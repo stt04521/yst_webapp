@@ -43,6 +43,9 @@
           <span v-if="route.path === '/' || route.path === '/news'" slot="overwrite-left" @click="drawerVisibility = !drawerVisibility">
             <x-icon type="navicon" size="35" style="fill:#fff;position:relative;top:-8px;left:-3px;"></x-icon>
           </span>
+          <span v-if="route.path === '/schedule'" slot="overwrite-left" @click="drawerVisibility = !drawerVisibility">
+            <x-icon type="navicon" size="35" style="fill:#fff;position:relative;top:-8px;left:-3px;"></x-icon>
+          </span>
         </x-header>
         <router-view class="router-view"></router-view>
 
@@ -176,6 +179,7 @@
       },
       title () {
         if (this.route.path === '/news') return '个人信息'
+        if (this.route.path === '/schedule') return '日程'
         if (this.route.path === '/project/donate') return 'Donate'
         if (this.route.path === '/demo') return 'Demo list'
         return this.componentName ? `Demo/${this.componentName}` : 'Demo/~~'

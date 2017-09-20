@@ -1,53 +1,73 @@
 <template>
-  <div class="hello">
-    <h1>{{ msg }}</h1>
-    <h2>Essential Links</h2>
-    <ul>
-      <li><a href="https://vuejs.org" target="_blank">Core Docs</a></li>
-      <li><a href="https://forum.vuejs.org" target="_blank">Forum</a></li>
-      <li><a href="https://gitter.im/vuejs/vue" target="_blank">Gitter Chat</a></li>
-      <li><a href="https://twitter.com/vuejs" target="_blank">Twitter</a></li>
-      <br>
-      <li><a href="http://vuejs-templates.github.io/webpack/" target="_blank">Docs for This Template</a></li>
-    </ul>
-    <h2>Ecosystem</h2>
-    <ul>
-      <li><a href="http://router.vuejs.org/" target="_blank">vue-router</a></li>
-      <li><a href="http://vuex.vuejs.org/" target="_blank">vuex</a></li>
-      <li><a href="http://vue-loader.vuejs.org/" target="_blank">vue-loader</a></li>
-      <li><a href="https://github.com/vuejs/awesome-vue" target="_blank">awesome-vue</a></li>
-    </ul>
+  <div class="schedule-wrapper">
+    <!--<tab class="tab-container">-->
+      <!--<tab-item class="s-tab-item" selected @click="showSchedule">日程</tab-item>-->
+      <!--<tab-item class="s-tab-item" @click="showNotepad">记事本</tab-item>-->
+      <!--<img class="schedule-img" src="../assets/schedule.png"/>-->
+    <!--</tab>-->
+    <flexbox class="tab-wrapper" :gutter="0">
+      <flexbox-item :span="10">
+        <tab :line-width="1" custom-bar-width="60px" active-color="#108ee9" class="s-tab-container">
+          <tab-item select>日程</tab-item>
+          <tab-item>记事本</tab-item>
+        </tab>
+      </flexbox-item>
+      <flexbox-item class="s-img-bg"><img class="calender-img" src="../assets/schedule.png"/></flexbox-item>
+    </flexbox>
+
+    <div class="content"></div>
   </div>
 </template>
 
 <script>
+  import {Flexbox, FlexboxItem, Tab, TabItem} from 'vux'
   export default {
     name: 'hello',
+    components: {
+      Flexbox,
+      FlexboxItem,
+      Tab,
+      TabItem
+    },
     data () {
       return {
         msg: 'Welcome to Your Vue.js App'
+      }
+    },
+    methods: {
+      showNotepad () {
+        console.log('show note pad')
+      },
+      showSchedule () {
+        console.log('show schedule')
       }
     }
   }
 </script>
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
-<style scoped>
-  h1, h2 {
-    font-weight: normal;
-  }
+<style scoped lang ="less">
+  .schedule-wrapper{
+    .tab-wrapper {
+      height: 37px;
+      line-height: 37px;
+      text-align: center;
+      .s-tab-container{
+        height: 37px;
+        line-height: 37px;
+      }
+      .s-img-bg{
+        background-color: #fff;
+        border:vux-1px-b ;
+        .calender-img{
+          width: 26px;
+          height: 26px;
+          vertical-align: middle;
+        }
+      }
 
-  ul {
-    list-style-type: none;
-    padding: 0;
-  }
+    }
 
-  li {
-    display: inline-block;
-    margin: 0 10px;
-  }
-
-  a {
-    color: #42b983;
   }
 </style>
+

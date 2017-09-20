@@ -7,6 +7,7 @@ import App from './App'
 import router from './router'
 import Vuex from 'vuex'
 import { sync } from 'vuex-router-sync'
+import './lib/flexible'
 
 require('es6-promise').polyfill()
 

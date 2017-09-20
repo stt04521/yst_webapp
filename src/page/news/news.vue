@@ -1,6 +1,6 @@
 <template>
   <div class="hello">
-    <group>
+    <group class="news">
       <cell-box>
         <Flexbox>
           <FlexboxItem :span="2">
@@ -67,7 +67,9 @@
           </FlexboxItem>
         </Flexbox>
       </cell-box>
+
       <cell-box>
+        <router-link to="/system" class="w100">
         <Flexbox>
           <FlexboxItem :span="2">
             <div class="news_img">
@@ -75,7 +77,7 @@
             </div>
           </FlexboxItem>
           <FlexboxItem :span="8">
-            <h4>系统消息</h4>
+            <h4 >系统消息</h4>
             <p class="f_14">财务报表任务已经完成，请…</p>
           </FlexboxItem>
           <FlexboxItem :span="2">
@@ -83,7 +85,9 @@
             <badge text="888"></badge>
           </FlexboxItem>
         </Flexbox>
+        </router-link>
       </cell-box>
+
     </group>
   </div>
 </template>
@@ -109,11 +113,17 @@
 </script>
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
-<style scoped>
-  .news_img{
-    height: 50px;
-    width: 50px;
-    border-radius: 50%;
-    background: #03BD80;
+<style scoped lang="less">
+  .news{
+    h4{
+      color: black;
+    }
+    .news_img{
+      height: 50px;
+      width: 50px;
+      border-radius: 50%;
+      background: #03BD80;
+    }
   }
+
 </style>

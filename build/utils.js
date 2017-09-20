@@ -20,8 +20,15 @@ exports.cssLoaders = function (options) {
     }
   }
 
+  // var px2remLoader = {
+  //   loader: 'px2rem-loader',
+  //   options: {
+  //     remUnit: 75
+  //   }
+  // }
   // generate loader string to be used with extract text plugin
   function generateLoaders (loader, loaderOptions) {
+    // var loaders = [cssLoader, px2remLoader]
     var loaders = [cssLoader]
     if (loader) {
       loaders.push({

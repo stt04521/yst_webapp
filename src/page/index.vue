@@ -44,7 +44,11 @@
             <x-icon type="navicon" size="35" style="fill:#fff;position:relative;top:-8px;left:-3px;"></x-icon>
           </span>
         </x-header>
+        <transition
+          @after-enter="$vux.bus && $vux.bus.$emit('vux:after-view-enter')"
+          :name="'vux-pop-' + (direction === 'forward' ? 'in' : 'out')">
         <router-view class="router-view"></router-view>
+        </transition>
 
         <tabbar class="vux-demo-tabbar" id="vux-demo-tabbar" icon-class="vux-center" slot="bottom">
           <tabbar-item :link="{path:'/news'}" :selected="route.path === '/news'" badge="99+">
@@ -197,14 +201,6 @@
   }
   body {
     background-color: #fbf9fe;
-  }
-  html, body {
-    height: 100%;
-    width: 100%;
-    overflow-x: hidden;
-  }
-  .vux-header{
-    background-color:  #624B4B!important;
   }
 
   .demo-icon-22 {

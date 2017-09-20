@@ -15,7 +15,7 @@ export default new Router({
       children: [{
         path: 'news', // 消息页
         component: (resolve) => {
-          require(['@/page/news'], resolve)
+          require(['@/page/news/news'], resolve)
         }
       },
       {
@@ -36,6 +36,12 @@ export default new Router({
           require(['@/page/schedule'], resolve)
         }
       }]
+    },
+    {
+      path: '/system', // 系统消息
+      component: (resolve) => {
+        require(['@/page/news/system'], resolve)
+      }
     }
   ]
 })

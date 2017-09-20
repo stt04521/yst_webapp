@@ -46,7 +46,20 @@ export default new Router({
           component: (resolve) => {
             require(['@/page/showSchedule'], resolve)
           }
-        }]
+        }
+        ]
+      },
+      {
+        path: 'showCalender',
+        component: (resolve) => {
+          require(['@/page/showCalender'], resolve)
+        }
+      },
+      {
+        path: 'createSchedule',
+        components: (resolve) => {
+          require(['@/page/createSchedule'], resolve)
+        }
       }]
     }
   ]

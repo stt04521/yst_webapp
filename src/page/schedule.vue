@@ -11,20 +11,24 @@
           </tab-item>
         </tab>
       </flexbox-item>
-      <flexbox-item class="s-img-bg vux-1px-tb"><img class="calender-img" src="../assets/schedule.png"/></flexbox-item>
+      <flexbox-item class="s-img-bg vux-1px-tb">
+        <router-link to="/showCalender">
+          <img class="calender-img" src="../assets/schedule.png"/>
+        </router-link>
+      </flexbox-item>
     </flexbox>
     <div class="content">
-      <!--<component :is="currentShow" :scheduleList="scheduleList" :isShowAddress="isShowAddress"></component>-->
-      <!--<router-view :scheduleList = 'scheduleList' :isShowAddress="isShowAddress"></router-view>-->
-      <show-schedule v-if="isShowNote" :scheduleList = 'scheduleList' :isShowAddress="false"></show-schedule>
-      <show-schedule v-else :scheduleList = 'scheduleList' :isShowAddress="isShowAddress"></show-schedule>
+      <show-schedule v-show="isShowSchedule" :scheduleList = 'scheduleList' :isShowAddress="true"></show-schedule>
+      <show-schedule v-show="isShowNote" :scheduleList = 'scheduleList' :isShowAddress="false"></show-schedule>
+      <showCalender v-show="isShowCalender"></showCalender>
     </div>
   </div>
 </template>
 
 <script>
-  import {Flexbox, FlexboxItem, Tab, TabItem} from 'vux'
+  import {Flexbox, FlexboxItem, Tab, TabItem, InlineCalendar} from 'vux'
   import showSchedule from './showSchedule.vue'
+  import showCalender from './showCalender.vue'
   export default {
     name: 'schedule',
     components: {
@@ -32,15 +36,16 @@
       FlexboxItem,
       Tab,
       TabItem,
-      showSchedule
-//      'schedule': showSchedule,
-//      'showNote': showSchedule
+      showSchedule,
+      showCalender,
+      InlineCalendar
     },
     data () {
       return {
         isShowAddress: true,
+        isShowSchedule: true,
+        isShowCalender: false,
         isShowNote: false,
-//        currentShow: 'schedule',
         scheduleList: [{
           content: '第一条日程记录',
           address: '杭州滨海区',
@@ -104,22 +109,32 @@
       }
     },
     methods: {
-      showNotepad () {
-        console.log('show note pad')
-      },
-      showSchedule () {
-        console.log('show schedule')
-      }
+//      showNotepad () {
+//        console.log('show note pad')
+//      },
+//      showSchedule () {
+//        console.log('show schedule')
+//      }
     },
     watch: {
       $route (to, from) {
+        console.log('to: ', to)
         if (to.path === '/schedule/showSchedule' || to.path === '/schedule') {
+          this.isShowSchedule = true
+          this.isShowCalender = false
           this.isShowNote = false
-          this.isShowAddress = true
         }
         if (to.path === '/schedule/showNote') {
+          this.isShowSchedule = false
+          this.isShowCalender = false
           this.isShowNote = true
-          this.isShowAddress = false
+        }
+        if (to.path === '/schedule/showCalender') {
+          console.log(to)
+          console.log(from)
+          this.isShowSchedule = false
+          this.isShowCalender = true
+          this.isShowNote = false
         }
       }
     }
@@ -153,6 +168,9 @@
       height: 522px;
       overflow-y: auto;
     }
+  }
+  .inline-calendar-demo {
+    background: rgba(255,255,255,0.9);
   }
 </style>
 

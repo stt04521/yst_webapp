@@ -179,8 +179,9 @@
       },
       title () {
         if (this.route.path === '/news') return '个人信息'
-        if (this.route.path === '/schedule' || this.route.path === '/schedule/showSchedule') return '日程'
+        if (this.route.path === '/schedule' || this.route.path === '/schedule/showSchedule' || this.route.path === '/showCalender') return '日程'
         if (this.route.path === '/schedule/showNote') return '记事本'
+        if (this.route.path === '/createSchedule') return '新建计划'
         if (this.route.path === '/project/donate') return 'Donate'
         if (this.route.path === '/demo') return 'Demo list'
         return this.componentName ? `Demo/${this.componentName}` : 'Demo/~~'

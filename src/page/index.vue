@@ -43,6 +43,9 @@
           <span v-if="route.path === '/' || route.path === '/news'" slot="overwrite-left" @click="drawerVisibility = !drawerVisibility">
             <x-icon type="navicon" size="35" style="fill:#fff;position:relative;top:-8px;left:-3px;"></x-icon>
           </span>
+          <span v-if="route.path === '/schedule'" slot="overwrite-left" @click="drawerVisibility = !drawerVisibility">
+            <x-icon type="navicon" size="35" style="fill:#fff;position:relative;top:-8px;left:-3px;"></x-icon>
+          </span>
         </x-header>
         <transition
           @after-enter="$vux.bus && $vux.bus.$emit('vux:after-view-enter')"
@@ -180,6 +183,9 @@
       },
       title () {
         if (this.route.path === '/news') return '个人信息'
+        if (this.route.path === '/schedule' || this.route.path === '/schedule/showSchedule' || this.route.path === '/showCalender') return '日程'
+        if (this.route.path === '/schedule/showNote') return '记事本'
+        if (this.route.path === '/createSchedule') return '新建计划'
         if (this.route.path === '/project/donate') return 'Donate'
         if (this.route.path === '/demo') return 'Demo list'
         return this.componentName ? `Demo/${this.componentName}` : 'Demo/~~'

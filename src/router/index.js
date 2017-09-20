@@ -34,6 +34,31 @@ export default new Router({
         path: 'schedule', // 日程
         component: (resolve) => {
           require(['@/page/schedule'], resolve)
+        },
+        children: [{
+          path: 'showSchedule',
+          component: (resolve) => {
+            require(['@/page/showSchedule'], resolve)
+          }
+        },
+        {
+          path: 'showNote',
+          component: (resolve) => {
+            require(['@/page/showSchedule'], resolve)
+          }
+        }
+        ]
+      },
+      {
+        path: 'showCalender',
+        component: (resolve) => {
+          require(['@/page/showCalender'], resolve)
+        }
+      },
+      {
+        path: 'createSchedule',
+        components: (resolve) => {
+          require(['@/page/createSchedule'], resolve)
         }
       }]
     },

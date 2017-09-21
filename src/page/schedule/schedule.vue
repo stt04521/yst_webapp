@@ -13,7 +13,7 @@
       </flexbox-item>
       <flexbox-item class="s-img-bg vux-1px-tb">
         <router-link to="/showCalender">
-          <img class="calender-img" src="../assets/schedule.png"/>
+          <img class="calender-img" src="../../assets/schedule.png"/>
         </router-link>
       </flexbox-item>
     </flexbox>
@@ -130,8 +130,6 @@
           this.isShowNote = true
         }
         if (to.path === '/schedule/showCalender') {
-          console.log(to)
-          console.log(from)
           this.isShowSchedule = false
           this.isShowCalender = true
           this.isShowNote = false

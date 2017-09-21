@@ -12,7 +12,7 @@
           <div class="title">{{ item.content }}</div>
           <div class="address" v-show="isShowAddress">{{ item.address }}</div>
           <div class="create-time">{{ item.createTime }}</div>
-          <img class="s-delete" src="../assets/delete.png"/>
+          <img class="s-delete" src="../../assets/delete.png"/>
           <span class="modify-time">{{ item.modifyTime }}</span>
         </div>
       </li>

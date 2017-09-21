@@ -33,18 +33,18 @@ export default new Router({
       {
         path: 'schedule', // 日程
         component: (resolve) => {
-          require(['@/page/schedule'], resolve)
+          require(['@/page/schedule/schedule'], resolve)
         },
         children: [{
           path: 'showSchedule',
           component: (resolve) => {
-            require(['@/page/showSchedule'], resolve)
+            require(['@/page/schedule/showSchedule'], resolve)
           }
         },
         {
           path: 'showNote',
           component: (resolve) => {
-            require(['@/page/showSchedule'], resolve)
+            require(['@/page/schedule/showSchedule'], resolve)
           }
         }
         ]
@@ -52,13 +52,37 @@ export default new Router({
       {
         path: 'showCalender',
         component: (resolve) => {
-          require(['@/page/showCalender'], resolve)
+          require(['@/page/schedule/showCalender'], resolve)
         }
       },
       {
         path: 'createSchedule',
-        components: (resolve) => {
-          require(['@/page/createSchedule'], resolve)
+        component: (resolve) => {
+          require(['@/page/schedule/createSchedule'], resolve)
+        }
+      },
+      {
+        path: 'chooseParticipator',
+        component: (resolve) => {
+          require(['@/page/schedule/chooseParticipator'], resolve)
+        }
+      },
+      {
+        path: 'scheduleDetail',
+        component: (resolve) => {
+          require(['@/page/schedule/scheduleDetail'], resolve)
+        }
+      },
+      {
+        path: 'noteDetail',
+        component: (resolve) => {
+          require(['@/page/schedule/noteDetail'], resolve)
+        }
+      },
+      {
+        path: 'createNote',
+        component: (resolve) => {
+          require(['@/page/schedule/createNote'], resolve)
         }
       }]
     },

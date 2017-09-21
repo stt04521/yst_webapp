@@ -50,6 +50,11 @@
             <span style="font-size: 17px; color: #fff">取消</span>
           </span>
           <span v-if="route.path === '/createSchedule'" slot="right" style="font-size: 17px; color: #fff" @click="createSchedule">创建</span>
+          <span v-if="route.path === '/schedule/showSchedule'" slot="right" style="font-size: 17px; color: #fff" @click="addSchedule">添加日程</span>
+          <span v-if="route.path === '/schedule/showNote'" slot="right" style="font-size: 17px; color: #fff" @click="addNote">添加记事</span>
+          <span v-if="route.path === '/chooseParticipator'" slot="right" style="font-size: 17px; color: #fff" @click="chooseParticipator">确定</span>
+          <span v-if="route.path === '/createNote'" slot="right" style="font-size: 17px; color: #fff" @click="createNote">创建笔记</span>
+          
         </x-header>
         <transition
           @after-enter="$vux.bus && $vux.bus.$emit('vux:after-view-enter')"
@@ -144,12 +149,23 @@
       ...mapActions([
         'updateDemoPosition'
       ]),
-      // 日程部分
       createSchedule () {
         console.log('create schedule')
       },
       cancleCreateSchedule () {
         console.log('cancle create schedule')
+      },
+      addSchedule () {
+        console.log('add schedule')
+      },
+      addNote () {
+        console.log('add note')
+      },
+      chooseParticipator () {
+        console.log('choose participator')
+      },
+      createNote () {
+        console.log('create note')
       }
     },
     computed: {
@@ -173,10 +189,8 @@
         }
       },
       rightOptions () {
-        if (this.route.path === '/createSchedule') return { showMore: false }
-        return {
-          showMore: true
-        }
+        // if (this.route.path === '/createSchedule') return { showMore: false }
+        if (this.route.path === '/') return { showMore: true }
       },
       headerTransition () {
         return this.direction === 'forward' ? 'vux-header-fade-in-right' : 'vux-header-fade-in-left'

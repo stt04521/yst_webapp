@@ -54,42 +54,42 @@ export default new Router({
         component: (resolve) => {
           require(['@/page/schedule/showCalender'], resolve)
         }
-      },
-      {
-        path: 'createSchedule',
-        component: (resolve) => {
-          require(['@/page/schedule/createSchedule'], resolve)
-        }
-      },
-      {
-        path: 'chooseParticipator',
-        component: (resolve) => {
-          require(['@/page/schedule/chooseParticipator'], resolve)
-        }
-      },
-      {
-        path: 'scheduleDetail',
-        component: (resolve) => {
-          require(['@/page/schedule/scheduleDetail'], resolve)
-        }
-      },
-      {
-        path: 'noteDetail',
-        component: (resolve) => {
-          require(['@/page/schedule/noteDetail'], resolve)
-        }
-      },
-      {
-        path: 'createNote',
-        component: (resolve) => {
-          require(['@/page/schedule/createNote'], resolve)
-        }
       }]
     },
     {
       path: '/system', // 系统消息
       component: (resolve) => {
         require(['@/page/news/system'], resolve)
+      }
+    },
+    {
+      path: '/createSchedule', // 创建日程
+      component: (resolve) => {
+        require(['@/page/schedule/createSchedule'], resolve)
+      }
+    },
+    {
+      path: '/chooseParticipator', // 选择参与者
+      component: (resolve) => {
+        require(['@/page/schedule/chooseParticipator'], resolve)
+      }
+    },
+    {
+      path: '/createNote',  // 创建记事
+      component: (resolve) => {
+        require(['@/page/schedule/createNote'], resolve)
+      }
+    },
+    {
+      path: '/scheduleDetail',  // 日程详情
+      component: (resolve) => {
+        require(['@/page/schedule/scheduleDetail'], resolve)
+      }
+    },
+    {
+      path: '/noteDetail',  // 记事详情
+      component: (resolve) => {
+        require(['@/page/schedule/noteDetail'], resolve)
       }
     }
   ]

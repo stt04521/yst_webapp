@@ -1,23 +1,19 @@
 <template>
   <div class="participator-wrapper">
-    <group>
-      <cell is-link title="选择人员" @click.native="chooseFriend"></cell>
-    </group>
-    <!--<checklist title="已选择的接收人" :options="commonList" @on-change="change">111</checklist>-->
-    <checklist title="已选择的接收人" :options="inlineDescList" v-model="inlineDescListValue" @on-change="change"></checklist>
-    <!--<div class="choose-container">-->
-      <!--<div class="choose-title">已选择的接收人</div>-->
-      <!--<ul>-->
-        <!--<li class="item-container">-->
-          <!--<input type="radio">-->
-          <!--<img src="../../assets/news/userImg.jpg" class="p-img">-->
-        <!--</li>-->
-      <!--</ul>-->
-    <!--</div>-->
+    <x-header title="参与者" slot="overwrite-left" class="header">
+      <span slot="overwrite-left" @click="cancleChoose">取消</span>
+      <span slot="right" @click="confirm">确定</span>
+    </x-header>
+    <view-box ref="viewBox" class="content-container">
+      <group>
+        <cell is-link title="选择人员" @click.native="chooseFriend"></cell>
+      </group>
+      <checklist title="已选择的接收人" :options="inlineDescList" v-model="inlineDescListValue" @on-change="change"></checklist>
+    </view-box>
   </div>
 </template>
 <script>
-  import {Group, Cell, Checklist} from 'vux'
+  import {Group, Cell, Checklist, XHeader, ViewBox} from 'vux'
   export default {
     name: 'chooseParticipator',
     data () {
@@ -34,7 +30,9 @@
     components: {
       Group,
       Cell,
-      Checklist
+      Checklist,
+      XHeader,
+      ViewBox
     },
     methods: {
       change (val) {
@@ -42,31 +40,26 @@
       },
       chooseFriend () {
         console.log('choose friend')
+      },
+      cancleChoose () {
+        console.log('cancel choose')
+      },
+      confirm () {
+        console.log('confirm choose')
       }
     }
   }
 </script>
 <style scoped lang="less">
   .participator-wrapper {
-    margin-top: -10px;
-    .choose-container{
-      margin-left: 10px;
-      margin-right: 10px;
-      .choose-title{
-        font-size: 15px;
-        color: #aaa;
-      }
-      .item-container{
-        height: 53px;
-        line-height: 53px;
-        background-color: #fff;
-        padding: 20px;
-        vertical-align: center;
-        .p-img{
-          width: 40px;
-          height: 40px;
-        }
-      }
+    height: 100%;
+    overflow: hidden;
+    .header span{
+      font-size: 17px;
+      color: #fff
+    }
+    .content-container {
+      margin-top: -20px;
     }
   }
 </style>

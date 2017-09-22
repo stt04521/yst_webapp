@@ -4,10 +4,10 @@
       <flexbox-item :span="10">
         <tab :line-width="1" custom-bar-width="60px" active-color="#108ee9" class="s-tab-container">
           <tab-item select>
-            <router-link to="/schedule/showSchedule">日程</router-link>
+            <router-link to="/schedule/showSchedule" @click="changeIndex">日程</router-link>
           </tab-item>
           <tab-item>
-            <router-link to="/schedule/showNote">记事本</router-link>
+            <router-link to="/schedule/showNote" @click="changeIndex">记事本</router-link>
           </tab-item>
         </tab>
       </flexbox-item>
@@ -42,6 +42,7 @@
     },
     data () {
       return {
+        pageIndex: 1,
         isShowAddress: true,
         isShowSchedule: true,
         isShowCalender: false,
@@ -115,6 +116,9 @@
 //      showSchedule () {
 //        console.log('show schedule')
 //      }
+      changeIndex () {
+        this.pageIndex = this.pageIndex === 1 ? 2 : 1
+      }
     },
     watch: {
       $route (to, from) {

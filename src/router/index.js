@@ -32,6 +32,7 @@ export default new Router({
       },
       {
         path: 'schedule', // 日程
+        redirect: 'schedule/showSchedule',
         component: (resolve) => {
           require(['@/page/schedule/schedule'], resolve)
         },

@@ -43,17 +43,8 @@
           <span v-if="route.path === '/' || route.path === '/news'" slot="overwrite-left" @click="drawerVisibility = !drawerVisibility">
             <x-icon type="navicon" size="35" style="fill:#fff;position:relative;top:-8px;left:-3px;"></x-icon>
           </span>
-          <span v-if="route.path === '/schedule'" slot="overwrite-left" @click="drawerVisibility = !drawerVisibility">
-            <x-icon type="navicon" size="35" style="fill:#fff;position:relative;top:-8px;left:-3px;"></x-icon>
-          </span>
-          <!--<span v-if="route.path === '/createSchedule'" slot="overwrite-left" @click="cancleCreateSchedule">-->
-            <!--<span style="font-size: 17px; color: #fff">取消</span>-->
-          <!--</span>-->
-          <span v-if="route.path === '/createSchedule'" slot="right" style="font-size: 17px; color: #fff" @click="createSchedule">创建</span>
           <span v-if="route.path === '/schedule/showSchedule'" slot="right" style="font-size: 17px; color: #fff" @click="addSchedule">添加日程</span>
           <span v-if="route.path === '/schedule/showNote'" slot="right" style="font-size: 17px; color: #fff" @click="addNote">添加记事</span>
-          <span v-if="route.path === '/chooseParticipator'" slot="right" style="font-size: 17px; color: #fff" @click="chooseParticipator">确定</span>
-          <span v-if="route.path === '/createNote'" slot="right" style="font-size: 17px; color: #fff" @click="createNote">创建笔记</span>
 
         </x-header>
         <transition
@@ -184,8 +175,12 @@
         return false
       },
       leftOptions () {
-        return {
-          showBack: this.route.path !== '/'
+        if (this.route.path === '/showCalender') {
+          return {showBack: true}
+        } else {
+          return {
+            showBack: false
+          }
         }
       },
       rightOptions () {
@@ -211,11 +206,6 @@
         if (this.route.path === '/news') return '个人信息'
         if (this.route.path === '/schedule' || this.route.path === '/schedule/showSchedule' || this.route.path === '/showCalender') return '日程'
         if (this.route.path === '/schedule/showNote') return '记事本'
-//        if (this.route.path === '/createSchedule') return '新建计划'
-//        if (this.route.path === '/chooseParticipator') return '参 与者'
-        if (this.route.path === '/scheduleDetail') return '日程详情'
-        if (this.route.path === '/noteDetail') return '笔记详情'
-        if (this.route.path === '/createNote') return '新建记事'
         if (this.route.path === '/project/donate') return 'Donate'
         if (this.route.path === '/demo') return 'Demo list'
         return this.componentName ? `Demo/${this.componentName}` : 'Demo/~~'

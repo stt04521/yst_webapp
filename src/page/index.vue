@@ -45,7 +45,7 @@
           </span>
           <span v-if="route.path === '/schedule/showSchedule'" slot="right" style="font-size: 17px; color: #fff" @click="addSchedule">添加日程</span>
           <span v-if="route.path === '/schedule/showNote'" slot="right" style="font-size: 17px; color: #fff" @click="addNote">添加记事</span>
-
+          <span v-if="route.path === '/work' || route.path === '/work/todoList' || route.path === '/work/finishedList'" slot="right" style="font-size: 17px; color: #fff" @click="toggle">切换</span>
         </x-header>
         <transition
           @after-enter="$vux.bus && $vux.bus.$emit('vux:after-view-enter')"
@@ -58,22 +58,22 @@
             <!--<span class="demo-icon-22 vux-demo-tabbar-icon-home" slot="icon" style="position:relative;top: -2px;">&#xe637;</span>-->
             <img slot="icon" src="../assets/news_ns.png">
             <img slot="icon-active" src="../assets/news.png">
-            <span slot="label">Home</span>
+            <span slot="label">消息</span>
           </tabbar-item>
           <tabbar-item :link="{path:'/work'}" :selected="route.path === '/work'" >
             <img slot="icon" src="../assets/work_ns.png">
             <img slot="icon-active" src="../assets/work.png">
-            <span slot="label"><span v-if="componentName" class="vux-demo-tabbar-component">{{componentName}}</span><span v-else>Demos</span></span>
+            <span slot="label"><span v-if="componentName" class="vux-demo-tabbar-component">{{componentName}}</span><span v-else>工作</span></span>
           </tabbar-item>
           <tabbar-item :link="{path:'/contacts'}" :selected="route.path === '/contacts'" show-dot badge="New">
             <img slot="icon" src="../assets/contacts_ns.png">
             <img slot="icon-active" src="../assets/contacts.png">
-          <span slot="label">Donate</span>
+          <span slot="label">联系人</span>
           </tabbar-item>
           <tabbar-item :link="{path:'/schedule'}" :selected="route.path === '/schedule'" show-dot>
             <img slot="icon" src="../assets/schedule_ns.png">
             <img slot="icon-active" src="../assets/schedule.png">
-            <span slot="label">Donate</span>
+            <span slot="label">日程</span>
           </tabbar-item>
         </tabbar>
       </view-box>
@@ -143,20 +143,14 @@
       createSchedule () {
         console.log('create schedule')
       },
-      cancleCreateSchedule () {
-        console.log('cancle create schedule')
-      },
       addSchedule () {
         console.log('add schedule')
       },
       addNote () {
         console.log('add note')
       },
-      chooseParticipator () {
-        console.log('choose participator')
-      },
-      createNote () {
-        console.log('create note')
+      toggle () {
+        console.log('toggle')
       }
     },
     computed: {
@@ -206,7 +200,7 @@
         if (this.route.path === '/news') return '个人信息'
         if (this.route.path === '/schedule' || this.route.path === '/schedule/showSchedule' || this.route.path === '/showCalender') return '日程'
         if (this.route.path === '/schedule/showNote') return '记事本'
-        if (this.route.path === '/project/donate') return 'Donate'
+        if (this.route.path === '/work' || this.route.path === '/work/todoList' || this.route.path === '/work/finishedList') return '个人应用'
         if (this.route.path === '/demo') return 'Demo list'
         return this.componentName ? `Demo/${this.componentName}` : 'Demo/~~'
       }

@@ -20,9 +20,22 @@ export default new Router({
       },
       {
         path: 'work', // 工作
+        redirect: 'work/todoList',
         component: (resolve) => {
-          require(['@/page/work'], resolve)
-        }
+          require(['@/page/work/work'], resolve)
+        },
+        children: [{
+          path: 'todoList',
+          component: (resolve) => {
+            require(['@/page/work/todoList'], resolve)
+          }
+        },
+        {
+          path: 'finishedList',
+          component: (resolve) => {
+            require(['@/page/work/todoList'], resolve)
+          }
+        }]
       },
       {
         path: 'contacts', // 联系人
@@ -91,6 +104,32 @@ export default new Router({
       path: '/noteDetail',  // 记事详情
       component: (resolve) => {
         require(['@/page/schedule/noteDetail'], resolve)
+      }
+    },
+    {
+      path: '/orgnizeApply',  // 组织应用
+      component: (resolve) => {
+        require(['@/page/work/orgnizeApply'], resolve)
+      },
+      children: [
+        {
+          path: 'organizeUse',
+          component: (resolve) => {
+            require(['@/page/work/useApply'], resolve)
+          }
+        },
+        {
+          path: 'personalUse',
+          component: (resolve) => {
+            require(['@/page/work/useApply'], resolve)
+          }
+        }
+      ]
+    },
+    {
+      path: '/personalApply',  // 个人应用
+      component: (resolve) => {
+        require(['@/page/work/personalApply'], resolve)
       }
     }
   ]

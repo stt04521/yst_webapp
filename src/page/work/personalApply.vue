@@ -1,46 +1,96 @@
 <template>
   <div class="personal-apply-wrapper">
-    <x-header title="上海某某某公司" slot="overwrite-left" class="header">
+    <x-header title="个人应用" slot="overwrite-left" class="header">
       <!--<span slot="overwrite-left" @click="cancleCreateSchedule">取消</span>-->
-      <span slot="right" @click="toggle">创建</span>
+      <span slot="right" @click="toggle">切换</span>
     </x-header>
-    <div class="content-wrapper">
-      <apply-show :dataList="personalList" :showAll="false"></apply-show>
-    </div>
+    <use-apply :alwaysUseList='alwaysUseList' :allApplyList='personalList'></use-apply>
   </div>
 </template>
 <script>
   import {XHeader} from 'vux'
   import applyShow from './applyShow.vue'
+  import useApply from './useApply.vue'
   export default{
     name: 'personalApply',
     components: {
       XHeader,
-      applyShow
+      applyShow,
+      useApply
     },
     data () {
       return {
+        alwaysUseList: [
+          {
+            image: require('../../assets/news/userImg.jpg'),
+            title: '常用应用'
+          },
+          {
+            image: require('../../assets/news/userImg.jpg'),
+            title: '常用应用'
+          },
+          {
+            image: require('../../assets/news/userImg.jpg'),
+            title: '常用应用'
+          },
+          {
+            image: require('../../assets/news/userImg.jpg'),
+            title: '常用应用'
+          },
+          {
+            image: require('../../assets/news/userImg.jpg'),
+            title: '常用应用'
+          },
+          {
+            image: require('../../assets/news/userImg.jpg'),
+            title: '常用应用'
+          },
+          {
+            image: require('../../assets/news/userImg.jpg'),
+            title: '常用应用'
+          },
+          {
+            image: require('../../assets/news/userImg.jpg'),
+            title: '常用应用'
+          }
+        ],
         personalList: [
           {
-            image: require('../../assets/feiji.png'),
-            creator: '蔡俊明',
-            content: '完成今天的完成今天的完成今天的完成今天的完成今天的完成今天的完成今天的完成今天的完成今天的完成今天的完成今天的完成今天的完成今天的完成今天的',
-            start: '2017-7-26 18: 00',
-            modify: '13:00'
-          },
-          {
-            image: require('../../assets/qianbi.png'),
-            creator: '蔡俊明',
-            content: '完成今天的完成今天的完成今天的完成今天的完成今天的完成今天的完成今天的完成今天的完成今天的完成今天的完成今天的完成今天的完成今天的完成今天的',
-            start: '2017-7-26 18: 00',
-            modify: '13:00'
-          },
-          {
-            image: require('../../assets/money.png'),
-            creator: '蔡俊明',
-            content: '完成今天的完成今天的完成今天的完成今天的完成今天的完成今天的完成今天的完成今天的完成今天的完成今天的完成今天的完成今天的完成今天的完成今天的',
-            start: '2017-7-26 18: 00',
-            modify: '13:00'
+            title: '财务管理',
+            applyList: [
+              {
+                image: require('../../assets/news/userImg.jpg'),
+                title: '任务'
+              },
+              {
+                image: require('../../assets/news/userImg.jpg'),
+                title: '任务'
+              },
+              {
+                image: require('../../assets/news/userImg.jpg'),
+                title: '任务'
+              },
+              {
+                image: require('../../assets/news/userImg.jpg'),
+                title: '任务'
+              },
+              {
+                image: require('../../assets/news/userImg.jpg'),
+                title: '任务'
+              },
+              {
+                image: require('../../assets/news/userImg.jpg'),
+                title: '任务'
+              },
+              {
+                image: require('../../assets/news/userImg.jpg'),
+                title: '任务'
+              },
+              {
+                image: require('../../assets/news/userImg.jpg'),
+                title: '任务'
+              }
+            ]
           }
         ]
       }
@@ -57,6 +107,20 @@
     .header span{
       color: #fff;
       font-size: 17px;
+    }
+    .apply-title{
+      margin-left: 10px;
+      .line {
+        width: 2px;
+        height: 13px;
+        display: inline-block;
+        background-color: #09f;
+        margin-right: 10px;
+      }
+      .title {
+        color: #aaa;
+        font-size: 14px;
+      }
     }
   }
 </style>

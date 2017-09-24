@@ -108,6 +108,7 @@ export default new Router({
     },
     {
       path: '/orgnizeApply',  // 组织应用
+      redirect: '/orgnizeApply/organizeUse',
       component: (resolve) => {
         require(['@/page/work/orgnizeApply'], resolve)
       },

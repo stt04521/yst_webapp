@@ -71,9 +71,21 @@ export default new Router({
       }]
     },
     {
-      path: '/system', // 系统消息
+      path: '/system/:type', // 系统消息
       component: (resolve) => {
         require(['@/page/news/system'], resolve)
+      }
+    },
+    {
+      path: '/messageDetails', // 消息详情
+      component: (resolve) => {
+        require(['@/page/news/messageDetails'], resolve)
+      }
+    },
+    {
+      path: '/invitingFriends', // 邀请好友
+      component: (resolve) => {
+        require(['@/page/news/invitingFriends'], resolve)
       }
     },
     {

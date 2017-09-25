@@ -132,6 +132,33 @@ export default new Router({
       component: (resolve) => {
         require(['@/page/work/personalApply'], resolve)
       }
+    },
+    {
+      path: '/taskList',  //  任务列表
+      redirect: '/taskList/taskItem',
+      component: (resolve) => {
+        require(['@/page/work/taskList'], resolve)
+      },
+      children: [
+        {
+          path: 'taskItem',   // 任务列表项
+          component: (resolve) => {
+            require(['@/page/work/taskItem'], resolve)
+          }
+        }
+      ]
+    },
+    {
+      path: '/createTask',  // 新建任务
+      component: (resolve) => {
+        require(['@/page/work/createTask'], resolve)
+      }
+    },
+    {
+      path: '/planList',  // 新建任务
+      component: (resolve) => {
+        require(['@/page/work/planList'], resolve)
+      }
     }
   ]
 })

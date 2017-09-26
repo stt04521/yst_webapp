@@ -167,9 +167,21 @@ export default new Router({
       }
     },
     {
-      path: '/planList',  // 新建任务
+      path: '/planList',  // 计划列表
       component: (resolve) => {
         require(['@/page/work/planList'], resolve)
+      }
+    },
+    {
+      path: '/createPlan',  // 新建计划
+      component: (resolve) => {
+        require(['@/page/work/createPlan'], resolve)
+      }
+    },
+    {
+      path: '/planDetail',  // 计划详情
+      component: (resolve) => {
+        require(['@/page/work/planDetail'], resolve)
       }
     }
   ]

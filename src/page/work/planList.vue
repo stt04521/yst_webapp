@@ -1,6 +1,6 @@
 <template>
   <div class="plan-list-wrapper">
-    <x-header title="计划" slot="overwrite-left" class="header">
+    <x-header title="计划" class="header">
       <!--<span slot="overwrite-left" @click="cancel">取消</span>-->
       <span slot="right" @click="create">创建</span>
     </x-header>

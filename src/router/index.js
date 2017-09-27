@@ -183,6 +183,24 @@ export default new Router({
       component: (resolve) => {
         require(['@/page/work/planDetail'], resolve)
       }
+    },
+    {
+      path: '/attachmentList',  // 附件列表
+      component: (resolve) => {
+        require(['@/page/work/attachmentList'], resolve)
+      }
+    },
+    {
+      path: '/aboutTask',  // 任务相关人员
+      component: (resolve) => {
+        require(['@/page/work/aboutTask'], resolve)
+      }
+    },
+    {
+      path: '/chooseMember',  // 选择各role人员以及移交任务组件
+      component: (resolve) => {
+        require(['@/page/work/chooseMember'], resolve)
+      }
     }
   ]
 })

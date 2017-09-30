@@ -201,6 +201,24 @@ export default new Router({
       component: (resolve) => {
         require(['@/page/work/chooseMember'], resolve)
       }
+    },
+    {
+      path: '/logIn',  // 登录
+      component: (resolve) => {
+        require(['@/page/login/logIn'], resolve)
+      }
+    },
+    {
+      path: '/registry',  // 注册
+      component: (resolve) => {
+        require(['@/page/login/registry'], resolve)
+      }
+    },
+    {
+      path: '/forgetPassword',  // 忘记密码
+      component: (resolve) => {
+        require(['@/page/login/forgetPassword'], resolve)
+      }
     }
   ]
 })

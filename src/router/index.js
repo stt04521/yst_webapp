@@ -219,6 +219,12 @@ export default new Router({
       component: (resolve) => {
         require(['@/page/login/forgetPassword'], resolve)
       }
+    },
+    {
+      path: '/registrySuccess',  // 忘记密码
+      component: (resolve) => {
+        require(['@/page/login/registrySuccess'], resolve)
+      }
     }
   ]
 })

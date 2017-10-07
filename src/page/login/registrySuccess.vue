@@ -31,7 +31,7 @@
   .registry-success-wrapper{
     height: 100%;
     width: 100%;
-    // position: relative;
+    overflow: hidden;
     .registry-container{
       width: 200px;
       margin: 40px auto;

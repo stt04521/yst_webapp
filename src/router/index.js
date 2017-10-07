@@ -221,10 +221,25 @@ export default new Router({
       }
     },
     {
-      path: '/registrySuccess',  // 忘记密码
+      path: '/registrySuccess',  // 注册成功
       component: (resolve) => {
         require(['@/page/login/registrySuccess'], resolve)
       }
+    },
+    {
+      path: '/personnelTask',  // 个人应用
+      redirect: '/personnelTask/taskManage',
+      component: (resolve) => {
+        require(['@/page/task/personnelTask'], resolve)
+      },
+      children: [
+        {
+          path: 'taskManage',  // 应用管理
+          component: (resolve) => {
+            require(['@/page/work/useApply'], resolve)
+          }
+        }
+      ]
     }
   ]
 })

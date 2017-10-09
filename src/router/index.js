@@ -144,6 +144,102 @@ export default new Router({
       component: (resolve) => {
         require(['@/page/work/personalApply'], resolve)
       }
+    },
+    {
+      path: '/taskList',  //  任务列表
+      redirect: '/taskList/taskItem',
+      component: (resolve) => {
+        require(['@/page/work/taskList'], resolve)
+      },
+      children: [
+        {
+          path: 'taskItem',   // 任务列表项
+          component: (resolve) => {
+            require(['@/page/work/taskItem'], resolve)
+          }
+        }
+      ]
+    },
+    {
+      path: '/createTask',  // 新建任务
+      component: (resolve) => {
+        require(['@/page/work/createTask'], resolve)
+      }
+    },
+    {
+      path: '/planList',  // 计划列表
+      component: (resolve) => {
+        require(['@/page/work/planList'], resolve)
+      }
+    },
+    {
+      path: '/createPlan',  // 新建计划
+      component: (resolve) => {
+        require(['@/page/work/createPlan'], resolve)
+      }
+    },
+    {
+      path: '/planDetail',  // 计划详情
+      component: (resolve) => {
+        require(['@/page/work/planDetail'], resolve)
+      }
+    },
+    {
+      path: '/attachmentList',  // 附件列表
+      component: (resolve) => {
+        require(['@/page/work/attachmentList'], resolve)
+      }
+    },
+    {
+      path: '/aboutTask',  // 任务相关人员
+      component: (resolve) => {
+        require(['@/page/work/aboutTask'], resolve)
+      }
+    },
+    {
+      path: '/chooseMember',  // 选择各role人员以及移交任务组件
+      component: (resolve) => {
+        require(['@/page/work/chooseMember'], resolve)
+      }
+    },
+    {
+      path: '/logIn',  // 登录
+      component: (resolve) => {
+        require(['@/page/login/logIn'], resolve)
+      }
+    },
+    {
+      path: '/registry',  // 注册
+      component: (resolve) => {
+        require(['@/page/login/registry'], resolve)
+      }
+    },
+    {
+      path: '/forgetPassword',  // 忘记密码
+      component: (resolve) => {
+        require(['@/page/login/forgetPassword'], resolve)
+      }
+    },
+    {
+      path: '/registrySuccess',  // 注册成功
+      component: (resolve) => {
+        require(['@/page/login/registrySuccess'], resolve)
+      }
+    },
+    {
+      path: '/personnelTask',  // 个人应用
+      redirect: '/personnelTask/taskManage',
+      component: (resolve) => {
+        require(['@/page/task/personnelTask'], resolve)
+      },
+      children: [
+        {
+          path: 'taskManage',  // 应用管理
+          component: (resolve) => {
+            require(['@/page/work/useApply'], resolve)
+          }
+        }
+      ]
     }
   ]
 })

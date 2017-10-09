@@ -2,7 +2,38 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="a08a54c5-9faf-4f5d-945d-799a32673bfe" name="Default" comment="">
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src/assets/addFile.png" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src/assets/down.png" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src/assets/folder.png" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src/assets/more.png" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src/assets/password.png" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src/assets/recover.png" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src/assets/un_watch.png" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src/assets/user.png" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src/assets/watch.png" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src/page/login/forgetPassword.vue" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src/page/login/header.vue" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src/page/login/logIn.vue" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src/page/login/registry.vue" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src/page/login/registrySuccess.vue" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src/page/task/personnelTask.vue" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src/page/task/taskManage.vue" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src/page/work/aboutTask.vue" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src/page/work/addMember.vue" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src/page/work/attachmentList.vue" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src/page/work/chooseMember.vue" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src/page/work/createPlan.vue" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src/page/work/createTask.vue" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src/page/work/planDetail.vue" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src/page/work/planItem.vue" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src/page/work/planList.vue" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src/page/work/searchPage.vue" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src/page/work/taskItem.vue" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src/page/work/tasklist.vue" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/assets/logo.png" afterPath="$PROJECT_DIR$/src/assets/logo.png" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/page/work/work.vue" afterPath="$PROJECT_DIR$/src/page/work/work.vue" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/router/index.js" afterPath="$PROJECT_DIR$/src/router/index.js" />
     </list>
     <ignored path="$PROJECT_DIR$/.tmp/" />
     <ignored path="$PROJECT_DIR$/temp/" />
@@ -22,7 +53,9 @@
           <provider selected="true" editor-type-id="text-editor">
             <state relative-caret-position="1890">
               <caret line="127" column="9" lean-forward="false" selection-start-line="127" selection-start-column="9" selection-end-line="127" selection-end-column="9" />
-              <folding />
+              <folding>
+                <marker date="1507529371000" expanded="true" signature="3477:5954" ph="{&quot;path&quot;: '/personalApply'...}" />
+              </folding>
             </state>
           </provider>
         </entry>
@@ -198,8 +231,8 @@
     <handled-path value="$PROJECT_DIR$/node_modules" />
   </component>
   <component name="ProjectFrameBounds">
-    <option name="x" value="1458" />
-    <option name="y" value="176" />
+    <option name="x" value="1362" />
+    <option name="y" value="169" />
     <option name="width" value="1137" />
     <option name="height" value="714" />
   </component>
@@ -363,7 +396,7 @@
       <workItem from="1506047397989" duration="9418000" />
       <workItem from="1506302176006" duration="676000" />
       <workItem from="1506649514543" duration="144000" />
-      <workItem from="1507511472034" duration="827000" />
+      <workItem from="1507511472034" duration="1327000" />
     </task>
     <task id="LOCAL-00001" summary="flexible">
       <created>1505917773062</created>
@@ -376,19 +409,19 @@
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="65897000" />
+    <option name="totallyTimeSpent" value="66397000" />
   </component>
   <component name="ToolWindowManager">
-    <frame x="1458" y="176" width="1137" height="714" extended-state="0" />
+    <frame x="1362" y="169" width="1137" height="714" extended-state="0" />
     <layout>
-      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.281362" sideWeight="0.5" order="0" side_tool="false" content_ui="combo" />
+      <window_info id="Project" active="true" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.281362" sideWeight="0.5" order="0" side_tool="false" content_ui="combo" />
       <window_info id="TODO" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="6" side_tool="false" content_ui="tabs" />
       <window_info id="Event Log" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="7" side_tool="true" content_ui="tabs" />
       <window_info id="Version Control" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.20418006" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="npm" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="2" side_tool="true" content_ui="tabs" />
       <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
       <window_info id="Structure" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
-      <window_info id="Terminal" active="true" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.4163987" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
+      <window_info id="Terminal" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.4163987" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="Favorites" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="2" side_tool="true" content_ui="tabs" />
       <window_info id="Debug" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.4" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="Cvs" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="4" side_tool="false" content_ui="tabs" />
@@ -746,7 +779,9 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="1890">
           <caret line="127" column="9" lean-forward="false" selection-start-line="127" selection-start-column="9" selection-end-line="127" selection-end-column="9" />
-          <folding />
+          <folding>
+            <marker date="1507529371000" expanded="true" signature="3477:5954" ph="{&quot;path&quot;: '/personalApply'...}" />
+          </folding>
         </state>
       </provider>
     </entry>

@@ -94,6 +94,8 @@
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped lang="less">
   .work-wrapper{
+    height: 100%;
+    overflow-y: auto;
     .task-container {
       margin-top: 40px;
       .s-tab-container{

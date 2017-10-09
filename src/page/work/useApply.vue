@@ -1,7 +1,7 @@
 <template>
   <div class="use-apply-wrapper">
     <div class="content-wrapper">
-      <apply-show :dataList="alwaysUseList" :showAll="false"></apply-show>
+      <apply-show :dataList="alwaysUseList" :showAll="false" @click-single-task="dealClick"></apply-show>
     </div>
     <div class='use-apply-container' v-for='(item, index) in allApplyList' :key='index'>
       <div class='apply-title' >
@@ -12,7 +12,7 @@
         <apply-show :dataList="item.applyList" :showAll="false"></apply-show>
       </div>
     </div>
-    
+
   </div>
 </template>
 <script>
@@ -36,6 +36,12 @@
     },
     components: {
       applyShow
+    },
+    methods: {
+      dealClick (item) {
+        console.log('item:', item.title)
+        console.log(item)
+      }
     }
   }
 </script>

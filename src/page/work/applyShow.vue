@@ -1,6 +1,6 @@
 <template>
   <div class="apply-container" v-show="dataList.length">
-    <div class="content-container" v-for="(item, index) in dataList" :key="index">
+    <div class="content-container" v-for="(item, index) in dataList" :key="index" @click="clickSingleTask(item)">
       <img class="apply-img" :src='item.image' >
       <span class="apply-title">{{ item.title }}</span>
     </div>
@@ -18,6 +18,11 @@
       showAll: {
         type: Boolean,
         default: false
+      }
+    },
+    methods: {
+      clickSingleTask (item) {
+        this.$emit('click-single-task', item)
       }
     }
   }

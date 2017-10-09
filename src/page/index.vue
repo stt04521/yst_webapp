@@ -11,24 +11,11 @@
       :show.sync="drawerVisibility"
       :show-mode="showModeValue"
       :placement="showPlacementValue"
-      :drawer-style="{'background-color':'#624B4B', width: '200px'}"
+      :drawer-style="{'background-color':'#3F3F3F', width: '248px'}"
     >
       <!-- drawer content -->
       <div slot="drawer">
-        <group title="Drawer demo(beta)" style="margin-top:20px;">
-          <cell title="Demo" link="/demo" value="演示" @click.native="drawerVisibility = false">
-          </cell>
-          <cell title="Buy me a coffee" link="project/donate" @click.native="drawerVisibility = false">
-          </cell>
-          <cell title="Github" link="http://github.com/airyland/vux" value="Star me" @click.native="drawerVisibility = false">
-          </cell>
-        </group>
-        <group title="showMode">
-          <radio v-model="showMode" :options="['push', 'overlay']" @on-change="onShowModeChange"></radio>
-        </group>
-        <group title="placement">
-          <radio v-model="showPlacement" :options="['left', 'right']" @on-change="onPlacementChange"></radio>
-        </group>
+        <mine></mine>
       </div>
 
       <!-- main content -->
@@ -83,6 +70,7 @@
 
 <script>
   import { Radio, Group, Cell, Badge, Drawer, Actionsheet, ButtonTab, ButtonTabItem, ViewBox, XHeader, Tabbar, TabbarItem, Loading, TransferDom } from 'vux'
+  import mine from './mine/mine'
   import { mapState, mapActions } from 'vuex'
   export default {
     directives: {
@@ -101,7 +89,8 @@
       Tabbar,
       TabbarItem,
       Loading,
-      Actionsheet
+      Actionsheet,
+      mine
     },
     data () {
       return {

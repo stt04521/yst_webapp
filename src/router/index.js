@@ -236,10 +236,28 @@ export default new Router({
         {
           path: 'taskManage',  // 应用管理
           component: (resolve) => {
-            require(['@/page/work/useApply'], resolve)
+            require(['@/page/task/taskManage'], resolve)
           }
         }
       ]
+    },
+    {
+      path: '/mine',  // 我的
+      component: (resolve) => {
+        require(['@/page/mine/mine'], resolve)
+      }
+    },
+    {
+      path: '/myOrganize',  // 我的组织
+      component: (resolve) => {
+        require(['@/page/mine/myOrganize'], resolve)
+      }
+    },
+    {
+      path: '/createOrganize',  // 创建组织
+      component: (resolve) => {
+        require(['@/page/mine/createOrganize'], resolve)
+      }
     }
   ]
 })

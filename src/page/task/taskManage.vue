@@ -4,7 +4,7 @@
   </div>
 </template>
 <script>
-import useApply from '../schedule/useApply.vue'
+import useApply from '../work/useApply.vue'
 export default {
   name: 'taskManage',
   components: {
@@ -42,8 +42,8 @@ export default {
           title: '常用应用'
         },
         {
-          image: require('../../assets/news/userImg.jpg'),
-          title: '常用应用'
+          image: require('../../assets/add_more.png'),
+          title: '添加应用'
         }
       ],
       personalList: [

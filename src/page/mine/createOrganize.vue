@@ -1,10 +1,10 @@
 <template>
   <div class="create-organize-wrapper">
-    <x-header title="创建组织" slot="overwrite-left" class="header">
+    <x-header title="创建组织" class="header">
     </x-header>
     <div class="create-organize-container">
-      <group :gutter="0">
-        <x-input
+      <group :gutter="0" class="content-container">
+        <x-input class="reset-padding"
           title="组织名称"
           v-model="organizeName"
           placeholder="至少两个字符"
@@ -12,28 +12,80 @@
           text-align="right"
         >
         </x-input>
+        <cell class="reset-padding" title="组织类型" :value="type" is-link @click.native="changeType" :border-intent="false"></cell>
+        <x-address title="所在地区" v-model="area" :list="addressData" @on-shadow-change="onShadowChange" placeholder="必填"></x-address>
       </group>
+      <button class="btn" :class="organizeName.length > 2 && area.length > 0 && type !== '必填' ? 'create' : ''" @click="createOrganize">创建组织</button>
+      <actionsheet v-model="showTypeChoose" :menus="typeList" @on-click-menu="chooseType" show-cancel></actionsheet>
+
     </div>
 
   </div>
 </template>
 <script>
-  import {XHeader, Group, XInput} from 'vux'
+  import {XHeader, Group, XInput, Cell, Actionsheet, XAddress, ChinaAddressV4Data} from 'vux'
   export default {
     name: 'createOrganize',
     components: {
       XHeader,
       Group,
-      XInput
+      XInput,
+      Cell,
+      Actionsheet,
+      XAddress
     },
     data () {
       return {
-        organizeName: ''
+        organizeName: '',
+        type: '必填',
+        area: [],
+        showTypeChoose: false,
+        addressData: ChinaAddressV4Data,
+        typeList: [
+          {
+            label: '企业'
+          },
+          {
+            label: '社会团体'
+          },
+          {
+            label: '事业单位'
+          },
+          {
+            label: '政府机构'
+          },
+          {
+            label: '自有团体'
+          },
+          {
+            label: '家庭'
+          }
+        ]
       }
     },
     methods: {
       verificate () {
         console.log(this.organizeName.length)
+      },
+      changeType () {
+        console.log('changeType')
+        this.showTypeChoose = true
+      },
+      chooseType (key, item) {
+        console.log('chooseType')
+        this.type = item.label
+      },
+      changeArea () {
+        console.log('changeArea')
+      },
+      createOrganize () {
+        if (this.organizeName.length > 2 && this.area.length > 0 && this.type !== '必填') {
+          console.log('组织名称： ', this.organizeName, '组织地址： ', this.area, '组织类型： ', this.type)
+          console.log('createOrganize')
+        }
+      },
+      onShadowChange (ids, names) {
+        console.log(this.area)
       }
     }
   }
@@ -43,7 +95,27 @@
     height: 100%;
     overflow: hidden;
     .create-organize-container{
-
+      text-align: center;
+      .content-container{
+        text-align: left;
+        .reset-padding{
+          padding-top: 25px;
+          padding-bottom: 25px;
+        }
+      }
+      .btn{
+        width: 355px;
+        height: 45px;
+        line-height: 45px;
+        border-radius: 4px;
+        background-color: #ccc;
+        border: none;
+        margin-top: 10px;
+        color: #fff;
+        &.create{
+          background-color: #0099ff;
+        }
+      }
     }
   }
 </style>

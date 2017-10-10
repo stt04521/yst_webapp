@@ -258,6 +258,18 @@ export default new Router({
       component: (resolve) => {
         require(['@/page/mine/createOrganize'], resolve)
       }
+    },
+    {
+      path: '/organizeAuthentication',  // 组织认证
+      component: (resolve) => {
+        require(['@/page/mine/organizeAuthentication'], resolve)
+      }
+    },
+    {
+      path: '/organizeInfo',  // 组织信息
+      component: (resolve) => {
+        require(['@/page/mine/organizeInfo'], resolve)
+      }
     }
   ]
 })

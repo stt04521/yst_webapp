@@ -27,7 +27,7 @@
                   :title="title"
                   :transition="headerTransition"
                   @on-click-more="onClickMore">
-          <span v-if="route.path === '/' || route.path === '/news'" slot="overwrite-left" @click="drawerVisibility = !drawerVisibility">
+          <span  slot="overwrite-left" @click="drawerVisibility = !drawerVisibility">
             <x-icon type="navicon" size="35" style="fill:#fff;position:relative;top:-8px;left:-3px;"></x-icon>
           </span>
           <span v-if="route.path === '/schedule/showSchedule'" slot="right" style="font-size: 17px; color: #fff" @click="addSchedule">添加日程</span>
@@ -191,7 +191,7 @@
         if (this.route.path === '/schedule/showNote') return '记事本'
         if (this.route.path === '/work' || this.route.path === '/work/todoList' || this.route.path === '/work/finishedList') return '个人应用'
         if (this.route.path === '/demo') return 'Demo list'
-        return this.componentName ? `Demo/${this.componentName}` : 'Demo/~~'
+        return this.componentName ? `Demo/${this.componentName}` : '联系人'
       }
     }
   }
@@ -199,6 +199,7 @@
 
 <style lang="less">
   @import '~vux/src/styles/reset.less';
+  @import '../styles/changeVux.less';
   @import '~vux/src/styles/1px.less';
   @import '~vux/src/styles/tap.less';
   .vux-demo {

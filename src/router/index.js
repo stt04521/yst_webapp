@@ -40,7 +40,7 @@ export default new Router({
       {
         path: 'contacts', // 联系人
         component: (resolve) => {
-          require(['@/page/contacts'], resolve)
+          require(['@/page/contacts/contacts'], resolve)
         }
       },
       {

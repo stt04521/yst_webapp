@@ -7,15 +7,13 @@ import App from './App'
 import router from './router'
 import Vuex from 'vuex'
 import { sync } from 'vuex-router-sync'
+import store from './store'
 import './lib/flexible'
 
 require('es6-promise').polyfill()
 
 Vue.use(Vuex)
 Vue.use(VueRouter)
-let store = new Vuex.Store({
-  modules: {}
-})
 
 store.registerModule('vux', {
   state: {

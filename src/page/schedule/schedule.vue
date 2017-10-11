@@ -3,7 +3,7 @@
     <flexbox class="tab-wrapper" :gutter="0">
       <flexbox-item :span="10">
         <tab :line-width="1" custom-bar-width="60px" active-color="#108ee9" class="s-tab-container">
-          <tab-item select>
+          <tab-item selected>
             <router-link to="/schedule/showSchedule" @click="changeIndex">日程</router-link>
           </tab-item>
           <tab-item>

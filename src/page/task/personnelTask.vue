@@ -5,7 +5,7 @@
     </x-header>
     <div class="personnel-task-container">
       <tab :line-width="1" custom-bar-width="60px" active-color="#108ee9">
-        <tab-item select>
+        <tab-item selected>
           <router-link to="/personnelTask/taskManage">应用管理</router-link>
         </tab-item>
         <tab-item>

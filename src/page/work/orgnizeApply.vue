@@ -6,7 +6,7 @@
     </x-header>
     <div class="f-use-container">
       <tab :line-width="1" custom-bar-width="60px" active-color="#10b4f7" class="s-tab-container" defaultColor="#aaa">
-        <tab-item select>
+        <tab-item selected>
           <router-link to="/orgnizeApply/organizeUse">组织应用</router-link>
         </tab-item>
         <tab-item>

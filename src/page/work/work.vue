@@ -3,7 +3,7 @@
     <apply-show :dataList="applyList" :showAll = "true"></apply-show>
     <div class="task-container">
       <tab :line-width="1" custom-bar-width="60px" active-color="#10b4f7" class="s-tab-container" defaultColor="#aaa">
-        <tab-item select>
+        <tab-item selected>
           <router-link to="/work/todoList">待办任务</router-link>
         </tab-item>
         <tab-item>

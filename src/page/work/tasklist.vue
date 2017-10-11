@@ -7,7 +7,7 @@
     <flexbox  :gutter="0" class="tab-container">
       <flexbox-item :span="7">
         <tab :line-width="1" custom-bar-width="60px" active-color="#10b4f7" class="s-tab-container" defaultColor="#aaa">
-          <tab-item select>
+          <tab-item selected>
             <router-link to="/taskList/taskItem">我创建的</router-link>
           </tab-item>
           <tab-item>

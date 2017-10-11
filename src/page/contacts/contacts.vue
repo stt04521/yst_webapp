@@ -1,21 +1,32 @@
 <template>
-  <div>
+  <div class="contacts">
     <search @on-submit="onSubmit" :auto-fixed="autoFixed" @on-focus="onFocus" @on-cancel="onCancel"></search>
     <div>
-      <tab :line-width=2 active-color='#fc378c' v-model="index">
+      <tab :line-width=2 active-color='#008EE5' v-model="index">
         <tab-item class="vux-center" :selected="demo2 === item" v-for="(item, index) in list2" @click="demo2 = item" :key="index">{{item}}</tab-item>
       </tab>
-      <swiper v-model="index" height="100px" :show-dots="false">
-        <swiper-item v-for="(item, index) in list2" :key="index">
-          <div class="tab-swiper vux-center">{{item}} Container</div>
+      <swiper v-model="index" :height="height + 'px'" :show-dots="false">
+        <swiper-item>
+          <contact-list></contact-list>
+        </swiper-item>
+        <swiper-item>
+          <contact-list></contact-list>
+        </swiper-item>
+        <swiper-item>
+          <contact-list></contact-list>
         </swiper-item>
       </swiper>
+      <!--<div class="content">-->
+        <!--<contact-list v-show="isHailFellow"></contact-list>-->
+        <!--<contact-list v-show="isColleague"></contact-list>-->
+      <!--</div>-->
     </div>
   </div>
 </template>
 
 <script>
-  import { Search, Tab, TabItem, Swiper, SwiperItem } from 'vux'
+  import { Search, Tab, TabItem, Swiper, SwiperItem, ViewBox } from 'vux'
+  import contactList from './contactList.vue'
   const list = () => ['好友', '同事', '群聊']
   export default {
     components: {
@@ -23,15 +34,14 @@
       Tab,
       TabItem,
       Swiper,
-      SwiperItem
+      SwiperItem,
+      contactList,
+      ViewBox
+    },
+    mounted () {
+      this.height = document.body.offsetHeight - 189
     },
     methods: {
-      resultClick (item) {
-        window.alert('you click the result item: ' + JSON.stringify(item))
-      },
-      getResult (val) {
-        this.results = val ? getResult(this.value) : []
-      },
       onSubmit (val) {
         window.alert('on submit' + val)
       },
@@ -44,6 +54,9 @@
     },
     data () {
       return {
+        height: 0,
+        isHailFellow: true,
+        isColleague: false,
         demo2: '好友',
         list2: list(),
         index: 0,
@@ -56,22 +69,11 @@
     }
   }
 
-  function getResult (val) {
-    let rs = []
-    for (let i = 0; i < 8; i++) {
-      rs.push({
-        title: `${val} result: ${i + 1} `,
-        other: i
-      })
-    }
-    return rs
-  }
 </script>
 
-<style scoped>
-  p {
-    padding: 10px 15px;
-    font-size: 14px;
-    color: #888;
+<style scoped lang="less">
+
+  .contacts .vux-slider .vux-swiper{
+    overflow: auto !important;
   }
 </style>

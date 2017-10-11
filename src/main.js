@@ -9,11 +9,12 @@ import Vuex from 'vuex'
 import { sync } from 'vuex-router-sync'
 import store from './store'
 import './lib/flexible'
-
+let longpress = require('vue-long-press-directive')
 require('es6-promise').polyfill()
 
 Vue.use(Vuex)
 Vue.use(VueRouter)
+Vue.use(longpress, { duration: 1000 })
 
 store.registerModule('vux', {
   state: {

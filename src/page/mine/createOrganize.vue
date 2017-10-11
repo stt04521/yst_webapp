@@ -5,11 +5,11 @@
     <div class="create-organize-container">
       <group :gutter="0" class="content-container">
         <x-input class="reset-padding"
-          title="组织名称"
-          v-model="organizeName"
-          placeholder="至少两个字符"
-          show-clear placeholder-align="right"
-          text-align="right"
+                 title="组织名称"
+                 v-model="organizeName"
+                 placeholder="至少两个字符"
+                 show-clear placeholder-align="right"
+                 text-align="right"
         >
         </x-input>
         <cell class="reset-padding" title="组织类型" :value="type" is-link @click.native="changeType" :border-intent="false"></cell>

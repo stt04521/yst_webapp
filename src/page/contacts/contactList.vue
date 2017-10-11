@@ -7,9 +7,15 @@
         :border-intent="false"
         :arrow-direction="showContent001 ? 'up' : 'down'"
         @click.native="showContent001 = !showContent001"
-        v-long-press='onlongpress'
+        v-long-press="onlongpress"
       ></cell>
-
+      <Popover ref="group">
+        <div slot="content">
+          <p>分组管理</p>
+          <hr>
+          <p>姓氏排序</p>
+        </div>
+      </Popover>
       <template v-if="showContent001">
         <cell>
           <span slot="title">General</span>
@@ -88,10 +94,13 @@
         </cell>
       </template>
     </group>
+
+
   </div>
 </template>
 <script>
   import { Cell, CellBox, CellFormPreview, Group, Badge } from 'vux'
+  import Popover from '@/components/popover.vue'
   export default {
     name: 'applyShow',
     components: {
@@ -99,7 +108,8 @@
       Cell,
       CellFormPreview,
       CellBox,
-      Badge
+      Badge,
+      Popover
     },
     props: {
     },
@@ -117,7 +127,7 @@
     methods: {
       onlongpress (e) {
         e.preventDefault()
-        alert('11')
+        this.$refs.group.onShow(true)
       }
     },
     data () {
@@ -155,4 +165,5 @@
     transition-timing-function: cubic-bezier(0.5, 0, 1, 0);
     transition-delay: 0s;
   }
+
 </style>

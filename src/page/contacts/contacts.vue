@@ -2,7 +2,7 @@
   <div>
     <search @on-submit="onSubmit" :auto-fixed="autoFixed" @on-focus="onFocus" @on-cancel="onCancel"></search>
     <div>
-      <tab :line-width=2 active-color='#008EE5' v-model="index">
+      <tab :line-width=2 active-color='#fc378c' v-model="index">
         <tab-item class="vux-center" :selected="demo2 === item" v-for="(item, index) in list2" @click="demo2 = item" :key="index">{{item}}</tab-item>
       </tab>
       <swiper v-model="index" height="100px" :show-dots="false">

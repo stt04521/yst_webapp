@@ -1,24 +1,24 @@
 <template>
   <div class="organize-authenticate-wrapper">
-    <x-header title="组织认证" class="header">
+    <x-header :title="pageTitle" class="header">
     </x-header>
     <group :gutter="0" class="content-container">
       <x-input
-        title="统一社会信用码"
+        :title="title01"
         placeholder="请输入"
         show-clear placeholder-align="right"
         text-align="right"
         v-model="creditCode"
       ></x-input>
       <x-input
-        title="企业名称"
+        :title="title02"
         placeholder="请输入"
         show-clear placeholder-align="right"
         text-align="right"
         v-model="enterpriseName"
       ></x-input>
       <cell>
-        <span slot="title">资质证明<span style="color: #aaa">(请上传营业执照原件照片)</span></span>
+        <span slot="title">{{ title03 }}<span style="color: #aaa">(请上传{{ title04 }}原件照片)</span></span>
       </cell>
       <div class="authentication-container vux-1px-t">
         <img class="img-style" v-for="(item, index) in imgList" :key="index" :src="item.image" alt="">
@@ -32,7 +32,7 @@
 <script>
   import {XHeader, Group, Cell, XInput, Actionsheet} from 'vux'
   export default {
-    name: 'organizeAuthenticate',
+    name: 'authentication',
     components: {
       XHeader,
       Group,
@@ -45,6 +45,12 @@
         creditCode: '',
         enterpriseName: '',
         showUploadChoose: false,
+        pageTitle: '111',
+        title01: '',
+        title02: '',
+        title03: '',
+        title04: '',
+        type: '',
         imgList: [
           {
             image: require('../../assets/yingyezhizhao.png')
@@ -72,11 +78,26 @@
         console.log(this.creditCode)
         console.log(this.enterpriseName)
         console.log(this.imgList)
+        if (this.$route.params.type === 'etag') {
+          console.log('企业认证')
+        } else if (this.$route.params.type === 'personnel') {
+          console.log('个人认证')
+        } else {
+          console.log('error')
+        }
       },
       showAction (key, item) {
         console.log('show action')
         console.log(item)
       }
+    },
+    created () {
+      let titleList = this.$route.params.paramList
+      this.pageTitle = titleList.pageTitle
+      this.title01 = titleList.title01
+      this.title02 = titleList.title02
+      this.title03 = titleList.title03
+      this.title04 = titleList.title04
     }
   }
 </script>

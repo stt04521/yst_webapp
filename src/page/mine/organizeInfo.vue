@@ -16,7 +16,7 @@
       <group :gutter="0"  style="margin-bottom: 20px">
         <cell title="认证状态">
           <span slot="value" v-show="anthenticationList.status === 1">已认证</span>
-          <span slot="value" v-show="anthenticationList.status === 0">未认证<span style="color: #0099ff">去认证>></span></span>
+          <span slot="value" v-show="anthenticationList.status === 0">未认证<span style="color: #0099ff" @click="gotoAuthentication">去认证>></span></span>
         </cell>
       </group>
       <group :gutter="0" v-show="anthenticationList.status === 1" v-for="(item, index) in anthenticationList.list" :key="index">
@@ -46,8 +46,15 @@
         infoList: ['企业', '武汉黎宁游科技有限公司', '黎宁游科技', require('../../assets/news/userImg.jpg'), '李明友', '武汉市洪山区', '武汉市洪山区关山大道未来大厦1201', '1111111111111111111111111', '111@111.com', '武汉黎宁游科技有限公司'],
         anthenticationTitle: ['统一社会信用代码', '企业名称', '企业类型', '企业住所', '法定代表人', '注册资本', '成立时间', '经营范围'],
         anthenticationList: {
-          status: 1,
+          status: 0,
           list: ['51264245MJK452163', '武汉黎宁游科技有限公司', '其他有限责任公司', '湖北省武汉市光谷大厦12楼1201', '李明友', '50(万元)', '2012-08-08', '企业管理咨询；企业形象策划；广告设计、制作、代理发布。']
+        },
+        organizeAuthenticationInfo: {
+          pageTitle: '企业认证',
+          title01: '统一社会信用代码',
+          title02: '企业名称',
+          title03: '资质证明',
+          title04: '营业执照'
         }
       }
     },
@@ -59,6 +66,16 @@
       showAuthentication () {
         this.baseInfo = false
         this.anthenticationInfo = true
+      },
+      gotoAuthentication () {
+        console.log('111')
+        this.$router.push({
+          name: 'authentication',
+          params: {
+            type: 'etag',
+            paramList: this.organizeAuthenticationInfo
+          }
+        })
       }
     }
   }

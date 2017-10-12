@@ -6,30 +6,34 @@
         :border-intent="false"
         :arrow-direction="showContent001 ? 'up' : 'down'"
         @click.native="showContent001 = !showContent001"
-        v-long-press="onlongpress"
+        v-longtap="{fn:onlongpress,name:'长按'}"
         data-id="1"
       >
-        <div slot="title" data-id="1">好友</div>
-      </cell>
-      <Popover ref="group1">
-        <div slot="content">
-          <p>分组管理</p>
-          <hr>
-          <p>姓氏排序</p>
+        <div slot="title" data-id="1">
+          好友
+          <Popover ref="group1">
+            <div slot="content">
+              <p>分组管理</p>
+              <hr>
+              <p>姓氏排序</p>
+            </div>
+          </Popover>
         </div>
-      </Popover>
+      </cell>
       <template v-if="showContent001">
         <cell data-id="2"  v-long-press="onItemLongpress">
-          <div slot="title" data-id="2">General</div>
+          <div slot="title" data-id="2">
+            General
+            <Popover ref="group2" >
+              <div slot="content">
+                <p>移动分组</p>
+                <hr>
+                <p>删除好友</p>
+              </div>
+            </Popover>
+          </div>
           <img slot="icon" width="40" style="display:block;padding-right:25px;" src="../../assets/news/userImg.jpg" data-id="2">
         </cell>
-        <Popover ref="group2">
-          <div slot="content">
-            <p>移动分组</p>
-            <hr>
-            <p>删除好友</p>
-          </div>
-        </Popover>
         <cell>
           <span slot="title">General</span>
           <img slot="icon" width="40" style="display:block;margin-right:25px;" src="../../assets/news/userImg.jpg">
@@ -110,6 +114,7 @@
 <script>
   import { Cell, CellBox, CellFormPreview, Group, Badge } from 'vux'
   import Popover from '@/components/popover.vue'
+  import { longtap } from '@/directives/vue-touch'
   export default {
     name: 'applyShow',
     components: {
@@ -122,20 +127,16 @@
     },
     props: {
     },
+    directives: {
+      longtap
+    },
     mounted () {
-//      this.$nextTick(function () {
-//        console.log(this.$refs.list.offsetHeight)
-//      })
     },
     computed: {
-      swiperHeight () {
-        console.log(this.$refs.list.offsetHeight)
-//        return this.$refs.list.$refs.list.style
-      }
     },
     methods: {
       onlongpress (e) {
-        e.preventDefault()
+        console.log(e)
         let id = e.target.getAttribute('data-id')
         this.$refs['group' + id].onShow(true)
       },

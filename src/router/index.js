@@ -260,9 +260,10 @@ export default new Router({
     //   }
     // },
     {
-      path: '/organizeAuthentication',  // 组织认证
+      path: '/authentication/:type/:paramList',  // 组织认证
+      name: 'authentication',
       component: (resolve) => {
-        require(['@/page/mine/organizeAuthentication'], resolve)
+        require(['@/page/mine/authentication'], resolve)
       }
     },
     {
@@ -270,6 +271,27 @@ export default new Router({
       component: (resolve) => {
         require(['@/page/mine/organizeInfo'], resolve)
       }
+    },
+    {
+      path: '/personnelInfo',  // 个人信息
+      component: (resolve) => {
+        require(['@/page/mine/personnelInfo'], resolve)
+      }
+    },
+    {
+      path: '/orderList',  // 我的订单
+      redirect: '/orderList/orderItem',
+      component: (resolve) => {
+        require(['@/page/mine/orderList'], resolve)
+      },
+      children: [
+        {
+          path: 'orderItem',
+          component: (resolve) => {
+            require(['@/page/mine/orderItem'], resolve)
+          }
+        }
+      ]
     }
   ]
 })

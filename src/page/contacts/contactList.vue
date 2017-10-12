@@ -2,14 +2,16 @@
   <div ref="list">
     <group>
       <cell
-        title="好友"
         is-link
         :border-intent="false"
         :arrow-direction="showContent001 ? 'up' : 'down'"
         @click.native="showContent001 = !showContent001"
         v-long-press="onlongpress"
-      ></cell>
-      <Popover ref="group">
+        data-id="1"
+      >
+        <div slot="title" data-id="1">好友</div>
+      </cell>
+      <Popover ref="group1">
         <div slot="content">
           <p>分组管理</p>
           <hr>
@@ -17,10 +19,17 @@
         </div>
       </Popover>
       <template v-if="showContent001">
-        <cell>
-          <span slot="title">General</span>
-          <img slot="icon" width="40" style="display:block;margin-right:25px;" src="../../assets/news/userImg.jpg">
+        <cell data-id="2"  v-long-press="onItemLongpress">
+          <div slot="title" data-id="2">General</div>
+          <img slot="icon" width="40" style="display:block;padding-right:25px;" src="../../assets/news/userImg.jpg" data-id="2">
         </cell>
+        <Popover ref="group2">
+          <div slot="content">
+            <p>移动分组</p>
+            <hr>
+            <p>删除好友</p>
+          </div>
+        </Popover>
         <cell>
           <span slot="title">General</span>
           <img slot="icon" width="40" style="display:block;margin-right:25px;" src="../../assets/news/userImg.jpg">
@@ -127,7 +136,14 @@
     methods: {
       onlongpress (e) {
         e.preventDefault()
-        this.$refs.group.onShow(true)
+        let id = e.target.getAttribute('data-id')
+        this.$refs['group' + id].onShow(true)
+      },
+      onItemLongpress (e) {
+        e.preventDefault()
+        console.log(e.target)
+        let id = e.target.getAttribute('data-id')
+        this.$refs['group' + id].onShow(true)
       }
     },
     data () {

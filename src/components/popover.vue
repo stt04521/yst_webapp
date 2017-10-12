@@ -1,6 +1,6 @@
 <template>
-  <div v-click-outside="onClickedOutside">
-  <div :class="{'hide':ishow}" v-click-outside="onClickedOutside">
+  <div v-click-outside="onClickedOutside" data-id="popover">
+  <div :class="{'hide':ishow}">
     <div class="vux-popover">
       <div class="vux-popover-arrow vux-popover-arrow-up">
       </div>
@@ -25,8 +25,8 @@
     },
     data () {
       return {
-        isFirst: false,
-        ishow: false
+        isFirst: true,
+        ishow: true
       }
     },
     directives: {
@@ -35,21 +35,20 @@
     methods: {
       onHide () {
         this.ishow = true
+        this.$emit('on-hide')
       },
       onShow (value) {
         this.isFirst = value
         this.ishow = false
+        this.$emit('on-show')
       },
       onClickedOutside (e) {
-        console.log(e)
         if (this.isFirst) {
           this.isFirst = !this.isFirst
           return false
         }
-        if (!this.ishow) {
-          this.ishow = true
-          this.$emit('on-hide')
-        }
+        this.ishow = true
+        this.$emit('on-hide')
       }
     }
   }

@@ -6,6 +6,10 @@ export default {
         onClickOutside(e)
       }
     }
+    // if (el.dataset.id === 'popover') {
+    //   return false
+    // }
+    document.body.removeEventListener('click', el.handler, true)
     document.body.addEventListener('click', el.handler, true)
   },
   unbind: function (el) {

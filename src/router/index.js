@@ -292,6 +292,26 @@ export default new Router({
           }
         }
       ]
+    },
+    {
+      path: '/setUp',  // 设置
+      component: (resolve) => {
+        require(['@/page/mine/setUp'], resolve)
+      }
+    },
+    {
+      path: '/countSafe',  // 账户安全
+      component: (resolve) => {
+        require(['@/page/mine/countSafe'], resolve)
+      }
+    },
+    {
+      // path: '/inputInfo/:type/:infoList',  // 设置手机号，密码，邮箱
+      path: '/inputInfo',  // 设置手机号，密码，邮箱
+      name: 'inputInfo',
+      component: (resolve) => {
+        require(['@/page/mine/inputInfo'], resolve)
+      }
     }
   ]
 })

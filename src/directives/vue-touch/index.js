@@ -8,6 +8,26 @@ export const longtap = {
     new vueTouch(el,binding,"longtap");
   }
 }
+export const swiperight = {
+  bind: function(el,binding){
+    new vueTouch(el,binding,"swiperight");
+  }
+}
+export const swipeleft = {
+  bind: function(el,binding){
+    new vueTouch(el,binding,"swipeleft");
+  }
+}
+export const swipedown = {
+  bind: function(el,binding){
+    new vueTouch(el,binding,"longtap");
+  }
+}
+export const swipeup = {
+  bind: function(el,binding){
+    new vueTouch(el,binding,"longtap");
+  }
+}
 
 function vueTouch(el,binding,type){
   var _this=this;

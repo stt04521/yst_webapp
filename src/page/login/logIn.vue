@@ -29,7 +29,7 @@
   import {Group, XInput, Icon} from 'vux'
   import VHeader from './header'
   export default{
-    name: 'logIn',
+    name: 'registrySuccess',
     components: {
       VHeader,
       Group,

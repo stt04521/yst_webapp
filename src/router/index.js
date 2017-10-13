@@ -306,6 +306,60 @@ export default new Router({
           }
         }
       ]
+    },
+    {
+      path: '/setUp',  // 设置
+      component: (resolve) => {
+        require(['@/page/mine/setUp'], resolve)
+      }
+    },
+    {
+      path: '/countSafe',  // 账户安全
+      component: (resolve) => {
+        require(['@/page/mine/countSafe'], resolve)
+      }
+    },
+    {
+      path: '/inputInfo/:setType/:setInfo',  // 设置手机号，密码，邮箱
+      // path: '/inputInfo',  // 设置手机号，密码，邮箱
+      name: 'inputInfo',
+      component: (resolve) => {
+        require(['@/page/mine/inputInfo'], resolve)
+      }
+    },
+    {
+      path: '/feedback',  // 帮助与反馈
+      component: (resolve) => {
+        require(['@/page/mine/feedback'], resolve)
+      }
+    },
+    {
+      path: '/baseFunction',  // 基本功能
+      name: 'baseFunction',
+      component: (resolve) => {
+        require(['@/page/mine/baseFunction'], resolve)
+      }
+    },
+    {
+      path: '/operateDetail/:title',  // 操作详情
+      name: 'operateDetail',
+      component: (resolve) => {
+        require(['@/page/mine/operateDetail'], resolve)
+      }
+    },
+    {
+      path: '/feedbackPage',  // 意见反馈页面
+      name: 'feedbackPage',
+      component: (resolve) => {
+        require(['@/page/mine/feedbackPage'], resolve)
+      }
+    },
+    {
+      path: '/concatUs',  // 意见反馈页面
+      name: 'concatUs',
+      component: (resolve) => {
+        require(['@/page/mine/concatUs'], resolve)
+      }
     }
   ]
 })

@@ -103,6 +103,20 @@ export default new Router({
       }
     },
     {
+      path: '/newsList', // 会话消息
+      component: (resolve) => {
+        require(['@/page/contacts/newsList'], resolve)
+      }
+    },
+    {
+      path: '/newsPage/:username', // 会话消息
+      name: 'newsPage',
+      component: (resolve) => {
+        require(['@/page/contacts/newsPage'], resolve)
+      }
+    },
+    // 日程
+    {
       path: '/createSchedule', // 创建日程
       component: (resolve) => {
         require(['@/page/schedule/createSchedule'], resolve)
@@ -267,12 +281,12 @@ export default new Router({
         require(['@/page/mine/myOrganize'], resolve)
       }
     },
-    // {
-    //   path: '/createOrganize',  // 创建组织
-    //   component: (resolve) => {
-    //     require(['@/page/mine/createOrganize'], resolve)
-    //   }
-    // },
+    {
+      path: '/createOrganize',  // 创建组织
+      component: (resolve) => {
+        require(['@/page/mine/createOrganize'], resolve)
+      }
+    },
     {
       path: '/authentication/:type/:paramList',  // 组织认证
       name: 'authentication',

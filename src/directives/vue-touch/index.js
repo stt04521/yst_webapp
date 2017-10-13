@@ -20,12 +20,12 @@ export const swipeleft = {
 }
 export const swipedown = {
   bind: function(el,binding){
-    new vueTouch(el,binding,"longtap");
+    new vueTouch(el,binding,"swipedown");
   }
 }
 export const swipeup = {
   bind: function(el,binding){
-    new vueTouch(el,binding,"longtap");
+    new vueTouch(el,binding,"swipeup");
   }
 }
 

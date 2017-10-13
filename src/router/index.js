@@ -70,6 +70,7 @@ export default new Router({
         }
       }]
     },
+    // news
     {
       path: '/system/:type', // 系统消息
       component: (resolve) => {
@@ -86,6 +87,19 @@ export default new Router({
       path: '/invitingFriends', // 邀请好友
       component: (resolve) => {
         require(['@/page/news/invitingFriends'], resolve)
+      }
+    },
+    // contacts
+    {
+      path: '/SearchBuddy/:type', // 搜索好友
+      component: (resolve) => {
+        require(['@/page/contacts/SearchBuddy'], resolve)
+      }
+    },
+    {
+      path: '/ContactInfo/:type', // 联系人资料
+      component: (resolve) => {
+        require(['@/page/contacts/ContactInfo'], resolve)
       }
     },
     {

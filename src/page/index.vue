@@ -1,5 +1,5 @@
 <template>
-  <div style="height:100%;">
+  <div style="height:100%;" >
     <div v-transfer-dom>
       <loading v-model="isLoading"></loading>
     </div>
@@ -11,7 +11,7 @@
       :show.sync="drawerVisibility"
       :show-mode="showModeValue"
       :placement="showPlacementValue"
-      :drawer-style="{'background-color':'#3F3F3F', width: '248px'}"
+      :drawer-style="{'background-color':'#35495e', width: '248px'}"
     >
       <!-- drawer content -->
       <div slot="drawer">
@@ -30,6 +30,17 @@
           <span  slot="overwrite-left" @click="drawerVisibility = !drawerVisibility">
             <x-icon type="navicon" size="35" style="fill:#fff;position:relative;top:-8px;left:-3px;"></x-icon>
           </span>
+          <div v-if="route.path === '/contacts'" slot="right" style="font-size: 24px; color: #fff; position: relative" @click="showPopover" class="top">+
+            <Popover ref="group1">
+              <div slot="content" class="">
+                <p @click="onJutmp('/SearchBuddy/addFriends')"><img :src="require('@/assets/contacts/addF.jpeg')">添加好友</p>
+                <hr>
+                <p><img :src="require('@/assets/contacts/groupChat.jpeg')">创建群聊</p>
+                <hr>
+                <p><img :src="require('@/assets/contacts/Scan.jpeg')">扫一扫</p>
+              </div>
+            </Popover>
+          </div>
           <span v-if="route.path === '/schedule/showSchedule'" slot="right" style="font-size: 17px; color: #fff" @click="addSchedule">添加日程</span>
           <span v-if="route.path === '/schedule/showNote'" slot="right" style="font-size: 17px; color: #fff" @click="addNote">添加记事</span>
           <span v-if="route.path === '/work' || route.path === '/work/todoList' || route.path === '/work/finishedList'" slot="right" style="font-size: 17px; color: #fff" @click="toggle">切换</span>
@@ -72,6 +83,7 @@
   import { Radio, Group, Cell, Badge, Drawer, Actionsheet, ButtonTab, ButtonTabItem, ViewBox, XHeader, Tabbar, TabbarItem, Loading, TransferDom } from 'vux'
   import mine from './mine/mine'
   import { mapState, mapActions } from 'vuex'
+  import Popover from '@/components/popover.vue'
   export default {
     directives: {
       TransferDom
@@ -90,7 +102,8 @@
       TabbarItem,
       Loading,
       Actionsheet,
-      mine
+      mine,
+      Popover
     },
     data () {
       return {
@@ -129,6 +142,9 @@
       ...mapActions([
         'updateDemoPosition'
       ]),
+      showPopover () {
+        this.$refs['group1'].onShow()
+      },
       createSchedule () {
         console.log('create schedule')
       },
@@ -140,6 +156,9 @@
       },
       toggle () {
         console.log('toggle')
+      },
+      onJutmp (url) {
+        this.$router.push(url)
       }
     },
     computed: {
@@ -200,6 +219,7 @@
 <style lang="less">
   @import '~vux/src/styles/reset.less';
   @import '../styles/changeVux.less';
+  @import '../styles/reset.less';
   @import '~vux/src/styles/1px.less';
   @import '~vux/src/styles/tap.less';
   .vux-demo {
@@ -309,5 +329,29 @@
   }
   .menu-title {
     color: #888;
+  }
+  .top{
+    .vux-popover{
+      position: absolute;
+      width: 85px;
+      left: 0%;
+      top: 0.8rem;
+      right: -7px;
+      background-color: #EFEFF4;
+      color: #333333;
+      -webkit-transform: translateX(-78%);
+      transform: translateX(-78%);
+      border-radius: 3PX;
+      z-index: 500;
+      padding: 0.26667rem;
+      .vux-popover-arrow-up{
+        left: 85%;
+        border-bottom: 5PX solid #EFEFF4;
+      }
+      img{
+        height: 14px;
+        margin: 0 3px;
+      }
+    }
   }
 </style>

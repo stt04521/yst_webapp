@@ -1,16 +1,18 @@
 <template>
   <div class="contacts">
-    <search @on-submit="onSubmit" :auto-fixed="autoFixed" @on-focus="onFocus" @on-cancel="onCancel"></search>
+    <router-link to="/SearchBuddy/search">
+      <search @on-submit="onSubmit" :auto-fixed="autoFixed" @on-focus="onFocus" @on-cancel="onCancel"></search>
+    </router-link>
     <div>
       <tab :line-width=2 active-color='#008EE5' v-model="index">
         <tab-item class="vux-center" :selected="demo2 === item" v-for="(item, index) in list2" @click="demo2 = item" :key="index">{{item}}</tab-item>
       </tab>
       <swiper v-model="index" :height="height + 'px'" :show-dots="false">
         <swiper-item>
-          <contact-list></contact-list>
+          <contact-list type="Friends"></contact-list>
         </swiper-item>
         <swiper-item>
-          <contact-list></contact-list>
+          <contact-list type="Colleague"></contact-list>
         </swiper-item>
         <swiper-item>
           <contact-list></contact-list>

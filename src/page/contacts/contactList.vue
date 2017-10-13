@@ -1,6 +1,7 @@
 <template>
-  <div ref="list">
-    <group>
+  <div class="list">
+    <!--好友列表-->
+    <group v-if="type == 'Friends'">
       <cell
         is-link
         :border-intent="false"
@@ -21,82 +22,21 @@
         </div>
       </cell>
       <template v-if="showContent001">
-        <cell data-id="2"  v-long-press="onItemLongpress">
-          <div slot="title" data-id="2">
-            General
-            <Popover ref="group2" >
-              <div slot="content">
-                <p>移动分组</p>
-                <hr>
-                <p>删除好友</p>
-              </div>
-            </Popover>
-          </div>
-          <img slot="icon" width="40" style="display:block;padding-right:25px;" src="../../assets/news/userImg.jpg" data-id="2">
-        </cell>
-        <cell>
-          <span slot="title">General</span>
-          <img slot="icon" width="40" style="display:block;margin-right:25px;" src="../../assets/news/userImg.jpg">
-        </cell>
-        <cell>
-          <span slot="title">General</span>
-          <img slot="icon" width="40" style="display:block;margin-right:25px;" src="../../assets/news/userImg.jpg">
-        </cell>
-      </template>
-      <cell
-        title="家人"
-        is-link
-        :border-intent="false"
-        :arrow-direction="showContent002 ? 'up' : 'down'"
-        @click.native="showContent002 = !showContent002"></cell>
-
-      <template v-if="showContent002">
-        <cell>
-          <span slot="title">General</span>
-          <img slot="icon" width="40" style="display:block;margin-right:25px;" src="../../assets/news/userImg.jpg">
-        </cell>
-        <cell>
-          <span slot="title">General</span>
-          <img slot="icon" width="40" style="display:block;margin-right:25px;" src="../../assets/news/userImg.jpg">
-        </cell>
-        <cell>
-          <span slot="title">General</span>
-          <img slot="icon" width="40" style="display:block;margin-right:25px;" src="../../assets/news/userImg.jpg">
-        </cell>
-      </template>
-      <cell
-        title="同学"
-        is-link
-        :border-intent="false"
-        :arrow-direction="showContent003 ? 'up' : 'down'"
-        @click.native="showContent003 = !showContent003"></cell>
-
-      <template v-if="showContent003">
-        <cell>
-          <span slot="title">General</span>
-          <img slot="icon" width="40" style="display:block;margin-right:25px;" src="../../assets/news/userImg.jpg">
-        </cell>
-        <cell>
-          <span slot="title">General</span>
-          <img slot="icon" width="40" style="display:block;margin-right:25px;" src="../../assets/news/userImg.jpg">
-        </cell>
-        <cell>
-          <span slot="title">General</span>
-          <img slot="icon" width="40" style="display:block;margin-right:25px;" src="../../assets/news/userImg.jpg">
-        </cell>
-      </template>
-      <cell
-        title="其他"
-        is-link
-        :border-intent="false"
-        :arrow-direction="showContent004 ? 'up' : 'down'"
-        @click.native="showContent004 = !showContent004"></cell>
-
-      <template v-if="showContent004">
-        <cell>
-          <span slot="title">General</span>
-          <img slot="icon" width="40" style="display:block;margin-right:25px;" src="../../assets/news/userImg.jpg">
-        </cell>
+        <router-link :to="`/ContactInfo/${type}`">
+          <cell data-id="2"  v-longtap="{fn:onItemLongpress,name:'长按'}">
+            <div slot="title" data-id="2">
+              General
+              <Popover ref="group2" >
+                <div slot="content">
+                  <p>移动分组</p>
+                  <hr>
+                  <p>删除好友</p>
+                </div>
+              </Popover>
+            </div>
+            <img slot="icon" width="40" style="display:block;padding-right:25px;" src="../../assets/news/userImg.jpg" data-id="2">
+          </cell>
+        </router-link>
         <cell>
           <span slot="title">General</span>
           <img slot="icon" width="40" style="display:block;margin-right:25px;" src="../../assets/news/userImg.jpg">
@@ -107,7 +47,39 @@
         </cell>
       </template>
     </group>
+    <!--同事列表-->
+    <group v-if="type == 'Colleague'">
+      <cell
+        is-link
+        :border-intent="false"
+        :arrow-direction="showContent002 ? 'up' : 'down'"
+        @click.native="showContent002 = !showContent002"
+        title="部门"
+      >
+      </cell>
+      <template v-if="showContent002">
+        <cell
+          is-link
+          :border-intent="false"
+          :arrow-direction="showContent003 ? 'up' : 'down'"
+          @click.native="showContent003 = !showContent003"
+          title="次部分"
+        >
+        </cell>
+        <template v-if="showContent003">
+          <router-link :to="`/ContactInfo/${type}`">
+            <cell>
+              <span slot="title">General</span>
+              <img slot="icon" width="40" style="display:block;margin-right:25px;" src="../../assets/news/userImg.jpg">
+            </cell>
+          </router-link>
+        </template>
 
+      </template>
+
+
+
+    </group>
 
   </div>
 </template>
@@ -126,6 +98,7 @@
       Popover
     },
     props: {
+      type: String
     },
     directives: {
       longtap
@@ -136,7 +109,7 @@
     },
     methods: {
       onlongpress (e) {
-        console.log(e)
+        e.preventDefault()
         let id = e.target.getAttribute('data-id')
         this.$refs['group' + id].onShow(true)
       },
@@ -167,20 +140,11 @@
     }
   }
 </script>
-<style scoped lang="less">
-  .sub-item {
-    color: #888;
-  }
-  .slide {
-    padding: 0 20px;
-    overflow: hidden;
-    max-height: 0;
-    transition: max-height .5s cubic-bezier(0, 1, 0, 1) -.1s;
-  }
-  .animate {
-    max-height: 9999px;
-    transition-timing-function: cubic-bezier(0.5, 0, 1, 0);
-    transition-delay: 0s;
+<style  lang="less">
+  .list{
+    .weui-cells{
+      overflow: initial !important;
+    }
   }
 
 </style>

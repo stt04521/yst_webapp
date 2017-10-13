@@ -4,11 +4,10 @@ export default {
     el.handler = function (e) {
       if (el && !el.contains(e.target)) {
         onClickOutside(e)
+      } else {
+        e.stopPropagation()
       }
     }
-    // if (el.dataset.id === 'popover') {
-    //   return false
-    // }
     document.body.removeEventListener('click', el.handler, true)
     document.body.addEventListener('click', el.handler, true)
   },

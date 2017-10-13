@@ -1,7 +1,6 @@
 <template>
   <div class="detail-wrapper">
-    <x-header title="日程详情" slot="overwrite-left" class="header">
-      <span slot="overwrite-left" @click="back">取消</span>
+    <x-header title="日程详情" class="header">
     </x-header>
     <view-box class="content-container">
       <div class="detail-container">

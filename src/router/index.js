@@ -43,6 +43,52 @@ export default new Router({
           require(['@/page/contacts/contacts'], resolve)
         }
       },
+    // news
+      {
+        path: '/system/:type', // 系统消息
+        component: (resolve) => {
+          require(['@/page/news/system'], resolve)
+        }
+      },
+      {
+        path: '/messageDetails', // 消息详情
+        component: (resolve) => {
+          require(['@/page/news/messageDetails'], resolve)
+        }
+      },
+      {
+        path: '/invitingFriends', // 邀请好友
+        component: (resolve) => {
+          require(['@/page/news/invitingFriends'], resolve)
+        }
+      },
+    // contacts
+      {
+        path: '/SearchBuddy/:type', // 搜索好友
+        component: (resolve) => {
+          require(['@/page/contacts/SearchBuddy'], resolve)
+        }
+      },
+      {
+        path: '/ContactInfo/:type', // 联系人资料
+        component: (resolve) => {
+          require(['@/page/contacts/ContactInfo'], resolve)
+        }
+      },
+      {
+        path: '/newsList', // 会话消息
+        component: (resolve) => {
+          require(['@/page/contacts/newsList'], resolve)
+        }
+      },
+      {
+        path: '/newsPage/:username', // 会话消息
+        name: 'newsPage',
+        component: (resolve) => {
+          require(['@/page/contacts/newsPage'], resolve)
+        }
+      },
+    // 日程
       {
         path: 'schedule', // 日程
         redirect: 'schedule/showSchedule',
@@ -70,52 +116,6 @@ export default new Router({
         }
       }]
     },
-    // news
-    {
-      path: '/system/:type', // 系统消息
-      component: (resolve) => {
-        require(['@/page/news/system'], resolve)
-      }
-    },
-    {
-      path: '/messageDetails', // 消息详情
-      component: (resolve) => {
-        require(['@/page/news/messageDetails'], resolve)
-      }
-    },
-    {
-      path: '/invitingFriends', // 邀请好友
-      component: (resolve) => {
-        require(['@/page/news/invitingFriends'], resolve)
-      }
-    },
-    // contacts
-    {
-      path: '/SearchBuddy/:type', // 搜索好友
-      component: (resolve) => {
-        require(['@/page/contacts/SearchBuddy'], resolve)
-      }
-    },
-    {
-      path: '/ContactInfo/:type', // 联系人资料
-      component: (resolve) => {
-        require(['@/page/contacts/ContactInfo'], resolve)
-      }
-    },
-    {
-      path: '/newsList', // 会话消息
-      component: (resolve) => {
-        require(['@/page/contacts/newsList'], resolve)
-      }
-    },
-    {
-      path: '/newsPage/:username', // 会话消息
-      name: 'newsPage',
-      component: (resolve) => {
-        require(['@/page/contacts/newsPage'], resolve)
-      }
-    },
-    // 日程
     {
       path: '/createSchedule', // 创建日程
       component: (resolve) => {
@@ -136,6 +136,7 @@ export default new Router({
     },
     {
       path: '/scheduleDetail',  // 日程详情
+      name: 'scheduleDetail',
       component: (resolve) => {
         require(['@/page/schedule/scheduleDetail'], resolve)
       }

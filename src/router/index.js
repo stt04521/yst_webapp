@@ -97,9 +97,27 @@ export default new Router({
       }
     },
     {
+      path: '/CreateGroupChat', // 创建群聊
+      component: (resolve) => {
+        require(['@/page/contacts/CreateGroupChat'], resolve)
+      }
+    },
+    {
       path: '/ContactInfo/:type', // 联系人资料
       component: (resolve) => {
         require(['@/page/contacts/ContactInfo'], resolve)
+      }
+    },
+    {
+      path: '/GroupManagement', // 分组管理
+      component: (resolve) => {
+        require(['@/page/contacts//GroupManagement'], resolve)
+      }
+    },
+    {
+      path: '/MobilePacket', // 移动分组
+      component: (resolve) => {
+        require(['@/page/contacts/MobilePacket'], resolve)
       }
     },
     {

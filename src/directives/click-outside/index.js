@@ -5,7 +5,7 @@ export default {
       if (el && !el.contains(e.target)) {
         onClickOutside(e)
       } else {
-        e.stopPropagation()
+        // e.stopPropagation()
       }
     }
     document.body.removeEventListener('click', el.handler, true)

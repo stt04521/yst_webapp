@@ -15,7 +15,7 @@
           <contact-list type="Colleague"></contact-list>
         </swiper-item>
         <swiper-item>
-          <contact-list></contact-list>
+          <contact-list type="Friends"></contact-list>
         </swiper-item>
       </swiper>
       <!--<div class="content">-->

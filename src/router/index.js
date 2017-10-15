@@ -117,6 +117,18 @@ export default new Router({
       }]
     },
     {
+      path: '/GroupManagement', // 分组管理
+      component: (resolve) => {
+        require(['@/page/contacts//GroupManagement'], resolve)
+      }
+    },
+    {
+      path: '/MobilePacket', // 移动分组
+      component: (resolve) => {
+        require(['@/page/contacts/MobilePacket'], resolve)
+      }
+    },
+    {
       path: '/createSchedule', // 创建日程
       name: 'createSchedule',
       component: (resolve) => {
@@ -291,12 +303,12 @@ export default new Router({
         require(['@/page/mine/myOrganize'], resolve)
       }
     },
-    {
-      path: '/createOrganize',  // 创建组织
-      component: (resolve) => {
-        require(['@/page/mine/createOrganize'], resolve)
-      }
-    },
+    // {
+    //   path: '/createOrganize',  // 创建组织
+    //   component: (resolve) => {
+    //     require(['@/page/mine/createOrganize'], resolve)
+    //   }
+    // },
     {
       path: '/authentication/:type/:paramList',  // 组织认证
       name: 'authentication',

@@ -17,7 +17,7 @@
         </search>
       </flexbox-item>
     </flexbox>
-    <contact-list v-show="$route.params.type == 'search' && isShow"></contact-list>
+    <contact-list v-show="$route.params.type == 'search' && isShow" type="Friends"></contact-list>
     <Group v-show="$route.params.type == 'addFriends' && isShow">
       <cell>
         <span slot="title">General</span>
@@ -45,8 +45,10 @@
     computed: {
       isShow () {
         if (this.value) {
+          console.log(this.value)
           return true
         } else {
+          console.log(this.value)
           return false
         }
       },
@@ -67,6 +69,7 @@
         window.alert('you click the result item: ' + JSON.stringify(item))
       },
       getResult (val) {
+        console.log(val)
         this.results = val ? getResult(this.value) : []
       },
       onSubmit () {
@@ -84,7 +87,6 @@
         console.log('on cancel')
       },
       onBack () {
-        console.log('11')
         this.$router.go(-1)
       }
     },

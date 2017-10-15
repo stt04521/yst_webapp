@@ -2,9 +2,9 @@
   <div class="detail-wrapper">
     <x-header title="日程详情" class="header">
     </x-header>
-    <view-box class="content-container">
+    <div class="content-container">
       <div class="detail-container">
-        <div class="detail-title">瓦风机饿哦ii合法开绿灯解放打开了房间饿哦i俄方将阿娥ofi俄双方均为i哦才发觉诶佛教瓦风机饿哦i合法开绿灯解放打开了房间饿哦i俄方将阿娥ofi俄双方均为i哦才发觉诶佛教瓦风机饿哦i合法开绿灯解放打开了房间饿哦i俄方将阿娥ofi俄双方均为i哦才发觉诶佛教瓦风机饿哦i合法开绿灯解放打开了房间饿哦i俄方将阿娥ofi俄双方均为i哦才发觉诶佛教</div>
+        <div class="detail-title">瓦风机饿哦ii合法开绿灯解放打开了房间饿哦i俄方将阿娥ofi俄双方均为i哦才发觉诶佛教瓦风机饿哦i合法开绿灯解放打开了房间饿哦i俄方将阿娥ofi俄双方均为i哦才发觉诶佛教瓦风机饿哦i合法开绿灯解放打开了房间饿哦i俄方将阿娥ofi俄双方均为i哦才发觉诶佛教瓦风机饿哦i合法开绿灯解放打开了房间饿哦i俄方将阿娥ofi俄双方均为i哦才发觉诶佛教瓦风机饿哦ii合法开绿灯解放打开了房间饿哦i俄方将阿娥ofi俄双方均为i哦才发觉诶佛教瓦风机饿哦i合法开绿灯解放打开了房间饿哦i俄方将阿娥ofi俄双方均为i哦才发觉诶佛教瓦风机饿哦i合法开绿灯解放打开了房间饿哦i俄方将阿娥ofi俄双方均为i哦才发觉诶佛教瓦风机饿哦i合法开绿灯解放打开了房间饿哦i俄方将阿娥ofi俄双方均为i哦才发觉诶佛教</div>
         <div class="detail-ite">开始时间：2017-7-26 18：00</div>
         <div class="detail-ite">截止时间：2017-7-26 18：00</div>
         <div class="detail-ite">地点：湖北省武汉市江夏区武大科技园</div>
@@ -23,25 +23,35 @@
           </li>
         </ul>
         <div class="operate">
-          <button class="operate-btn">编辑</button>
-          <button class="cancle-btn">取消日程</button>
+          <button class="operate-btn" @click="editDetail">编辑</button>
+          <button class="cancle-btn" @click="cancleSchedule">取消日程</button>
         </div>
         <br style="clear: both"/>
       </div>
-    </view-box>
+    </div>
   </div>
 </template>
 <script>
-  import {XHeader, ViewBox} from 'vux'
+  import {XHeader} from 'vux'
   export default {
     name: 'scheduleDetail',
     components: {
-      XHeader,
-      ViewBox
+      XHeader
     },
     methods: {
       back () {
         console.log('back')
+      },
+      editDetail () {
+        // 点击参与人员的中的编辑，跳转到选择参与人员页面
+        this.$router.push({
+          name: 'chooseParticipator'
+        })
+      },
+      cancleSchedule () {
+        // 取消日程，删除该条日程记录
+        console.log('cancle schedule')
+        this.$router.go(-1)
       }
     }
   }
@@ -61,14 +71,13 @@
       color: #fff
     }
     .content-container {
-      overflow: hidden;
+      height: 620px;
+      overflow-y: auto;
       .detail-container{
         .container;
-        height: 342px;
         position: relative;
         .detail-title{
           width: 321px;
-          height: 120px;
           overflow-y: auto;
         }
         .detail-ite{
@@ -76,12 +85,11 @@
           line-height: 30px;
         }
         .creator-detail{
-          position: absolute;
-          left: 10px;
-          bottom:20px;
           height: 40px;
           line-height: 40px;
           width: 100%;
+          margin-top: 40px;
+          position: relative;
           .creator-img{
             width: 30px;
             height: 30px;

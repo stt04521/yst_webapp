@@ -2,7 +2,7 @@
   <div class="create-note-wrapper">
     <x-header title="新建计划" slot="overwrite-left" class="header">
       <span slot="overwrite-left" @click="cancleCreateNote">取消</span>
-      <span slot="right" @click="createNote">创建</span>
+      <span slot="right" @click="create">创建</span>
     </x-header>
     <view-box class="content-container">
       <group>
@@ -34,9 +34,13 @@
       },
       cancleCreateNote () {
         console.log('cancel create note')
+        this.$router.go(-1)
       },
-      createNote () {
+      create () {
         console.log('create note')
+        this.$router.push({
+          name: 'noteDetail'
+        })
       }
     }
   }

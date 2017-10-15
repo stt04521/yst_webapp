@@ -149,10 +149,16 @@
         console.log('create schedule')
       },
       addSchedule () {
-        console.log('add schedule')
+        // 点击添加日程跳转到添加日程页面
+        this.$router.push({
+          name: 'createSchedule'
+        })
       },
       addNote () {
-        console.log('add note')
+        // 点击添加笔记跳转到添加笔记页面
+        this.$router.push({
+          name: 'createNote'
+        })
       },
       toggle () {
         console.log('toggle')

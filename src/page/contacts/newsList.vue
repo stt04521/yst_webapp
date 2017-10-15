@@ -12,7 +12,7 @@
           <span class="detail" v-else>{{ item.detail }}</span>
         </div>
         <span class="show-time"><span v-show="item.isGroup">{{item.lastName}}：</span>{{ item.time }}</span>
-        <img v-show="item.noDisturb" src="../../assets/no_disturb.png" class="no-disturb">
+        <!-- <img v-show="item.noDisturb" src="../../assets/no_disturb.png" class="no-disturb"> -->
       </div>
     </div>
   </div>

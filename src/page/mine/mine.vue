@@ -65,12 +65,28 @@
     },
     methods: {
       dealClick (item) {
-        console.log(item.title)
+        // console.log(item.title)
+        if (item.title === '我的订单') {
+          this.$router.push({
+            name: 'orderList'
+          })
+        }
+        if (item.title === '我的组织') {
+          this.$router.push({
+            name: 'myOrganize'
+          })
+        }
       },
       setUp () {
         console.log('set up')
+        this.$router.push({
+          name: 'setUp'
+        })
       },
       help () {
+        this.$router.push({
+          name: 'feedback'
+        })
         console.log('help')
       },
       selectOrganize () {

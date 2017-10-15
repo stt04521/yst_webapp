@@ -47,66 +47,68 @@
         isShowSchedule: true,
         isShowCalender: false,
         isShowNote: false,
-        scheduleList: [{
-          content: '第一条日程记录',
-          address: '杭州滨海区',
-          createTime: '8月6日 18：00',
-          modifyTime: '刚刚'
-        },
-        {
-          content: '第二条日程记录',
-          address: '杭州滨海区',
-          createTime: '8月6日 18：00',
-          modifyTime: '8月10日 8：00'
-        },
-        {
-          content: '第三条日程记录',
-          address: '杭州滨海区',
-          createTime: '8月6日 18：00',
-          modifyTime: '10月6日 18：20'
-        },
-        {
-          content: '第四条日程记录',
-          address: '杭州滨海区',
-          createTime: '8月6日 18：00',
-          modifyTime: '9月6日 18：02'
-        },
-        {
-          content: '第五条日程记录第五条日程记录第五条日程记录第五条日程记录第五条日程记录',
-          address: '湖北异常',
-          createTime: '8月6日 18：40',
-          modifyTime: '刚刚'
-        },
-        {
-          content: '第四条日程记录',
-          address: '杭州滨海区',
-          createTime: '8月6日 18：00',
-          modifyTime: '9月6日 18：02'
-        },
-        {
-          content: '第五条日程记录第五条日程记录第五条日程记录第五条日程记录第五条日程记录',
-          address: '湖北异常',
-          createTime: '8月6日 18：40',
-          modifyTime: '刚刚'
-        },
-        {
-          content: '第四条日程记录',
-          address: '杭州滨海区',
-          createTime: '8月6日 18：00',
-          modifyTime: '9月6日 18：02'
-        },
-        {
-          content: '第五条日程记录第五条日程记录第五条日程记录第五条日程记录第五条日程记录',
-          address: '湖北异常',
-          createTime: '8月6日 18：40',
-          modifyTime: '刚刚'
-        },
-        {
-          content: '第六条程记录',
-          address: '湖北武汉',
-          createTime: '8月6日 19：00',
-          modifyTime: '12月6日 18：00'
-        }]
+        scheduleList: [
+          {
+            content: '第一条日程记录',
+            address: '杭州滨海区',
+            createTime: '8月6日 18：00',
+            modifyTime: '刚刚'
+          },
+          {
+            content: '第二条日程记录',
+            address: '杭州滨海区',
+            createTime: '8月6日 18：00',
+            modifyTime: '8月10日 8：00'
+          },
+          {
+            content: '第三条日程记录',
+            address: '杭州滨海区',
+            createTime: '8月6日 18：00',
+            modifyTime: '10月6日 18：20'
+          },
+          {
+            content: '第四条日程记录',
+            address: '杭州滨海区',
+            createTime: '8月6日 18：00',
+            modifyTime: '9月6日 18：02'
+          },
+          {
+            content: '第五条日程记录第五条日程记录第五条日程记录第五条日程记录第五条日程记录',
+            address: '湖北异常',
+            createTime: '8月6日 18：40',
+            modifyTime: '刚刚'
+          },
+          {
+            content: '第四条日程记录',
+            address: '杭州滨海区',
+            createTime: '8月6日 18：00',
+            modifyTime: '9月6日 18：02'
+          },
+          {
+            content: '第五条日程记录第五条日程记录第五条日程记录第五条日程记录第五条日程记录',
+            address: '湖北异常',
+            createTime: '8月6日 18：40',
+            modifyTime: '刚刚'
+          },
+          {
+            content: '第四条日程记录',
+            address: '杭州滨海区',
+            createTime: '8月6日 18：00',
+            modifyTime: '9月6日 18：02'
+          },
+          {
+            content: '第五条日程记录第五条日程记录第五条日程记录第五条日程记录第五条日程记录',
+            address: '湖北异常',
+            createTime: '8月6日 18：40',
+            modifyTime: '刚刚'
+          },
+          {
+            content: '第六条程记录',
+            address: '湖北武汉',
+            createTime: '8月6日 19：00',
+            modifyTime: '12月6日 18：00'
+          }
+        ]
       }
     },
     methods: {
@@ -146,7 +148,8 @@
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style lang ="less">
   .schedule-wrapper{
-    height: 566px;
+    height: 100%;
+    width: 100%;
     overflow: hidden;
     .tab-wrapper {
       height: 37px;
@@ -166,9 +169,12 @@
       }
     }
     .content{
-      margin-top: 10px;
-      height: 522px;
+      padding-top: 10px;
+      height: 504px;
       overflow-y: auto;
+      overflow-x: hidden;
+      padding-left: 0px;
+      padding-right: 0px;
     }
   }
   .inline-calendar-demo {

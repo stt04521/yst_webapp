@@ -43,6 +43,52 @@ export default new Router({
           require(['@/page/contacts/contacts'], resolve)
         }
       },
+    // news
+      {
+        path: '/system/:type', // 系统消息
+        component: (resolve) => {
+          require(['@/page/news/system'], resolve)
+        }
+      },
+      {
+        path: '/messageDetails', // 消息详情
+        component: (resolve) => {
+          require(['@/page/news/messageDetails'], resolve)
+        }
+      },
+      {
+        path: '/invitingFriends', // 邀请好友
+        component: (resolve) => {
+          require(['@/page/news/invitingFriends'], resolve)
+        }
+      },
+    // contacts
+      {
+        path: '/SearchBuddy/:type', // 搜索好友
+        component: (resolve) => {
+          require(['@/page/contacts/SearchBuddy'], resolve)
+        }
+      },
+      {
+        path: '/ContactInfo/:type', // 联系人资料
+        component: (resolve) => {
+          require(['@/page/contacts/ContactInfo'], resolve)
+        }
+      },
+      {
+        path: '/newsList', // 会话消息
+        component: (resolve) => {
+          require(['@/page/contacts/newsList'], resolve)
+        }
+      },
+      {
+        path: '/newsPage/:username', // 会话消息
+        name: 'newsPage',
+        component: (resolve) => {
+          require(['@/page/contacts/newsPage'], resolve)
+        }
+      },
+    // 日程
       {
         path: 'schedule', // 日程
         redirect: 'schedule/showSchedule',
@@ -69,44 +115,6 @@ export default new Router({
           require(['@/page/schedule/showCalender'], resolve)
         }
       }]
-    },
-    // news
-    {
-      path: '/system/:type', // 系统消息
-      component: (resolve) => {
-        require(['@/page/news/system'], resolve)
-      }
-    },
-    {
-      path: '/messageDetails', // 消息详情
-      component: (resolve) => {
-        require(['@/page/news/messageDetails'], resolve)
-      }
-    },
-    {
-      path: '/invitingFriends', // 邀请好友
-      component: (resolve) => {
-        require(['@/page/news/invitingFriends'], resolve)
-      }
-    },
-    // contacts
-    {
-      path: '/SearchBuddy/:type', // 搜索好友
-      component: (resolve) => {
-        require(['@/page/contacts/SearchBuddy'], resolve)
-      }
-    },
-    {
-      path: '/CreateGroupChat', // 创建群聊
-      component: (resolve) => {
-        require(['@/page/contacts/CreateGroupChat'], resolve)
-      }
-    },
-    {
-      path: '/ContactInfo/:type', // 联系人资料
-      component: (resolve) => {
-        require(['@/page/contacts/ContactInfo'], resolve)
-      }
     },
     {
       path: '/GroupManagement', // 分组管理

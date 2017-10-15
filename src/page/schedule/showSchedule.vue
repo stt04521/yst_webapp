@@ -8,7 +8,7 @@
             <span class="s-line"></span>
           </div>
         </div>
-        <div class="right">
+        <div class="right" @click="toscheduleDetail(item)">
           <div class="title">{{ item.content }}</div>
           <div class="address" v-show="isShowAddress">{{ item.address }}</div>
           <div class="create-time">{{ item.createTime }}</div>
@@ -42,13 +42,22 @@ export default {
   },
   mounted () {
     console.log(this.isShowAddress)
+  },
+  methods: {
+    toscheduleDetail (val) {
+      // 跳转到日程详情页面
+      console.log(val)
+      this.$router.push({
+        name: 'scheduleDetail'
+      })
+    }
   }
 }
 </script>
 <style scoped lang="less">
   .item-container{
     width: 375px;
-    height: 80px;
+    height: 100px;
     padding-left: 30px;
     padding-right: 30px;
     .left{
@@ -63,12 +72,12 @@ export default {
         box-sizing: border-box;
       }
       .line{
-        height: 60px;
+        height: 80px;
         width:20px;
         text-align: center;
         .s-line {
           display: inline-block;
-          height: 60px;
+          height: 80px;
           width: 1px;
           background-color: #aaa;
         }

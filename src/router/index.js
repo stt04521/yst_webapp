@@ -148,6 +148,7 @@ export default new Router({
     },
     {
       path: '/scheduleDetail',  // 日程详情
+      name: 'scheduleDetail',
       component: (resolve) => {
         require(['@/page/schedule/scheduleDetail'], resolve)
       }

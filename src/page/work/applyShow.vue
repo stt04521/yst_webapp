@@ -1,10 +1,10 @@
 <template>
   <div class="apply-container" v-show="dataList.length">
-    <div class="content-container" v-for="(item, index) in dataList" :key="index" @click="clickSingleTask(item)">
+    <div class="content-container" @click="showTaskDetail(item)" v-for="(item, index) in dataList" :key="index">
       <img class="apply-img" :src='item.image' >
       <span class="apply-title">{{ item.title }}</span>
     </div>
-    <div class="show-all-btn" v-show="showAll">全部</div>
+    <div class="show-all-btn" v-show="showAll" @click="showAllTask">全部</div>
   </div>
 </template>
 <script>
@@ -21,8 +21,11 @@
       }
     },
     methods: {
-      clickSingleTask (item) {
-        this.$emit('click-single-task', item)
+      showTaskDetail (item) {
+        this.$emit('show-task-detail', item)
+      },
+      showAllTask () {
+        this.$emit('show-all-task')
       }
     }
   }

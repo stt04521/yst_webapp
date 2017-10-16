@@ -1,8 +1,6 @@
 <template>
   <div class="orgnize-apply-wrapper">
-    <x-header title="上海某某某公司" slot="overwrite-left" class="header">
-      <!--<span slot="overwrite-left" @click="cancleCreateSchedule">取消</span>-->
-      <span slot="right" @click="toggle">创建</span>
+    <x-header title="上海某某某公司" class="header">
     </x-header>
     <div class="f-use-container">
       <tab :line-width="1" custom-bar-width="60px" active-color="#10b4f7" class="s-tab-container" defaultColor="#aaa">
@@ -16,7 +14,6 @@
       <div>
         <router-view :alwaysUseList='alwaysUseList' :allApplyList='personalList'></router-view>
       </div>
-
     </div>
   </div>
 </template>
@@ -31,6 +28,7 @@
     },
     data () {
       return {
+        showModel: false,
         alwaysUseList: [
           {
             image: require('../../assets/news/userImg.jpg'),
@@ -107,9 +105,6 @@
       }
     },
     methods: {
-      toggle () {
-        console.log('toggle')
-      }
     }
   }
 </script>
@@ -120,6 +115,30 @@
     .header span{
       font-size: 17px;
       color: #fff;
+    }
+    .list-container {
+      .choose-organize{
+        z-index: 3;
+        position: absolute;
+        top: 45px;
+        background-color: #fff;
+        text-align: center;
+        font-size: 16px;
+        width: 100%;
+        .status-item{
+          height: 45px;
+          line-height: 45px;
+        }
+      }
+      .bg-color{
+        width:100%;
+        height: 100%;
+        background-color: rgba(7,17,27,0.7);
+        position: absolute;
+        top: 45px;
+        right: 0px;
+        z-index:2;
+      }
     }
   }
 </style>

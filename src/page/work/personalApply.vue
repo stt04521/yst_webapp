@@ -1,8 +1,6 @@
 <template>
   <div class="personal-apply-wrapper">
-    <x-header title="个人应用" slot="overwrite-left" class="header">
-      <!--<span slot="overwrite-left" @click="cancleCreateSchedule">取消</span>-->
-      <span slot="right" @click="toggle">切换</span>
+    <x-header title="个人应用" class="header">
     </x-header>
     <use-apply :alwaysUseList='alwaysUseList' :allApplyList='personalList'></use-apply>
   </div>
@@ -20,6 +18,7 @@
     },
     data () {
       return {
+        showModel: false,
         alwaysUseList: [
           {
             image: require('../../assets/news/userImg.jpg'),
@@ -96,9 +95,6 @@
       }
     },
     methods: {
-      toggle () {
-        console.log('toggle')
-      }
     }
   }
 </script>
@@ -120,6 +116,30 @@
       .title {
         color: #aaa;
         font-size: 14px;
+      }
+    }
+    .list-container {
+      .choose-organize{
+        z-index: 3;
+        position: absolute;
+        top: 45px;
+        background-color: #fff;
+        text-align: center;
+        font-size: 16px;
+        width: 100%;
+        .status-item{
+          height: 45px;
+          line-height: 45px;
+        }
+      }
+      .bg-color{
+        width:100%;
+        height: 100%;
+        background-color: rgba(7,17,27,0.7);
+        position: absolute;
+        top: 45px;
+        right: 0px;
+        z-index:2;
       }
     }
   }

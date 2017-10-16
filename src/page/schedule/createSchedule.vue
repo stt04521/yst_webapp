@@ -21,12 +21,13 @@
         <cell title="地点" ></cell>
       </group>
       <group>
-        <cell title="参与者" is-link>
-        <span slot="value">
+        <cell title="参与者" is-link link="/chooseParticipator">
+          <!-- 下面内容是显示选中的人员 没有则显示为空 -->
+        <!-- <span slot="value">
           <img src="../../assets/news/userImg.jpg" class="item-img"/>
           <img src="../../assets/news/userImg.jpg" class="item-img"/>
           <span>2人</span>
-        </span>
+        </span> -->
         </cell>
       </group>
     </view-box>
@@ -87,9 +88,13 @@
       },
       cancleCreateSchedule () {
         console.log('cancel create schedule')
+        this.$router.go(-1)
       },
       CreateSchedule () {
         console.log('create schedule')
+        this.$router.push({
+          path: '/'
+        })
       }
     }
   }

@@ -42,6 +42,12 @@
           tel: this.tel,
           vCode: this.vCode
         }
+        // 验证通过
+        if (registryInfo) {
+          this.$router.push({
+            name: 'registrySuccess'
+          })
+        }
         console.log(registryInfo)
       },
       sendVCode () {

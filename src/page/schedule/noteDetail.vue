@@ -1,7 +1,6 @@
 <template>
   <div class="note-detail-wrapper">
     <x-header title="记事详情" slot="overwrite-left" class="header">
-      <span slot="overwrite-left" @click="back">取消</span>
     </x-header>
     <view-box class="content-container">
       <div class="note-container">
@@ -10,8 +9,8 @@
         <div class="modify-time">13:00</div>
       </div>
       <div class="operate-container">
-        <button class="operate-btn">编辑</button>
-        <button class="delete-btn">删除</button>
+        <button class="operate-btn" @click="editNote">编辑</button>
+        <button class="delete-btn" @click="deleteNote">删除</button>
       </div>
     </view-box>
 
@@ -28,7 +27,21 @@
     methods: {
       back () {
         console.log('back')
+      },
+      editNote () {
+        this.$router.push({
+          name: 'createNote'
+        })
+      },
+      deleteNote () {
+        this.$router.go(-1)
       }
+      // toShowNote () {
+      //   console.log('111')
+      //   // this.$router.push({
+      //   //   path: '/schedule/showNote'
+      //   // })
+      // }
     }
   }
 </script>

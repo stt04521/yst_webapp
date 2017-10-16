@@ -8,7 +8,7 @@
             <span class="s-line"></span>
           </div>
         </div>
-        <div class="right" @click="toscheduleDetail(item)">
+        <div class="right" @click="toDetail(item)">
           <div class="title">{{ item.content }}</div>
           <div class="address" v-show="isShowAddress">{{ item.address }}</div>
           <div class="create-time">{{ item.createTime }}</div>
@@ -44,12 +44,18 @@ export default {
     console.log(this.isShowAddress)
   },
   methods: {
-    toscheduleDetail (val) {
-      // 跳转到日程详情页面
+    toDetail (val) {
+      // 跳转到日程详情页面 或者 记事详情页面
       console.log(val)
-      this.$router.push({
-        name: 'scheduleDetail'
-      })
+      if (this.isShowAddress) {
+        this.$router.push({
+          name: 'scheduleDetail'
+        })
+      } else {
+        this.$router.push({
+          name: 'noteDetail'
+        })
+      }
     }
   }
 }

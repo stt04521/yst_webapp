@@ -20,6 +20,9 @@
     methods: {
       jumpOut () {
         console.log('jump out')
+        this.$router.push({
+          name: 'logIn'
+        })
       },
       toIdentificate () {
         console.log('to identificate')

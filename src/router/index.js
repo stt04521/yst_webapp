@@ -136,18 +136,21 @@ export default new Router({
     },
     {
       path: '/createSchedule', // 创建日程
+      name: 'createSchedule',
       component: (resolve) => {
         require(['@/page/schedule/createSchedule'], resolve)
       }
     },
     {
       path: '/chooseParticipator', // 选择参与者
+      name: 'chooseParticipator',
       component: (resolve) => {
         require(['@/page/schedule/chooseParticipator'], resolve)
       }
     },
     {
       path: '/createNote',  // 创建记事
+      name: 'createNote',
       component: (resolve) => {
         require(['@/page/schedule/createNote'], resolve)
       }
@@ -161,6 +164,7 @@ export default new Router({
     },
     {
       path: '/noteDetail',  // 记事详情
+      name: 'noteDetail',
       component: (resolve) => {
         require(['@/page/schedule/noteDetail'], resolve)
       }
@@ -251,24 +255,28 @@ export default new Router({
     },
     {
       path: '/logIn',  // 登录
+      name: 'logIn',
       component: (resolve) => {
         require(['@/page/login/logIn'], resolve)
       }
     },
     {
       path: '/registry',  // 注册
+      name: 'registry',
       component: (resolve) => {
         require(['@/page/login/registry'], resolve)
       }
     },
     {
       path: '/forgetPassword',  // 忘记密码
+      name: 'forgetPassword',
       component: (resolve) => {
         require(['@/page/login/forgetPassword'], resolve)
       }
     },
     {
       path: '/registrySuccess',  // 注册成功
+      name: 'registrySuccess',
       component: (resolve) => {
         require(['@/page/login/registrySuccess'], resolve)
       }
@@ -296,6 +304,7 @@ export default new Router({
     },
     {
       path: '/myOrganize',  // 我的组织
+      name: 'myOrganize',
       component: (resolve) => {
         require(['@/page/mine/myOrganize'], resolve)
       }
@@ -328,6 +337,7 @@ export default new Router({
     {
       path: '/orderList',  // 我的订单
       redirect: '/orderList/orderItem',
+      name: 'orderList',
       component: (resolve) => {
         require(['@/page/mine/orderList'], resolve)
       },
@@ -342,6 +352,7 @@ export default new Router({
     },
     {
       path: '/setUp',  // 设置
+      name: 'setUp',
       component: (resolve) => {
         require(['@/page/mine/setUp'], resolve)
       }
@@ -362,6 +373,7 @@ export default new Router({
     },
     {
       path: '/feedback',  // 帮助与反馈
+      name: 'feedback',
       component: (resolve) => {
         require(['@/page/mine/feedback'], resolve)
       }

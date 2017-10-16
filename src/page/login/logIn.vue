@@ -11,8 +11,8 @@
         </x-input>
       </group>
       <div class="operate">
-        <span>新用户注册</span>
-        <span class="forget">忘记密码</span>
+        <span @click="toRegistry">新用户注册</span>
+        <span class="forget" @click="toForgetPsw">忘记密码</span>
       </div>
       <button class="login-btn" @click="login">登录</button>
       <div class="warning-msg" v-show="showWarning">
@@ -55,6 +55,16 @@
         if (err) {
           this.showWarning = true
         }
+      },
+      toRegistry () {
+        this.$router.push({
+          name: 'registry'
+        })
+      },
+      toForgetPsw () {
+        this.$router.push({
+          name: 'forgetPassword'
+        })
       }
     }
   }

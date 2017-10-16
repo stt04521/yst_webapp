@@ -23,7 +23,7 @@
           </Popover>
         </div>
       </cell>
-      <template v-if="showContent001">
+      <template v-if="showContent001 && !select">
           <cell data-id="2"  v-longtap="{fn:onItemLongpress,name:'长按'}" @click.native="onJutmp(`/ContactInfo/${type}`)">
             <div slot="title" data-id="2">
               General
@@ -46,6 +46,11 @@
           <img slot="icon" width="40" style="display:block;margin-right:25px;" src="../../assets/news/userImg.jpg">
         </cell>
       </template>
+      <template v-if="showContent001 && select == 'true'">
+        <checklist  label-position="left" required :options="radio003" v-model="checklist001" >
+          <img slot="icon" width="40" style="display:block;margin-right:25px;" src="../../assets/news/userImg.jpg">
+        </checklist>
+      </template>
     </group>
     <!--同事列表-->
     <group v-if="type == 'Colleague'">
@@ -57,7 +62,7 @@
         title="部门"
       >
       </cell>
-      <template v-if="showContent002">
+      <template v-if="showContent002 && !select">
         <cell
           is-link
           :border-intent="false"
@@ -77,14 +82,30 @@
 
       </template>
 
+      <template v-if="showContent002 && select == 'true'">
+        <cell
+          is-link
+          :border-intent="false"
+          :arrow-direction="showContent003 ? 'up' : 'down'"
+          @click.native="showContent003 = !showContent003"
+          title="次部分"
+        >
+        </cell>
+        <template v-if="showContent003">
+            <cell>
+              <span slot="title">General</span>
+              <img slot="icon" width="40" style="display:block;margin-right:25px;" src="../../assets/news/userImg.jpg">
+            </cell>
+        </template>
 
+      </template>
 
     </group>
 
   </div>
 </template>
 <script>
-  import { Cell, CellBox, CellFormPreview, Group, Badge, Actionsheet } from 'vux'
+  import { Cell, CellBox, CellFormPreview, Group, Badge, Actionsheet, Checklist } from 'vux'
   import Popover from '@/components/popover.vue'
   import { longtap } from '@/directives/vue-touch'
   export default {
@@ -96,10 +117,12 @@
       CellBox,
       Badge,
       Popover,
-      Actionsheet
+      Actionsheet,
+      Checklist
     },
     props: {
-      type: String
+      type: String,
+      select: String
     },
     directives: {
       longtap
@@ -142,11 +165,22 @@
         showContent002: false,
         showContent003: false,
         showContent004: false,
+        checklist001: [],
         show3: false,
         menus3: {
           title: '<span style="color:#999999;font-size: 14px">您将与该好友接触好友关系</span>',
           delete: '<span style="color:red">确定删除</span>'
-        }
+        },
+        radio003: [{
+          icon: 'http://dn-placeholder.qbox.me/110x110/FF2D55/000',
+          key: '001',
+          value: 'radio001'
+        }, {
+          icon: 'http://dn-placeholder.qbox.me/110x110/FF2D55/000',
+          key: '002',
+          value: 'radio002'
+        }],
+        commonList: [ 'China', 'Japan', 'America' ]
       }
     }
   }

@@ -213,6 +213,7 @@ export default new Router({
     //  任务与计划
     {
       path: '/taskList',  //  任务列表
+      name: 'taskList',
       redirect: '/taskList/taskItem',
       component: (resolve) => {
         require(['@/page/work/taskList'], resolve)
@@ -228,18 +229,21 @@ export default new Router({
     },
     {
       path: '/createTask',  // 新建任务
+      name: 'createTask',
       component: (resolve) => {
         require(['@/page/work/createTask'], resolve)
       }
     },
     {
       path: '/planList',  // 计划列表
+      name: 'planList',
       component: (resolve) => {
         require(['@/page/work/planList'], resolve)
       }
     },
     {
       path: '/createPlan',  // 新建计划
+      name: 'createPlan',
       component: (resolve) => {
         require(['@/page/work/createPlan'], resolve)
       }
@@ -260,12 +264,14 @@ export default new Router({
     },
     {
       path: '/attachmentList',  // 附件列表
+      name: 'attachmentList',
       component: (resolve) => {
         require(['@/page/work/attachmentList'], resolve)
       }
     },
     {
       path: '/aboutTask',  // 任务相关人员
+      name: 'aboutTask',
       component: (resolve) => {
         require(['@/page/work/aboutTask'], resolve)
       }

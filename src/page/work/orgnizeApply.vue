@@ -12,7 +12,7 @@
         </tab-item>
       </tab>
       <div>
-        <router-view :alwaysUseList='alwaysUseList' :allApplyList='personalList'></router-view>
+        <router-view :alwaysUseList='alwaysUseList' :allApplyList='personalList' @deal-click="showList"></router-view>
       </div>
     </div>
   </div>
@@ -32,23 +32,23 @@
         alwaysUseList: [
           {
             image: require('../../assets/news/userImg.jpg'),
-            title: '组织应用'
+            title: '计划'
           },
           {
             image: require('../../assets/news/userImg.jpg'),
-            title: '组织应用'
+            title: '任务'
           },
           {
             image: require('../../assets/news/userImg.jpg'),
-            title: '组织应用'
+            title: '计划'
           },
           {
             image: require('../../assets/news/userImg.jpg'),
-            title: '组织应用'
+            title: '任务'
           },
           {
             image: require('../../assets/news/userImg.jpg'),
-            title: '组织应用'
+            title: '计划'
           },
           {
             image: require('../../assets/news/userImg.jpg'),
@@ -105,6 +105,18 @@
       }
     },
     methods: {
+      showList (item) {
+        if (item.title.indexOf('计划') > -1) {
+          this.$router.push({
+            name: 'planList'
+          })
+        }
+        if (item.title.indexOf('任务') > -1) {
+          this.$router.push({
+            name: 'taskList'
+          })
+        }
+      }
     }
   }
 </script>

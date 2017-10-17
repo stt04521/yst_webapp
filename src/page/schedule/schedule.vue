@@ -17,7 +17,7 @@
         </router-link>
       </flexbox-item>
     </flexbox>
-    <div class="content" :height="height + 'px'">
+    <div class="content" :style="{height: height + 'px'}">
       <show-schedule v-show="isShowSchedule" :scheduleList = 'scheduleList' :isShowAddress="true"></show-schedule>
       <show-schedule v-show="isShowNote" :scheduleList = 'scheduleList' :isShowAddress="false"></show-schedule>
       <showCalender v-show="isShowCalender"></showCalender>

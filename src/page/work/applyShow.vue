@@ -1,6 +1,6 @@
 <template>
   <div class="apply-container" v-show="dataList.length">
-    <div class="content-container" @click="showTaskDetail(item)" v-for="(item, index) in dataList" :key="index">
+    <div class="content-container" @click="dealItemClick(item)" v-for="(item, index) in dataList" :key="index">
       <img class="apply-img" :src='item.image' >
       <span class="apply-title">{{ item.title }}</span>
     </div>
@@ -21,8 +21,9 @@
       }
     },
     methods: {
-      showTaskDetail (item) {
-        this.$emit('show-task-detail', item)
+      dealItemClick (item) {
+        this.$emit('deal-item-click', item)
+        console.log('111')
       },
       showAllTask () {
         this.$emit('show-all-task')

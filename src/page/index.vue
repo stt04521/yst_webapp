@@ -43,7 +43,9 @@
           </div>
           <span v-if="route.path === '/schedule/showSchedule'" slot="right" style="font-size: 17px; color: #fff" @click="addSchedule">添加日程</span>
           <span v-if="route.path === '/schedule/showNote'" slot="right" style="font-size: 17px; color: #fff" @click="addNote">添加记事</span>
-          <span v-if="route.path === '/work' || route.path === '/work/todoList' || route.path === '/work/finishedList'" slot="right" style="font-size: 17px; color: #fff" @click="toggle">切换</span>
+          <span v-if="route.path === '/work' || route.path === '/work/todoList' || route.path === '/work/finishedList'" slot="right" style="font-size: 17px; color: #fff" @click="toggleModelShow">切换
+            <selection-list :dataList="selectionList" @toggle-model-show="toggleModelShow" @change-item="changeOrganize" :showModel="showModel"></selection-list>
+          </span>
         </x-header>
 
 
@@ -87,6 +89,7 @@
   import { mapState, mapActions } from 'vuex'
   import Popover from '@/components/popover.vue'
   import {eventBus} from '../eventBus'
+  import selectionList from '../components/selectionList'
   export default {
     directives: {
       TransferDom
@@ -106,11 +109,14 @@
       Loading,
       Actionsheet,
       mine,
-      Popover
+      Popover,
+      selectionList
     },
     data () {
       return {
         showMenu: false,
+        showModel: false,
+        workPageTitle: '个人应用',
         menus: {
           'language.noop': '<span class="menu-title">Language</span>',
           'zh-CN': '中文',
@@ -121,7 +127,8 @@
         showModeValue: 'push',
         showPlacement: 'left',
         showPlacementValue: 'left',
-        msg: 'Hello World!'
+        msg: 'Hello World!',
+        selectionList: [{key: '0', value: '组织01'}, {key: '1', value: '组织02'}, {key: '2', value: '组织03'}, {key: '3', value: '个人'}]
       }
     },
     methods: {
@@ -163,9 +170,12 @@
           name: 'createNote'
         })
       },
-      toggle () {
-        console.log('toggle')
-        eventBus.$emit('toggle-list-show')
+      toggleModelShow () {
+        this.showModel = !this.showModel
+      },
+      changeOrganize (item) {
+        eventBus.$emit('organize-changed', item)
+        this.workPageTitle = item.value
       },
       onJutmp (url) {
         this.$router.push(url)
@@ -218,7 +228,9 @@
         if (this.route.path === '/news') return '个人信息'
         if (this.route.path === '/schedule' || this.route.path === '/schedule/showSchedule' || this.route.path === '/showCalender') return '日程'
         if (this.route.path === '/schedule/showNote') return '记事本'
-        if (this.route.path === '/work' || this.route.path === '/work/todoList' || this.route.path === '/work/finishedList') return '个人应用'
+        if (this.route.path === '/work' || this.route.path === '/work/todoList' || this.route.path === '/work/finishedList') {
+          return this.workPageTitle
+        }
         if (this.route.path === '/demo') return 'Demo list'
         return this.componentName ? `Demo/${this.componentName}` : '联系人'
       }

@@ -14,7 +14,7 @@
         </div>
         <div class="start-time">开始时间：{{item.startTime}}</div>
         <div class="end-time">开始时间：{{item.endTime}}</div>
-        <span class="about">任务相关者》</span>
+        <span class="about" @click="showAboutTask">任务相关者》</span>
         <span class="status" :style="{color: item.status === 0 ? '#ffccff':'#eee'}">{{item.status === 0 ? '正在进行': '已完成'}}</span>
         <div class="recover">
           <img src="../../assets/recover.png" class="avatar">
@@ -67,6 +67,13 @@
             recoverLength: '3'
           }
         ]
+      }
+    },
+    methods: {
+      showAboutTask () {
+        this.$router.push({
+          name: 'aboutTask'
+        })
       }
     }
   }

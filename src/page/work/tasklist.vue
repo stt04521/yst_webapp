@@ -2,7 +2,7 @@
   <div class="task-list-wrapper">
     <x-header title="工作" slot="overwrite-left" class="header">
       <!--<span slot="overwrite-left" @click="cancleCreateSchedule">取消</span>-->
-      <router-link tag="span" slot="right" to="/createTask">创建</router-link>
+      <span tag="span" slot="right" @click="createTask">创建</span>
     </x-header>
     <flexbox  :gutter="0" class="tab-container">
       <flexbox-item :span="7">
@@ -30,7 +30,7 @@
         </group>
       </flexbox-item>
     </flexbox>
-    <div class="task-item-list">
+    <div class="task-item-list" :style="{height: height + 'px'}">
       <div v-if="showStatus" class="choose-status" @click="changeStatus" >
         <div class="status-item" v-for="(item, index) in statuslist" :key="index">{{item.value}}</div>
       </div>
@@ -55,6 +55,7 @@
     },
     data () {
       return {
+        height: 0,
         statuslist: [{key: '0', value: '不限'}, {key: '1', value: '正在进行'}, {key: '2', value: '已结束'}],
         showStatus: false,
         choosedStatus: '不限'
@@ -71,8 +72,16 @@
         let target = e.target
         this.choosedStatus = target.innerText
         this.toggleStatusShow()
+      },
+      createTask () {
+        this.$router.push({
+          name: 'createTask'
+        })
       }
 
+    },
+    mounted () {
+      this.height = document.body.offsetHeight - 86
     }
   }
 </script>
@@ -100,7 +109,6 @@
       }
     }
     .task-item-list{
-      height:100%;
       .choose-status{
         z-index: 3;
         position: absolute;

@@ -20,7 +20,7 @@
       <div class="participator-container">
         <div class="title-container">
           <span class="title">任务相关人员</span>
-          <span class="show-all">查看全部>></span>
+          <span class="show-all" @click="showAll">查看全部>></span>
         </div>
         <ul>
           <!--这里最多只显示三个人，数据需要做处理-->
@@ -31,7 +31,7 @@
         </ul>
         <div class="show-all-file">
           <img src="../../assets/addFile.png" class="add-file">
-          <span class="title">查看所有附件</span>
+          <span class="title" @click="showAllFile">查看所有附件</span>
         </div>
 
       </div>
@@ -109,6 +109,16 @@
     methods: {
       send () {
         console.log(this.recoverContent)
+      },
+      showAll () {
+        this.$router.push({
+          name: 'aboutTask'
+        })
+      },
+      showAllFile () {
+        this.$router.push({
+          name: 'attachmentList'
+        })
       }
     }
   }

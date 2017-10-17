@@ -183,6 +183,7 @@ export default new Router({
     },
     {
       path: '/orgnizeApply',  // 组织应用
+      name: 'orgnizeApply',
       redirect: '/orgnizeApply/organizeUse',
       component: (resolve) => {
         require(['@/page/work/orgnizeApply'], resolve)
@@ -204,10 +205,12 @@ export default new Router({
     },
     {
       path: '/personalApply',  // 个人应用
+      name: 'personalApply',
       component: (resolve) => {
         require(['@/page/work/personalApply'], resolve)
       }
     },
+    //  任务与计划
     {
       path: '/taskList',  //  任务列表
       redirect: '/taskList/taskItem',
@@ -243,8 +246,16 @@ export default new Router({
     },
     {
       path: '/planDetail',  // 计划详情
+      name: 'planDetail',
       component: (resolve) => {
         require(['@/page/work/planDetail'], resolve)
+      }
+    },
+    {
+      path: '/taskDetail',  // 计划详情
+      name: 'taskDetail',
+      component: (resolve) => {
+        require(['@/page/work/taskDetail'], resolve)
       }
     },
     {
@@ -308,6 +319,7 @@ export default new Router({
         }
       ]
     },
+    // 我的页面
     {
       path: '/mine',  // 我的
       component: (resolve) => {

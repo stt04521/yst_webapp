@@ -1,5 +1,5 @@
 <template>
-  <div class="content-wrapper">
+  <div class="content-wrapper" :height="height">
     <ul>
       <li class="item-container" v-for="(item, index) in scheduleList" :key="index">
         <div class="left">
@@ -38,6 +38,9 @@ export default {
     },
     isShowAddress: {
       type: Boolean
+    },
+    height: {
+      type: String
     }
   },
   mounted () {

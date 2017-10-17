@@ -153,6 +153,7 @@
         'updateDemoPosition'
       ]),
       showPopover () {
+        console.log(this.$refs['group1'])
         this.$refs['group1'].onShow()
       },
       createSchedule () {

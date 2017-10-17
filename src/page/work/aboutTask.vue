@@ -14,7 +14,17 @@
         <li class="item-container" v-for="(item, index) in dataList" :key="index">
           <img :src="item.avatar" alt="" class="avatar">
           <span class="name">{{ item.name }}</span>
-          <img src="../../assets/more.png" @click="showPop" class="right-operate" v-show="showMore" alt=""/>
+          <div class="show-more-container">
+            <img src="../../assets/more.png" @click="toggleShow(index)" v-show="showMore"/>
+            <Popover ref="popGroup">
+              <div slot="content" class="content">
+                <span @click="toPlanList">查看计划</span>
+                <span style="color: #0099ff" @click="toCreatePlan">做计划</span>
+                <span style="color: #ff0000" @click="deleteTask">删除</span>
+              </div>
+            </Popover>
+          </div>
+
           <span class="right-operate delete" v-show="showDelete">删除</span>
         </li>
       </ul>
@@ -24,14 +34,15 @@
   </div>
 </template>
 <script>
-  import {XHeader, Tab, TabItem, Popover} from 'vux'
+  import {XHeader, Tab, TabItem} from 'vux'
+  import Popover from '@/components/popover.vue'
   export default {
     name: 'aboutTask',
     data () {
       return {
         showDelete: false,
         showMore: true,
-        showPopup: false,
+        isShowSelect: false,
         dataList: [
           {
             avatar: require('../../assets/news/userImg.jpg'),
@@ -45,7 +56,8 @@
             avatar: require('../../assets/news/userImg.jpg'),
             name: '张茜'
           }
-        ]
+        ],
+        list: [{key: '1', value: '查看计划'}, {key: '2', value: '做计划'}, {key: '2', value: '删除'}]
       }
     },
     components: {
@@ -63,14 +75,30 @@
       showAll () {
         console.log('show all')
       },
-      showPop () {
-        console.log('show showPopup')
-        this.showPopup = true
+      toggleShow (index) {
+        this.$refs['popGroup'][index].onShow()
+      },
+      toPlanList () {
+        this.$router.push({
+          name: 'planList'
+        })
+      },
+      toCreatePlan () {
+        this.$router.push({
+          name: 'createPlan'
+        })
+      },
+      deleteTask () {
+        console.log('delete task')
       }
     }
   }
 </script>
-<style scoped lang="less">
+<style  lang="less">
+  .vux-popover{
+    color: #000;
+    background-color: #fff;
+  }
   .about-task-wrapper{
     height: 100%;
     overflow: hidden;
@@ -105,10 +133,51 @@
         .name{
 
         }
-        .right-operate{
+        .show-more-container{
           position: absolute;
           top: 15px;
-          right: 20px;
+          right: 22px;
+          .vux-popover{
+            background-color: rgba(7, 17, 27, 0.5);
+            color: #000;
+            top: 24px;
+            .vux-popover-arrow-up{
+              border-bottom-color: rgba(7, 17, 27, 0.5);
+            }
+            .content{
+              padding: 0px;
+              padding-top: 2px;
+              padding-bottom: 2px;
+              width: 60px;
+              text-align: center;
+            }
+          }
+          /*.content{*/
+            /*!*background-color: #fff;*!*/
+            /*!*color: #000;*!*/
+          /*}*/
+          /*.vux-popover{*/
+            /*position: absolute;*/
+            /*width: 85px;*/
+            /*left: 0%;*/
+            /*top: 0.8rem;*/
+            /*right: -7px;*/
+            /*background-color: #EFEFF4;*/
+            /*color: #333333;*/
+            /*-webkit-transform: translateX(-78%);*/
+            /*transform: translateX(-78%);*/
+            /*border-radius: 3PX;*/
+            /*z-index: 500;*/
+            /*padding: 0.26667rem;*/
+            /*.vux-popover-arrow-up{*/
+              /*left: 85%;*/
+              /*border-bottom: 5PX solid #EFEFF4;*/
+            /*}*/
+            /*img{*/
+              /*height: 14px;*/
+              /*margin: 0 3px;*/
+            /*}*/
+          /*}*/
         }
         .delete{
           color: #f00;

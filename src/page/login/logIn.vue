@@ -3,10 +3,10 @@
     <v-header :title="title"></v-header>
     <div  class="content-container">
       <group :gutter="0">
-        <x-input title="title" v-model="username" placeholder ="请输入用户名/手机号" class="v-input">
+        <x-input title="title" v-model="username" required placeholder ="请输入用户名/手机号" class="v-input">
           <img slot="label" src="../../assets/user.png" class="v-img"/>
         </x-input>
-        <x-input title="title" v-model="password" placeholder="请输入密码" class="v-input">
+        <x-input title="title" v-model="password" required placeholder="请输入密码" class="v-input">
           <img slot="label" src="../../assets/password.png" class="v-img"/>
         </x-input>
       </group>
@@ -19,15 +19,13 @@
         <icon type="safe_warn" class="warning"></icon>
         <span>密码错误，请重新输入</span>
       </div>
-
     </div>
-
-
   </div>
 </template>
 <script>
   import {Group, XInput, Icon} from 'vux'
   import VHeader from './header'
+  import { mapActions } from 'vuex'
   export default{
     name: 'registrySuccess',
     components: {
@@ -41,16 +39,19 @@
         title: '登录',
         username: '',
         password: '',
-        showWarning: false
+        showWarning: true
       }
     },
     methods: {
+      ...mapActions([
+        'LoginByUsername'
+      ]),
       login () {
         let userInfo = {
-          username: this.username,
+          user: this.username,
           password: this.password
         }
-        console.log(userInfo)
+        this.LoginByUsername(userInfo)
         let err = true
         if (err) {
           this.showWarning = true
@@ -107,6 +108,9 @@
       .warning-msg{
         margin: 0 auto;
         width: 142px;
+        span{
+          color: #FF3399;
+        }
       }
     }
   }

@@ -125,7 +125,19 @@ export default new Router({
     {
       path: '/GroupManagement', // 分组管理
       component: (resolve) => {
-        require(['@/page/contacts//GroupManagement'], resolve)
+        require(['@/page/contacts/GroupManagement'], resolve)
+      }
+    },
+    {
+      path: '/GroupChatData', // 群聊资料
+      component: (resolve) => {
+        require(['@/page/contacts/GroupChatData'], resolve)
+      }
+    },
+    {
+      path: '/AddMembers', // 添加群成员
+      component: (resolve) => {
+        require(['@/page/contacts/AddMembers'], resolve)
       }
     },
     {

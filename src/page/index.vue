@@ -30,7 +30,7 @@
           <span  slot="overwrite-left" @click="drawerVisibility = !drawerVisibility">
             <x-icon type="navicon" size="35" style="fill:#fff;position:relative;top:-8px;left:-3px;"></x-icon>
           </span>
-          <div v-if="route.path === '/contacts'" slot="right" style="font-size: 24px; color: #fff; position: relative" @click="showPopover" class="top">+
+          <div v-if="route.path === '/contacts'" slot="right" style="font-size: 24px; color: #fff; position: relative" @click="showPopover" id="top">+
             <Popover ref="group1">
               <div slot="content" class="">
                 <p @click="onJutmp('/SearchBuddy/addFriends')"><img :src="require('@/assets/contacts/addF.jpeg')">添加好友</p>
@@ -45,10 +45,12 @@
           <span v-if="route.path === '/schedule/showNote'" slot="right" style="font-size: 17px; color: #fff" @click="addNote">添加记事</span>
           <span v-if="route.path === '/work' || route.path === '/work/todoList' || route.path === '/work/finishedList'" slot="right" style="font-size: 17px; color: #fff" @click="toggle">切换</span>
         </x-header>
+
+
         <transition
           @after-enter="$vux.bus && $vux.bus.$emit('vux:after-view-enter')"
           :name="'vux-pop-' + (direction === 'forward' ? 'in' : 'out')">
-        <router-view class="router-view"></router-view>
+          <router-view class="router-view"></router-view>
         </transition>
 
         <tabbar class="vux-demo-tabbar" id="vux-demo-tabbar" icon-class="vux-center" slot="bottom">
@@ -310,7 +312,7 @@
     will-change: transform;
     transition: all 500ms;
     height: 100%;
-    top: 46px;
+    top: 46PX;
     position: absolute;
     backface-visibility: hidden;
     perspective: 1000;
@@ -334,7 +336,7 @@
   .menu-title {
     color: #888;
   }
-  .top{
+  #top{
     .vux-popover{
       position: absolute;
       width: 85px;

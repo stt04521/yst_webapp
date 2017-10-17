@@ -13,7 +13,6 @@
         type: String,
         default: '标题'
       }
-
     }
   }
 </script>

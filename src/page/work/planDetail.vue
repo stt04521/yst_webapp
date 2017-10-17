@@ -29,13 +29,10 @@
           <li class="vux-1px-b recover-item-container" v-for="(item, index) in recoverList" :key="index">
             <div class="recover-detail">
               <img :src="item.avatar" class="avatar" alt="">
-              <div class="detail-container">
-                <span class="name">{{ item.name }}</span>
-                <span class="time">{{ item.time }}</span>
-                <span class="detail-content">{{ item.content }}</span>
-              </div>
+              <span class="name">{{ item.name }}</span>
+              <span class="time">{{ item.time }}</span>
             </div>
-
+            <span class="content">{{ item.content }}</span>
           </li>
         </ul>
         <div class="recover-content">
@@ -94,7 +91,7 @@
     height: 100%;
     overflow: hidden;
     .plan-detail-container{
-      height: 610px;
+      height: 100%;
       overflow-y: auto;
       .content-container{
         width: 326px;
@@ -135,7 +132,7 @@
           border-radius: 5px;
           position: absolute;
           right: 15px;
-          top: 160px;
+          top: 140px;
         }
         .file{
           margin-top: 20px;
@@ -171,6 +168,7 @@
         background-color: #fff;
         margin: 10px auto 0 auto;
         position: relative;
+        height: 100%;
         .recover-title{
           width: 60px;
           display: inline-block;
@@ -200,28 +198,18 @@
             .avatar{
               height: 40px;
               width: 40px;
-              vertical-align: top;
+              vertical-align: middle;
               margin-right: 10px;
             }
-            .detail-container{
-              display: inline-block;
-              .name {
-                font-size: 14px;
-                color: #888;
-                display: block;
-              }
-              .time{
-                position: absolute;
-                right: 0px;
-                top: 10px;
-              }
-              .detail-content{
-                display: inline-block;
-                margin-top: 20px;
-                color: #000;
-              }
+            .name {
+              font-size: 14px;
+              color: #888;
             }
-
+            .time{
+              position: absolute;
+              right: 20px;
+              top: 10px;
+            }
           }
           .content{
             margin-left: 40px;
@@ -244,7 +232,8 @@
             }
           }
           .send{
-            margin-left: 20px;
+            margin-left: 30px;
+            background-color: #fff;
             padding: 5px 15px;
             border-radius: 4px;
             border: none;

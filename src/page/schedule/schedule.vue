@@ -17,7 +17,7 @@
         </router-link>
       </flexbox-item>
     </flexbox>
-    <div class="content" :height="height + 'px'">
+    <div class="content">
       <show-schedule v-show="isShowSchedule" :scheduleList = 'scheduleList' :isShowAddress="true"></show-schedule>
       <show-schedule v-show="isShowNote" :scheduleList = 'scheduleList' :isShowAddress="false"></show-schedule>
       <showCalender v-show="isShowCalender"></showCalender>
@@ -42,7 +42,6 @@
     },
     data () {
       return {
-        height: 0,
         pageIndex: 1,
         isShowAddress: true,
         isShowSchedule: true,
@@ -142,10 +141,6 @@
           this.isShowNote = false
         }
       }
-    },
-    mounted () {
-      this.height = document.body.offsetHeight - 136
-      console.log(this.height)
     }
   }
 </script>
@@ -174,8 +169,8 @@
       }
     }
     .content{
-      /*height: 531px;*/
-      padding-top: 20px;
+      padding-top: 10px;
+      height: 504px;
       overflow-y: auto;
       overflow-x: hidden;
       padding-left: 0px;

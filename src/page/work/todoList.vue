@@ -1,6 +1,6 @@
 <template>
   <div class="todo-list-wrapper" v-show="dataList.length">
-    <div class="list-item-container" @click="toDetail(item)" v-for="(item,index) in dataList" :key="index">
+    <div class="list-item-container" :class="index !== dataList.length-1 ? 'vux-1px-b' : ''" v-for="(item,index) in dataList" :key="index">
       <img class="list-img" :src="item.image">
       <span class="list-creator">任务 {{item.creator}}发出</span>
       <div class="list-content">{{item.content}}</div>
@@ -17,11 +17,6 @@
         type: Array,
         default: []
       }
-    },
-    methods: {
-      toDetail (item) {
-        this.$emit('to-detail', item)
-      }
     }
   }
 </script>
@@ -33,7 +28,6 @@
       position: relative;
       padding-left: 70px;
       background-color: #fff;
-      border-bottom: 1px solid #eee;
       .list-img{
         width: 20px;
         height: 20px;

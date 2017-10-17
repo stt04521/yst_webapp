@@ -1,26 +1,39 @@
 <template>
-  <div class="plan-detail-wrapper">
-    <x-header title="计划" class="header">
-    </x-header>
-    <div class="plan-detail-container">
+  <div class="task-detail-wrapper">
+    <x-header title="任务"></x-header>
+    <div class="content-wrapper">
       <div class="content-container">
-        <span class="title">今天完成那个财务报表</span>
-        <span class="status">待审核</span>
-        <p class="content">
+        <div class="task-creator">
+          <img class="avatar" src="../../assets/news/userImg.jpg" alt="">
+          <div class="detail">
+            <span class="creator">我发出的</span>
+            <span class="time">13:00</span>
+            <span class="status">正在进行</span>
+          </div>
+        </div>
+        <div class="task-content">
           完成多行文字完成多行文字完成多行文字完成多行文字完成多行文字完成多行文字完成多行文字完成多行文字完成多行文字完成多行文字完成多行文字字完成多行文字完成多行文字完成多行文字完成多行文字完成多行文字完成多行文字完成多行文字完成多行文字完成多行文字
-        </p>
+        </div>
         <span class="time">开始时间： 2017-7-26 18：00</span>
         <span class="time">截止时间： 2017-7-26 18：00</span>
-        <button class="button">审核通过</button>
-        <div class="file">
-          <img class="file-icon" src="../../assets/addFile.png" alt="">
-          <span>共三个附件</span>
+      </div>
+      <div class="participator-container">
+        <div class="title-container">
+          <span class="title">任务相关人员</span>
+          <span class="show-all">查看全部>></span>
         </div>
-        <div class="plan-creator">
-          <img class="avatar" src="../../assets/news/userImg.jpg" alt="">
-          <span>我发出的</span>
+        <ul>
+          <!--这里最多只显示三个人，数据需要做处理-->
+          <li class="item-container" v-for="(item, index) in list" :key="index">
+            <img :src="item.avatar" class="avatar">
+            <span>{{ item.name }}</span>
+          </li>
+        </ul>
+        <div class="show-all-file">
+          <img src="../../assets/addFile.png" class="add-file">
+          <span class="title">查看所有附件</span>
         </div>
-        <span class="create-time">13：00</span>
+
       </div>
       <div class="recover-container">
         <span class="recover-title">回复</span>
@@ -44,15 +57,32 @@
         </div>
       </div>
     </div>
+
   </div>
 </template>
 <script>
-  import {XHeader, Tab, TabItem, XInput, Group} from 'vux'
-  export default{
-    name: 'planDetail',
+  import {XHeader} from 'vux'
+  export default {
+    name: 'taskDetail',
+    components: {
+      XHeader
+    },
     data () {
       return {
-        recoverContent: '',
+        list: [
+          {
+            avatar: require('../../assets/news/userImg.jpg'),
+            name: '王明友'
+          },
+          {
+            avatar: require('../../assets/news/userImg.jpg'),
+            name: 'zhangsan'
+          },
+          {
+            avatar: require('../../assets/news/userImg.jpg'),
+            name: 'lishi'
+          }
+        ],
         recoverList: [
           {
             avatar: require('../../assets/news/userImg.jpg'),
@@ -72,98 +102,106 @@
             content: '有什么具体要求吗',
             time: '13:00'
           }
-        ]
+        ],
+        recoverContent: ''
       }
-    },
-    components: {
-      XHeader,
-      Tab,
-      TabItem,
-      XInput,
-      Group
     },
     methods: {
       send () {
-        console.log(this.content)
+        console.log(this.recoverContent)
       }
     }
   }
 </script>
 <style scoped lang="less">
-  .plan-detail-wrapper{
+  .task-detail-wrapper{
     height: 100%;
     overflow: hidden;
-    .plan-detail-container{
+    .content-wrapper {
       height: 610px;
       overflow-y: auto;
       .content-container{
-        width: 326px;
-        padding: 15px;
-        margin: 10px auto 0px auto;
+        width: 333px;
+        margin: 10px auto;
         background-color: #fff;
-        position: relative;
-        .title {
-          font-size: 14px;
-          font-weight: 700;
-          display: inline-block;
-          margin-top: 10px;
+        padding: 20px 10px;
+        .task-creator{
+          position: relative;
+          .avatar{
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+          }
+          .detail {
+            display: inline-block;
+            margin-left: 20px;
+            .creator{
+              display: block;
+              font-weight: 700;
+            }
+            .time{}
+            .status{
+              position: absolute;
+              top: 10px;
+              right: 5px;
+              color: #f00;
+            }
+          }
         }
-        .status{
-          position: absolute;
-          top: 25px;
-          right: 10px;
-          color: #fcf;
-        }
-        .content{
-          padding: 0px;
+        .task-content{
           margin-top: 20px;
-          overflow : hidden;
-          text-overflow: ellipsis;
-          display: -webkit-box;
-          -webkit-line-clamp: 3;
-          -webkit-box-orient: vertical;
         }
         .time{
           display: inline-block;
-          margin-top: 8px;
+          margin-top: 10px;
         }
-        .button{
-          background-color: #fff;
-          border: 1px solid #0099ff;
-          color: #0099ff;
-          padding: 3px 10px;
-          border-radius: 5px;
-          position: absolute;
-          right: 15px;
-          top: 160px;
-        }
-        .file{
-          margin-top: 20px;
-          color: #aaa;
-          .file-icon{
-            vertical-align: top;
+      }
+      .participator-container{
+        width: 333px;
+        margin: 10px auto;
+        background-color: #fff;
+        padding: 20px 10px;
+        .title-container{
+          height: 32px;
+          line-height: 32px;
+          position: relative;
+          .title{
+            font-weight: 700;
+            font-size: 14px;
+            color: #888
+          }
+          .show-all{
+            position: absolute;
+            top: 0px;
+            right: 0px;
+            color: #0099ff;
+            font-size: 13px;
           }
         }
-        .plan-creator {
-          margin-top: 20px;
-          margin-bottom: 15px;
+        .item-container {
+          height: 60px;
+          line-height: 60px;
           font-size: 14px;
-          font-weight: 600;
           .avatar{
-            width: 30px;
-            height: 30px;
+            width: 40px;
+            height: 40px;
             vertical-align: middle;
             margin-right: 20px;
           }
-        }
-        .create-time{
-          position: absolute;
-          right: 20px;
-          bottom: 40px;
-          color: #aaa;
-        }
 
-
+        }
+        .show-all-file{
+          margin-top: 10px;
+          .add-file{
+            width: 20px;
+            height: 20px;
+            vertical-align: middle;
+            margin-right: 10px;
+          }
+          .title{
+            color: #0099ff;
+          }
+        }
       }
       .recover-container{
         width: 326px;
@@ -254,5 +292,6 @@
         }
       }
     }
+
   }
 </style>

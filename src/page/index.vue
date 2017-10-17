@@ -86,6 +86,7 @@
   import mine from './mine/mine'
   import { mapState, mapActions } from 'vuex'
   import Popover from '@/components/popover.vue'
+  import {eventBus} from '../eventBus'
   export default {
     directives: {
       TransferDom
@@ -164,6 +165,7 @@
       },
       toggle () {
         console.log('toggle')
+        eventBus.$emit('toggle-list-show')
       },
       onJutmp (url) {
         this.$router.push(url)

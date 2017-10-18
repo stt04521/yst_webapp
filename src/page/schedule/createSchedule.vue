@@ -4,7 +4,7 @@
       <actionsheet :menus="remindMenu" v-model="showRemind" @on-click-menu="chooseRemind"></actionsheet>
     </div>
     <!--主体内容-->
-    <x-header title="新建计划" slot="overwrite-left" class="header">
+    <x-header title="新建日程" slot="overwrite-left" class="header">
       <span slot="overwrite-left" @click="cancleCreateSchedule">取消</span>
       <span slot="right" @click="createNewSchedule">创建</span>
     </x-header>
@@ -47,11 +47,21 @@
         endTime: '',
         showRemind: false,
         remindValue: '一天前',
-        remindMenu: {
-          menu1: '不提醒',
-          menu2: '一天前',
-          menu3: '1小时'
-        }
+        remind: -1,
+        remindMenu: [
+          {
+            label: '不提醒',
+            value: -1
+          },
+          {
+            label: '一小时',
+            value: 3600000
+          },
+          {
+            label: '一天前',
+            value: 86400000
+          }
+        ]
       }
     },
     components: {
@@ -88,11 +98,11 @@
       showActionSheet () {
         this.showRemind = true
       },
-      chooseRemind (key, value) {
-        this.remindValue = value
+      chooseRemind (key, val) {
+        this.remindValue = val.label
+        this.remind = val.value
       },
       cancleCreateSchedule () {
-        console.log('cancel create schedule')
         this.$router.go(-1)
       },
       createNewSchedule () {
@@ -102,6 +112,7 @@
           startTime: this.startTime,
           endTime: this.endTime,
           address: 'wuhan',
+          remind: this.remind,
           partner: []
         }
         this.createSchedule(paramData).then(() => {

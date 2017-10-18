@@ -9,6 +9,7 @@ import Vuex from 'vuex'
 import { sync } from 'vuex-router-sync'
 import store from './store'
 import './lib/flexible'
+import { getToken } from '@/utils/auth' // 验权
 let longpress = require('vue-long-press-directive')
 require('es6-promise').polyfill()
 
@@ -75,10 +76,8 @@ history.setItem('/', 0)
 
 router.beforeEach(function (to, from, next) {
   store.commit('updateLoadingStatus', {isLoading: true})
-
   const toIndex = history.getItem(to.path)
   const fromIndex = history.getItem(from.path)
-
   if (toIndex) {
     if (!fromIndex || parseInt(toIndex, 10) > parseInt(fromIndex, 10) || (toIndex === '0' && fromIndex === '0')) {
       store.commit('updateDirection', {direction: 'forward'})
@@ -91,12 +90,22 @@ router.beforeEach(function (to, from, next) {
     to.path !== '/' && history.setItem(to.path, historyCount)
     store.commit('updateDirection', {direction: 'forward'})
   }
-
   if (/\/http/.test(to.path)) {
     let url = to.path.split('http')[1]
     window.location.href = `http${url}`
   } else {
-    next()
+    if (getToken()) {
+      next()
+    } else {
+      if (to.path === '/logIn') {
+        next()
+      } else {
+        next({
+          path: '/logIn',
+          query: { redirect: to.fullPath }
+        })
+      }
+    }
   }
 })
 

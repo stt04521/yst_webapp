@@ -106,7 +106,11 @@
           self.$vux.toast.text('请填写正确信息')
           return false
         }
-        self.ForgetPassword({password: self.newPassword})
+        self.ForgetPassword({password: self.newPassword}).then(() => {
+          self.$router.push({
+            name: 'logIn'
+          })
+        })
       }
     }
   }

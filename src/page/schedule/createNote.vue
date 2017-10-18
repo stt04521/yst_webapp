@@ -6,16 +6,17 @@
     </x-header>
     <view-box class="content-container">
       <group>
-        <x-textarea :max="1000" placeholder="请输入记事内容" @on-focus="onEvent('focus')" @on-blur="onEvent('blur')" :height="183"></x-textarea>
+        <x-textarea :max="1000" v-model="content" placeholder="请输入记事内容" @on-focus="onEvent('focus')" @on-blur="onEvent('blur')" :height="183"></x-textarea>
       </group>
       <group>
-        <datetime format="YYYY-MM-DD HH:mm" @on-change="startTimeChange" title="开始时间"></datetime>
+        <datetime v-model="startTime" format="YYYY-MM-DD HH:mm" @on-change="startTimeChange" title="开始时间"></datetime>
       </group>
     </view-box>
   </div>
 </template>
 <script>
   import {Group, XTextarea, Datetime, ViewBox, XHeader} from 'vux'
+  import {mapActions} from 'vuex'
   export default {
     name: 'createNote',
     components: {
@@ -25,7 +26,16 @@
       Datetime,
       XHeader
     },
+    data () {
+      return {
+        startTime: '',
+        content: ''
+      }
+    },
     methods: {
+      ...mapActions([
+        'createNote'
+      ]),
       startTimeChange (val) {
         console.log(val)
       },
@@ -38,6 +48,20 @@
       },
       create () {
         console.log('create note')
+        let that = this
+        let data = {
+          content: this.content,
+          startTime: this.startTime
+        }
+        console.log('data', data)
+        this.createNote(data).then(() => {
+          that.$router.push({
+            name: 'showNote'
+          })
+        }, (err) => {
+          console.log(err)
+        })
+
         this.$router.push({
           name: 'noteDetail'
         })

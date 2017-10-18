@@ -10,10 +10,10 @@
         </div>
         <div class="right" @click="toDetail(item)">
           <div class="title">{{ item.content }}</div>
-          <div class="address" v-show="isShowAddress">{{ item.address }}</div>
-          <div class="create-time">{{ item.createTime }}</div>
+          <div class="address" v-if="isShowAddress">{{ item.address }}</div>
+          <div class="create-time">{{ item.startTime }}</div>
           <img class="s-delete" src="../../assets/delete.png"/>
-          <span class="modify-time">{{ item.modifyTime }}</span>
+          <span class="modify-time">{{ item.updatedAt }}</span>
         </div>
       </li>
     </ul>
@@ -43,9 +43,6 @@ export default {
       type: String
     }
   },
-  mounted () {
-    console.log(this.isShowAddress)
-  },
   methods: {
     toDetail (val) {
       // 跳转到日程详情页面 或者 记事详情页面
@@ -60,6 +57,9 @@ export default {
         })
       }
     }
+  },
+  created () {
+
   }
 }
 </script>
@@ -108,6 +108,7 @@ export default {
 
       }
       .address{
+        height: 20px;
         margin-top: 2px;
         margin-bottom: 5px;
       }

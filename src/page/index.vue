@@ -156,9 +156,9 @@
         console.log(this.$refs['group1'])
         this.$refs['group1'].onShow()
       },
-      createSchedule () {
-        console.log('create schedule')
-      },
+//      createSchedule () {
+//        console.log('create schedule')
+//      },
       addSchedule () {
         // 点击添加日程跳转到添加日程页面
         this.$router.push({

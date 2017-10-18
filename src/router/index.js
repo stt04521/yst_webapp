@@ -53,12 +53,16 @@ export default new Router({
         },
         children: [{
           path: 'showSchedule',
+          name: 'showSchedule',
+          meta: { keepAlive: true },
           component: (resolve) => {
             require(['@/page/schedule/showSchedule'], resolve)
           }
         },
         {
           path: 'showNote',
+          name: 'showNote',
+          meta: { keepAlive: true },
           component: (resolve) => {
             require(['@/page/schedule/showSchedule'], resolve)
           }

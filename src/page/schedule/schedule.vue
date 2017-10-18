@@ -3,11 +3,11 @@
     <flexbox class="tab-wrapper" :gutter="0">
       <flexbox-item :span="10">
         <tab :line-width="1" custom-bar-width="60px" active-color="#108ee9" class="s-tab-container">
-          <tab-item selected>
-            <router-link to="/schedule/showSchedule" @click="changeIndex">日程</router-link>
+          <tab-item selected class="tab-item">
+            <router-link to="/schedule/showSchedule" @click="changeIndex" style="display: block">日程</router-link>
           </tab-item>
-          <tab-item>
-            <router-link to="/schedule/showNote" @click="changeIndex">记事本</router-link>
+          <tab-item class="tab-item">
+            <router-link to="/schedule/showNote" @click="changeIndex" style="display: block">记事本</router-link>
           </tab-item>
         </tab>
       </flexbox-item>
@@ -18,8 +18,8 @@
       </flexbox-item>
     </flexbox>
     <div class="content" :style="{height: height + 'px'}">
-      <show-schedule v-show="isShowSchedule" :scheduleList = 'scheduleList' :isShowAddress="true"></show-schedule>
-      <show-schedule v-show="isShowNote" :scheduleList = 'scheduleList' :isShowAddress="false"></show-schedule>
+      <show-schedule v-show="isShowSchedule" :scheduleList = 'list' :isShowAddress="true"></show-schedule>
+      <show-schedule v-show="isShowNote" :scheduleList = 'list' :isShowAddress="false"></show-schedule>
       <showCalender v-show="isShowCalender"></showCalender>
     </div>
   </div>
@@ -29,6 +29,7 @@
   import {Flexbox, FlexboxItem, Tab, TabItem, InlineCalendar} from 'vux'
   import showSchedule from './showSchedule.vue'
   import showCalender from './showCalender.vue'
+  import {mapActions} from 'vuex'
   export default {
     name: 'schedule',
     components: {
@@ -48,93 +49,57 @@
         isShowSchedule: true,
         isShowCalender: false,
         isShowNote: false,
-        scheduleList: [
-          {
-            content: '第一条日程记录',
-            address: '杭州滨海区',
-            createTime: '8月6日 18：00',
-            modifyTime: '刚刚'
-          },
-          {
-            content: '第二条日程记录',
-            address: '杭州滨海区',
-            createTime: '8月6日 18：00',
-            modifyTime: '8月10日 8：00'
-          },
-          {
-            content: '第三条日程记录',
-            address: '杭州滨海区',
-            createTime: '8月6日 18：00',
-            modifyTime: '10月6日 18：20'
-          },
-          {
-            content: '第四条日程记录',
-            address: '杭州滨海区',
-            createTime: '8月6日 18：00',
-            modifyTime: '9月6日 18：02'
-          },
-          {
-            content: '第五条日程记录第五条日程记录第五条日程记录第五条日程记录第五条日程记录',
-            address: '湖北异常',
-            createTime: '8月6日 18：40',
-            modifyTime: '刚刚'
-          },
-          {
-            content: '第四条日程记录',
-            address: '杭州滨海区',
-            createTime: '8月6日 18：00',
-            modifyTime: '9月6日 18：02'
-          },
-          {
-            content: '第五条日程记录第五条日程记录第五条日程记录第五条日程记录第五条日程记录',
-            address: '湖北异常',
-            createTime: '8月6日 18：40',
-            modifyTime: '刚刚'
-          },
-          {
-            content: '第四条日程记录',
-            address: '杭州滨海区',
-            createTime: '8月6日 18：00',
-            modifyTime: '9月6日 18：02'
-          },
-          {
-            content: '第五条日程记录第五条日程记录第五条日程记录第五条日程记录第五条日程记录',
-            address: '湖北异常',
-            createTime: '8月6日 18：40',
-            modifyTime: '刚刚'
-          },
-          {
-            content: '第六条程记录',
-            address: '湖北武汉',
-            createTime: '8月6日 19：00',
-            modifyTime: '12月6日 18：00'
-          }
-        ]
+        list: [],
+        scheduleList: [],
+        noteList: []
       }
     },
     methods: {
-//      showNotepad () {
-//        console.log('show note pad')
-//      },
-//      showSchedule () {
-//        console.log('show schedule')
-//      }
+      ...mapActions([
+        'getScheduleList',
+        'getNoteList'
+      ]),
       changeIndex () {
         this.pageIndex = this.pageIndex === 1 ? 2 : 1
+      },
+      getscheduleList () {
+        let that = this
+        this.getScheduleList().then((res) => {
+          that.list = res
+        }, (err) => {
+          console.log('err', err)
+        }).catch(err => {
+          console.log('err', err)
+        })
+        return this.scheduleList
+      },
+      getnoteList () {
+        let that = this
+        this.getNoteList().then((res) => {
+          that.list = res
+          console.log('noteList', res)
+        }, (err) => {
+          console.log('err', err)
+        }).catch(err => {
+          console.log('err', err)
+        })
+        return this.noteList
       }
     },
     watch: {
       $route (to, from) {
-        console.log('to: ', to)
+        console.log('555555: ', to)
         if (to.path === '/schedule/showSchedule' || to.path === '/schedule') {
           this.isShowSchedule = true
           this.isShowCalender = false
           this.isShowNote = false
+          this.getscheduleList()
         }
         if (to.path === '/schedule/showNote') {
           this.isShowSchedule = false
           this.isShowCalender = false
           this.isShowNote = true
+          this.getnoteList()
         }
         if (to.path === '/schedule/showCalender') {
           this.isShowSchedule = false
@@ -145,7 +110,34 @@
     },
     mounted () {
       this.height = document.body.offsetHeight - 136
-      console.log(this.height)
+    },
+    created () {
+      let path = this.$route.path
+      console.log('path:', path)
+      if (path.indexOf('showSchedule') > -1) {
+        this.getscheduleList()
+      }
+      if (path.indexOf('showNote') > -1) {
+        this.getnoteList()
+      }
+//      this.getScheduleList()
+//      this.getNoteList()
+//      let that = this
+//      this.getScheduleList().then((res) => {
+//        this.scheduleList = res
+//      }, (err) => {
+//        console.log('err', err)
+//      }).catch(err => {
+//        console.log('err', err)
+//      })
+//      this.getNoteList().then((res) => {
+//        this.noteList = res
+//        console.log('noteList', res)
+//      }, (err) => {
+//        console.log('err', err)
+//      }).catch(err => {
+//        console.log('err', err)
+//      })
     }
   }
 </script>
@@ -160,6 +152,11 @@
       height: 37px;
       line-height: 37px;
       text-align: center;
+      .tab-item{
+        padding: 0px;
+        height: 37px;
+        line-height: 37px;
+      }
       .s-tab-container{
         height: 37px;
         line-height: 37px;

@@ -6,11 +6,11 @@
     <!--主体内容-->
     <x-header title="新建计划" slot="overwrite-left" class="header">
       <span slot="overwrite-left" @click="cancleCreateSchedule">取消</span>
-      <span slot="right" @click="CreateSchedule">创建</span>
+      <span slot="right" @click="createNewSchedule">创建</span>
     </x-header>
     <view-box class="content-container">
       <group>
-        <x-textarea :max="1000" placeholder="请输入日程内容" @on-focus="onEvent('focus')" @on-blur="onEvent('blur')" :height="183"></x-textarea>
+        <x-textarea :max="1000" v-model="content" placeholder="请输入日程内容" @on-focus="onEvent('focus')" @on-blur="onEvent('blur')" :height="183"></x-textarea>
       </group>
       <group>
         <datetime format="YYYY-MM-DD HH:mm" @on-change="startTimeChange" title="开始时间"></datetime>
@@ -35,10 +35,12 @@
 </template>
 <script>
   import { XTextarea, Group, DatetimeRange, Datetime, Cell, Actionsheet, XSwitch, PopupHeader, Radio, XHeader, ViewBox } from 'vux'
+  import { mapActions } from 'vuex'
   export default {
     name: 'createSchedule',
     data () {
       return {
+        content: '',
         show1: false,
         startTime: '',
         beginTime: '2017-01-01',
@@ -66,6 +68,9 @@
       ViewBox
     },
     methods: {
+      ...mapActions([
+        'createSchedule'
+      ]),
       onEvent (event) {
         console.log('on', event)
       },
@@ -90,10 +95,23 @@
         console.log('cancel create schedule')
         this.$router.go(-1)
       },
-      CreateSchedule () {
-        console.log('create schedule')
-        this.$router.push({
-          path: '/'
+      createNewSchedule () {
+        let that = this
+        let paramData = {
+          content: this.content,
+          startTime: this.startTime,
+          endTime: this.endTime,
+          address: 'wuhan',
+          partner: []
+        }
+        this.createSchedule(paramData).then(() => {
+          that.$router.push({
+            name: 'showSchedule'
+          })
+        }, (err) => {
+          console.log(err)
+        }).catch(err => {
+          console.log(err)
         })
       }
     }
@@ -102,6 +120,7 @@
 <style scoped lang="less">
   .create-s-wrapper {
     height: 100%;
+    overflow: hidden;
     .content-container {
       margin-top: -20px;
       .item-img {

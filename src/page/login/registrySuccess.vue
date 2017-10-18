@@ -1,6 +1,6 @@
 <template>
   <div class="registry-success-wrapper">
-    <span class="jump-out" @click='jumpOut'>跳过</span>    
+    <span class="jump-out" @click='jumpOut'>跳过</span>
     <div class="registry-container">
       <icon type="success" is-msg class="icon-style"></icon>
       <div>注册成功</div>

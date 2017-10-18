@@ -1,25 +1,34 @@
 <template>
   <div class="registry-container">
-    <v-header :title="title"></v-header>
-    <div class="content-container">
+    <v-header :title="$route.params.type == 'registry'?'注册':'忘记密码'"></v-header>
+    <div class="content-container" v-if="isShowPassPage">
       <group :gutter="0">
-        <x-input v-model="tel" placeholder="请输入手机号" class="v-input">
+        <x-input v-model="tel" :required="true" ref="tel" placeholder="请输入手机号" class="v-input"  :max="13" is-type="china-mobile">
           <span slot="label" class="title-slot vux-1px-r">+86</span>
         </x-input>
-        <x-input v-model="vCode" placeholder="请输入验证码" class="v-input">
+        <x-input v-model="vCode" :required="true" placeholder="请输入验证码" class="v-input" ref="vCode">
           <x-button slot="right" mini @click.native="sendVCode">{{sendCode}}</x-button>
         </x-input>
       </group>
-      <button class="next-step" @click="nextStep">下一步</button>
+      <button class="next-step" @click="nextStep" v-if="$route.params.type == 'registry'">下一步</button>
+      <button class="next-step" @click="fgpwNextStep" v-else>下一步</button>
+    </div>
+    <div class="content-container" v-else>
+      <group :gutter="0">
+        <x-input v-model="newPassword" placeholder="请输入新密码" class="v-input" :type='passwordType' :min="6" :max="18" :required="true" ref="newPW">
+          <img slot="right" :src="isPasswordAvalible" @click="changePasswordType" alt="">
+        </x-input>
+      </group>
+      <button class="next-step" @click="ensurePassword">确定</button>
     </div>
   </div>
-
 </template>
 <script>
   import VHeader from './header'
-  import {Group, XInput, XButton} from 'vux'
+  import { Group, XInput, XButton, Cell } from 'vux'
+  import { mapActions } from 'vuex'
   export default {
-    name: 'registry',
+    name: 'sureRegistry',
     data () {
       return {
         title: '注册',
@@ -27,34 +36,77 @@
         vCode: '',
         sendCode: '获取验证码',
         isSendCode: false,
-        waitTime: 60
+        waitTime: 60,
+        showList: false,
+        isShowPassPage: true,
+        newPassword: '',
+        isPasswordAvalible: require('../../assets/un_watch.png'),
+        passwordType: 'password',
+        isWatchPw: false
       }
     },
     components: {
       VHeader,
       Group,
       XInput,
-      XButton
+      XButton,
+      Cell
     },
     methods: {
+      ...mapActions([
+        'LoginByPhone',
+        'ForgetPassword'
+      ]),
+      // 注册下一步操作
       nextStep () {
+        let self = this
+        if (!self.$refs.tel.valid || !self.$refs.vCode.valid) {
+          self.$vux.toast.text('请填写正确信息')
+          return false
+        }
+        this.$router.push({
+          path: '/sureRegistry',
+          query: {tel: self.tel}
+        })
+      },
+      // 忘记密码下一步操作
+      fgpwNextStep () {
+        let self = this
         let registryInfo = {
-          tel: this.tel,
-          vCode: this.vCode
+          phone: self.tel,
+          authCode: self.vCode
         }
-        // 验证通过
-        if (registryInfo) {
-          this.$router.push({
-            name: 'registrySuccess'
-          })
+        if (!self.$refs.tel.valid || !self.$refs.vCode.valid) {
+          self.$vux.toast.text('请填写正确信息')
+          return false
         }
-        console.log(registryInfo)
+        self.LoginByPhone(registryInfo).then(() => {
+          self.isShowPassPage = false
+        })
       },
       sendVCode () {
         this.isSendCode = true
         if (this.isSendCode) {
           this.sendCode = '重新获取(' + this.waitTime + '秒)'
         }
+      },
+      changePasswordType () {
+        this.isWatchPw = !this.isWatchPw
+        if (this.isWatchPw) {
+          this.isPasswordAvalible = require('../../assets/watch.png')
+          this.passwordType = 'text'
+        } else {
+          this.isPasswordAvalible = require('../../assets/un_watch.png')
+          this.passwordType = 'password'
+        }
+      },
+      ensurePassword () {
+        let self = this
+        if (!self.$refs.newPW.valid) {
+          self.$vux.toast.text('请填写正确信息')
+          return false
+        }
+        self.ForgetPassword({password: self.newPassword})
       }
     }
   }

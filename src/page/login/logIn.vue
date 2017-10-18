@@ -17,7 +17,7 @@
       <button class="login-btn" @click="login">登录</button>
       <div class="warning-msg" v-show="showWarning">
         <icon type="safe_warn" class="warning"></icon>
-        <span>密码错误，请重新输入</span>
+        <span>账号/密码错误，请重新输入</span>
       </div>
     </div>
   </div>
@@ -39,7 +39,7 @@
         title: '登录',
         username: '',
         password: '',
-        showWarning: true
+        showWarning: false
       }
     },
     methods: {
@@ -47,11 +47,21 @@
         'LoginByUsername'
       ]),
       login () {
+        let self = this
         let userInfo = {
           user: this.username,
           password: this.password
         }
-        this.LoginByUsername(userInfo)
+        if (!userInfo.user || !userInfo.password) {
+          this.$vux.toast.text('请完善账号/密码')
+          return false
+        }
+        this.LoginByUsername(userInfo).then(() => {
+          self.$router.push('/')
+        }).catch(err => {
+          self.showWarning = true
+          console.log(err)
+        })
         let err = true
         if (err) {
           this.showWarning = true
@@ -59,12 +69,12 @@
       },
       toRegistry () {
         this.$router.push({
-          name: 'registry'
+          path: '/registry/registry'
         })
       },
       toForgetPsw () {
         this.$router.push({
-          name: 'forgetPassword'
+          path: '/registry/forgetPw'
         })
       }
     }
@@ -107,7 +117,7 @@
       }
       .warning-msg{
         margin: 0 auto;
-        width: 142px;
+        width: 170px;
         span{
           color: #FF3399;
         }

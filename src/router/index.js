@@ -284,10 +284,17 @@ export default new Router({
       }
     },
     {
-      path: '/registry',  // 注册
+      path: '/registry/:type',  // 注册
       name: 'registry',
       component: (resolve) => {
         require(['@/page/login/registry'], resolve)
+      }
+    },
+    {
+      path: '/sureRegistry',  // 确认注册
+      name: 'sureRegistry',
+      component: (resolve) => {
+        require(['@/page/login/sureRegistry'], resolve)
       }
     },
     {

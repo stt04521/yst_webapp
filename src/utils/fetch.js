@@ -1,11 +1,11 @@
 import axios from 'axios'
 import store from '@/store'
 import { getToken } from '@/utils/auth'
-
+import qs from 'qs'
 // 创建axios实例
 const service = axios.create({
   baseURL: process.env.apiServerAddress, // api的base_url
-  timeout: 5000                  // 请求超时时间
+  timeout: 500000                  // 请求超时时间
 })
 
 // request拦截器
@@ -14,6 +14,7 @@ service.interceptors.request.use(config => {
   if (store.getters.token) {
     config.headers['Authorization'] = getToken() // 让每个请求携带token--['Authorization']
   }
+  config.data = qs.stringify(config.data)
   return config
 }, error => {
   // Do something with request error

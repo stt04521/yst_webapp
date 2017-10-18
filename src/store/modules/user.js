@@ -1,5 +1,6 @@
 import { getToken, setToken, removeToken } from '@/utils/auth'
-import { loginByUsername, logout, getUserInfo } from '@/api/login'
+import { loginByUsername, logout, getUserInfo, register, loginByPhone, forgetPassword } from '@/api/login'
+
 const login = {
   state: {
     user: '',
@@ -51,6 +52,43 @@ const login = {
           const data = response.data
           setToken(response.data.result.token)
           commit('SET_TOKEN', data.token)
+          resolve()
+        }).catch(error => {
+          reject(error)
+        })
+      })
+    },
+    // 手机号获取 token
+    LoginByPhone ({ commit }, phoneInfo) {
+      return new Promise((resolve, reject) => {
+        loginByPhone(phoneInfo).then(response => {
+          const data = response.data
+          setToken(response.data.result.token)
+          commit('SET_TOKEN', data.token)
+          resolve()
+        }).catch(error => {
+          reject(error)
+        })
+      })
+    },
+    // 注册
+    Register ({ commit }, registryInfo) {
+      return new Promise((resolve, reject) => {
+        register(registryInfo).then(response => {
+          const data = response.data
+          console.log(data)
+          resolve()
+        }).catch(error => {
+          reject(error)
+        })
+      })
+    },
+    // forgetPassword
+    ForgetPassword ({ commit }, password) {
+      return new Promise((resolve, reject) => {
+        forgetPassword(password).then(response => {
+          const data = response.data
+          console.log(data)
           resolve()
         }).catch(error => {
           reject(error)

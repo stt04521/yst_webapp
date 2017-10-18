@@ -9,13 +9,13 @@ import Vuex from 'vuex'
 import { sync } from 'vuex-router-sync'
 import store from './store'
 import './lib/flexible'
+import _ from 'lodash'
 import { getToken } from '@/utils/auth' // 验权
-let longpress = require('vue-long-press-directive')
 require('es6-promise').polyfill()
 
 Vue.use(Vuex)
 Vue.use(VueRouter)
-Vue.use(longpress, { duration: 1000 })
+Object.defineProperty(Vue.prototype, '_', { value: _ })
 
 store.registerModule('vux', {
   state: {
@@ -119,3 +119,4 @@ new Vue({
   router,
   render: h => h(App)
 }).$mount('#app-box')
+

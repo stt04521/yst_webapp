@@ -51,7 +51,7 @@ const login = {
         loginByUsername(user, userInfo.password).then(response => {
           const data = response.data
           setToken(response.data.result.token)
-          commit('SET_TOKEN', data.token)
+          commit('SET_TOKEN', data.result.token)
           resolve()
         }).catch(error => {
           reject(error)
@@ -64,7 +64,7 @@ const login = {
         loginByPhone(phoneInfo).then(response => {
           const data = response.data
           setToken(response.data.result.token)
-          commit('SET_TOKEN', data.token)
+          commit('SET_TOKEN', data.result.token)
           resolve()
         }).catch(error => {
           reject(error)

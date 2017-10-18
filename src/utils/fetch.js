@@ -1,7 +1,6 @@
 import axios from 'axios'
 import store from '@/store'
 import { getToken } from '@/utils/auth'
-import qs from 'qs'
 // 创建axios实例
 const service = axios.create({
   baseURL: process.env.apiServerAddress, // api的base_url
@@ -12,9 +11,9 @@ const service = axios.create({
 service.interceptors.request.use(config => {
   // Do something before request is sent
   if (store.getters.token) {
+    config.headers['Content-Type'] = 'application/json'
     config.headers['Authorization'] = getToken() // 让每个请求携带token--['Authorization']
   }
-  config.data = qs.stringify(config.data)
   return config
 }, error => {
   // Do something with request error

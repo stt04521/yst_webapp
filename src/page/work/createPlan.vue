@@ -70,9 +70,13 @@
     methods: {
       cancel () {
         console.log('cancel')
+        this.$router.go(-1)
       },
       create () {
         console.log('create')
+        this.$router.push({
+          name: 'planList'
+        })
       },
       startTimeChange (val) {
         this.startTime = val

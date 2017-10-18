@@ -12,7 +12,7 @@
         <span class="time">开始时间： 2017-7-26 18：00</span>
         <span class="time">截止时间： 2017-7-26 18：00</span>
         <button class="button">审核通过</button>
-        <div class="file">
+        <div class="file" @click="showAllFile">
           <img class="file-icon" src="../../assets/addFile.png" alt="">
           <span>共三个附件</span>
         </div>
@@ -85,6 +85,11 @@
     methods: {
       send () {
         console.log(this.content)
+      },
+      showAllFile () {
+        this.$router.push({
+          name: 'attachmentList'
+        })
       }
     }
   }

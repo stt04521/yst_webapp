@@ -2,7 +2,7 @@
   <div class="personal-apply-wrapper">
     <x-header title="个人应用" class="header">
     </x-header>
-    <use-apply :alwaysUseList='alwaysUseList' :allApplyList='personalList'></use-apply>
+    <use-apply :alwaysUseList='alwaysUseList' :allApplyList='personalList' @deal-click="dealClick"></use-apply>
   </div>
 </template>
 <script>
@@ -22,23 +22,23 @@
         alwaysUseList: [
           {
             image: require('../../assets/news/userImg.jpg'),
-            title: '常用应用'
+            title: '任务'
           },
           {
             image: require('../../assets/news/userImg.jpg'),
-            title: '常用应用'
+            title: '计划'
           },
           {
             image: require('../../assets/news/userImg.jpg'),
-            title: '常用应用'
+            title: '任务'
           },
           {
             image: require('../../assets/news/userImg.jpg'),
-            title: '常用应用'
+            title: '任务'
           },
           {
             image: require('../../assets/news/userImg.jpg'),
-            title: '常用应用'
+            title: '计划'
           },
           {
             image: require('../../assets/news/userImg.jpg'),
@@ -95,6 +95,19 @@
       }
     },
     methods: {
+      dealClick (item) {
+        console.log(item)
+        if (item.title.indexOf('计划') > -1) {
+          this.$router.push({
+            name: 'planList'
+          })
+        }
+        if (item.title.indexOf('任务') > -1) {
+          this.$router.push({
+            name: 'taskList'
+          })
+        }
+      }
     }
   }
 </script>

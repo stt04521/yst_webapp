@@ -4,7 +4,7 @@
       <!--<span slot="overwrite-left" @click="cancel">取消</span>-->
       <span slot="right" @click="create">创建</span>
     </x-header>
-    <div class="plan-list-container">
+    <div class="plan-list-container" :style="{height: height + 'px'}">
       <flexbox :gutter="0" direction="row">
         <flexbox-item>
           <router-link to="#">
@@ -66,6 +66,7 @@
     },
     data () {
       return {
+        height: 0,
         vauleCharacter: 'value显示的值',
         showCreatorModel: false,
         showStatusModel: false,
@@ -121,6 +122,9 @@
     methods: {
       create () {
         console.log('create')
+        this.$router.push({
+          name: 'createPlan'
+        })
       },
       changeModelShow (val) {
         if (val === 'plan') {
@@ -145,6 +149,9 @@
         this.statusValue = target.innerText
         this.toggleModelShow()
       }
+    },
+    mounted () {
+      this.height = document.body.offsetHeight - 86
     }
   }
 </script>
@@ -157,8 +164,6 @@
       color: #fff;
     }
     .plan-list-container {
-      height: 100%;
-      overflow: hidden;
       .cell-style{
         height: 40px;
         line-height: 40px;

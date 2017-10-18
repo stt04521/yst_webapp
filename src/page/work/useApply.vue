@@ -1,7 +1,7 @@
 <template>
   <div class="use-apply-wrapper">
     <div class="content-wrapper">
-      <apply-show :dataList="alwaysUseList" :showAll="false" @click-single-task="dealClick"></apply-show>
+      <apply-show :dataList="alwaysUseList" :showAll="false" @deal-item-click="dealClick"></apply-show>
     </div>
     <div class='use-apply-container' v-for='(item, index) in allApplyList' :key='index'>
       <div class='apply-title' >
@@ -9,7 +9,7 @@
         <span class='title'>{{item.title}}</span>
       </div>
       <div class="content-wrapper">
-        <apply-show :dataList="item.applyList" :showAll="false"></apply-show>
+        <apply-show :dataList="item.applyList" @deal-item-click="dealClick" :showAll="false"></apply-show>
       </div>
     </div>
 
@@ -39,8 +39,7 @@
     },
     methods: {
       dealClick (item) {
-        console.log('item:', item.title)
-        console.log(item)
+        this.$emit('deal-click', item)
       }
     }
   }

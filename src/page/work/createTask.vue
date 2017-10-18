@@ -109,9 +109,13 @@
     methods: {
       cancel () {
         console.log('cancel')
+        this.$router.go(-1)
       },
       create () {
         console.log('create')
+        this.$router.push({
+          name: 'taskList'
+        })
       },
       onEvent (event) {
         console.log('on', event)

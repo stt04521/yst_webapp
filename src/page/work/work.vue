@@ -1,6 +1,6 @@
 <template>
   <div class="work-wrapper" :height="height + 'px'">
-    <apply-show @show-task-detail="showTaskDetail" @show-all-task="toShowAll" :dataList="applyList" :showAll = "true"></apply-show>
+    <apply-show @deal-item-click="showTaskDetail" @show-all-task="toShowAll" :dataList="applyList" :showAll = "true"></apply-show>
     <div class="task-container">
       <tab :line-width="1" custom-bar-width="60px" active-color="#10b4f7" class="s-tab-container" defaultColor="#aaa">
         <tab-item selected>
@@ -12,10 +12,6 @@
       </tab>
       <div class="list-container">
         <router-view :dataList = 'dataList' @to-detail="toDetail"></router-view>
-        <div v-show="showModel" class="choose-organize" @click="toggleModelShow" >
-          <div class="status-item" @click="toOrganize(item)" v-for="(item, index) in organizeList" :key="index">{{item.value}}</div>
-        </div>
-        <div class="bg-color" v-if="showModel" @click="toggleModelShow"></div>
       </div>
     </div>
   </div>
@@ -25,6 +21,7 @@
   import { Tab, TabItem } from 'vux'
   import applyShow from './applyShow.vue'
   import {eventBus} from '../../eventBus'
+//  import selectionList from '../../components/selectionList.vue'
   export default {
     name: 'work',
     components: {
@@ -35,7 +32,7 @@
     data () {
       return {
         height: 0,
-        showModel: false,
+        isOrganize: false,
         applyList: [
           {
             image: require('../../assets/news/userImg.jpg'),
@@ -43,7 +40,7 @@
           },
           {
             image: require('../../assets/news/userImg.jpg'),
-            title: '任务'
+            title: '计划'
           },
           {
             image: require('../../assets/news/userImg.jpg'),
@@ -95,16 +92,22 @@
             modify: '13:00',
             title: 'others'
           }
-        ],
-        organizeList: [{key: '0', value: '组织01'}, {key: '1', value: '组织02'}, {key: '2', value: '组织03'}, {key: '3', value: '个人'}]
+        ]
       }
     },
     methods: {
       showTaskDetail (item) {
         console.log(item)
-        this.$router.push({
-          name: 'taskDetail'
-        })
+        if (item.title === '任务') {
+          this.$router.push({
+            name: 'taskDetail'
+          })
+        }
+        if (item.title === '计划') {
+          this.$router.push({
+            name: 'planDetail'
+          })
+        }
       },
       toDetail (val) {
         if (val.title === '任务') {
@@ -121,29 +124,30 @@
           console.log('其他任务')
         }
       },
-      toggleModelShow () {
-        this.showModel = !this.showModel
-      },
-      toOrganize (item) {
-        if (item.value === '个人') {
-          this.$router.push({
-            name: 'personalApply'
-          })
-        } else {
+      toShowAll () {
+        if (this.isOrganize) {
           this.$router.push({
             name: 'orgnizeApply'
           })
+        } else {
+          this.$router.push({
+            name: 'personalApply'
+          })
         }
-      },
-      toShowAll () {
-        this.$router.push({
-          name: 'personalApply'
-        })
       }
     },
     mounted () {
-      eventBus.$on('toggle-list-show', () => {
-        this.toggleModelShow()
+      eventBus.$on('organize-changed', (item) => {
+        console.log('1111', item)
+        // work页面获取selection选择item 渲染页面
+        // 如果item是组织，则点击更多显示的组织应用页面
+        // 如果item是个人，则点击更多显示的是个人应用页面
+        if (item.value.indexOf('个人') > -1) {
+          this.isOrganize = false
+        }
+        if (item.value.indexOf('组织') > -1) {
+          this.isOrganize = true
+        }
       })
       this.height = document.body.offsetHeight - 99
     }
@@ -157,30 +161,6 @@
     .task-container {
       margin-top: 40px;
       .s-tab-container{
-      }
-      .list-container{
-        .choose-organize{
-          z-index: 3;
-          position: absolute;
-          top: 45px;
-          background-color: #fff;
-          text-align: center;
-          font-size: 16px;
-          width: 100%;
-          .status-item{
-            height: 45px;
-            line-height: 45px;
-          }
-        }
-        .bg-color{
-          width:100%;
-          height: 100%;
-          background-color: rgba(7,17,27,0.7);
-          position: absolute;
-          top: 45px;
-          right: 0px;
-          z-index:2;
-        }
       }
     }
   }

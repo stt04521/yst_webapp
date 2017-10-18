@@ -10,13 +10,14 @@ import { sync } from 'vuex-router-sync'
 import store from './store'
 import './lib/flexible'
 import _ from 'lodash'
+import moment from 'moment'
 import { getToken } from '@/utils/auth' // 验权
 require('es6-promise').polyfill()
 
 Vue.use(Vuex)
 Vue.use(VueRouter)
 Object.defineProperty(Vue.prototype, '_', { value: _ })
-
+Object.defineProperty(Vue.prototype, '$moment', { value: moment })
 store.registerModule('vux', {
   state: {
     demoScrollTop: 0,

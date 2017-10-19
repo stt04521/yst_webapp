@@ -152,7 +152,7 @@ export default new Router({
       }
     },
     {
-      path: '/createSchedule', // 创建日程
+      path: '/createSchedule/:info', // 创建日程
       name: 'createSchedule',
       component: (resolve) => {
         require(['@/page/schedule/createSchedule'], resolve)
@@ -166,21 +166,21 @@ export default new Router({
       }
     },
     {
-      path: '/createNote',  // 创建记事
+      path: '/createNote/:info',  // 创建记事
       name: 'createNote',
       component: (resolve) => {
         require(['@/page/schedule/createNote'], resolve)
       }
     },
     {
-      path: '/scheduleDetail',  // 日程详情
+      path: '/scheduleDetail/:id',  // 日程详情
       name: 'scheduleDetail',
       component: (resolve) => {
         require(['@/page/schedule/scheduleDetail'], resolve)
       }
     },
     {
-      path: '/noteDetail',  // 记事详情
+      path: '/noteDetail/:id',  // 记事详情
       name: 'noteDetail',
       component: (resolve) => {
         require(['@/page/schedule/noteDetail'], resolve)

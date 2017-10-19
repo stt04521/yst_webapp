@@ -11,8 +11,8 @@
         <div class="right" @click="toDetail(item)">
           <div class="title">{{ item.content }}</div>
           <div class="address" v-if="isShowAddress">{{ item.address }}</div>
-          <div class="create-time">{{ item.startTime }}</div>
-          <img class="s-delete" src="../../assets/delete.png"/>
+          <div class="create-time" :style="{marginTop: isShowAddress ? '2px' : '27px'}">{{ item.startTime }}</div>
+          <img class="s-delete" src="../../assets/delete.png" @click.stop="deleteItem(item)"/>
           <span class="modify-time">{{ item.updatedAt }}</span>
         </div>
       </li>
@@ -22,6 +22,7 @@
 </template>
 <script>
 import { Flow, FlowLine, FlowState, Timeline, TimelineItem } from 'vux'
+import {mapActions} from 'vuex'
 export default {
   name: 'showSchedule',
   components: {
@@ -44,15 +45,45 @@ export default {
     }
   },
   methods: {
+    ...mapActions([
+      'deleteSchedule',
+      'deleteNote'
+    ]),
     toDetail (val) {
       // 跳转到日程详情页面 或者 记事详情页面
       if (this.isShowAddress) {
+        console.log('schedule: ', val)
         this.$router.push({
-          name: 'scheduleDetail'
+          name: 'scheduleDetail',
+          params: {
+            id: val.id
+          }
         })
       } else {
         this.$router.push({
-          name: 'noteDetail'
+          name: 'noteDetail',
+          params: {
+            id: val.id
+          }
+        })
+      }
+    },
+    deleteItem (val) {
+      if (this.isShowAddress) {
+        this.deleteSchedule(val.id).then((res) => {
+          this.$emit('refresh-schedule-list')
+        }, (err) => {
+          console.log(err)
+        }).catch((err) => {
+          console.log(err)
+        })
+      } else {
+        this.deleteNote(val.id).then((res) => {
+          this.$emit('refresh-note-list')
+        }, (err) => {
+          console.log(err)
+        }).catch((err) => {
+          console.log(err)
         })
       }
     }

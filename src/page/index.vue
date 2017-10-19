@@ -161,8 +161,10 @@
 //      },
       addSchedule () {
         // 点击添加日程跳转到添加日程页面
+        let info = {}
         this.$router.push({
-          name: 'createSchedule'
+          name: 'createSchedule',
+          param: info
         })
       },
       addNote () {

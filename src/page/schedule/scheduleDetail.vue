@@ -33,12 +33,16 @@
 </template>
 <script>
   import {XHeader} from 'vux'
+  import {mapActions} from 'vuex'
   export default {
     name: 'scheduleDetail',
     components: {
       XHeader
     },
     methods: {
+      ...mapActions([{
+        getScheduleDetail: 'getScheduleDetail'
+      }]),
       back () {
         console.log('back')
       },
@@ -53,6 +57,16 @@
         console.log('cancle schedule')
         this.$router.go(-1)
       }
+    },
+    created () {
+      console.log('get schedule detail')
+      this.getScheduleDetail().then((res) => {
+        console.log('get schedule detail', res)
+      }, (err) => {
+        console.log(err)
+      }).catch((err) => {
+        console.log(err)
+      })
     }
   }
 </script>

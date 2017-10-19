@@ -46,7 +46,6 @@ export default {
   methods: {
     toDetail (val) {
       // 跳转到日程详情页面 或者 记事详情页面
-      console.log(val)
       if (this.isShowAddress) {
         this.$router.push({
           name: 'scheduleDetail'

@@ -18,13 +18,17 @@
 </template>
 <script>
   import {XHeader, ViewBox} from 'vux'
+  import {mapActions} from 'vuex'
   export default {
-    name: 'nodeDetail',
+    name: 'noteDetail',
     components: {
       XHeader,
       ViewBox
     },
     methods: {
+      ...mapActions([
+        'getNoteDetail'
+      ]),
       back () {
         console.log('back')
       },
@@ -42,6 +46,14 @@
       //   //   path: '/schedule/showNote'
       //   // })
       // }
+    },
+    mounted () {
+      this.getNoteDetail()
+    },
+    created () {
+//      console.log('////')
+//      console.log(this.getNoteDetail())
+//      this.getNoteDetail()
     }
   }
 </script>

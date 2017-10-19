@@ -88,7 +88,6 @@
     },
     watch: {
       $route (to, from) {
-        console.log('555555: ', to)
         if (to.path === '/schedule/showSchedule' || to.path === '/schedule') {
           this.isShowSchedule = true
           this.isShowCalender = false

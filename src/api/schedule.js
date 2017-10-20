@@ -7,7 +7,8 @@ import fetch from '@/utils/fetch'
   *   startTime: '2017-09-15 15:02:52'
   *   endTime: '2017-09-17 15:02:52',
   *   address: 'wuhan132',
-  *   partner: ['802d8152-3c6c-4ae8-9e3d-b082297786f2']
+  *   partner: ['802d8152-3c6c-4ae8-9e3d-b082297786f2']，
+  *   remind: '360000'
   *  }
   * */
 export function createSchedule (data) {
@@ -28,9 +29,9 @@ export function getList () {
 }
 
 // 获取日程详情
-export function getInfo () {
+export function getInfo (id) {
   return fetch({
-    url: '/restful/schedule/getScheduleInfo/6544e842-b24c-4cea-96d7-fd5e481702f4',
+    url: '/restful/schedule/getScheduleInfo/' + id,
     method: 'get'
   })
 }
@@ -59,9 +60,68 @@ export function getNoteList () {
 }
 
 // 获取笔记详情
-export function getNoteInfo () {
+export function getNoteInfo (id) {
   return fetch({
-    url: '/restful/notepad/getNotepadInfo/a20c2a33-9449-4908-96c5-16b96ec65692',
+    url: '/restful/notepad/getNotepadInfo/' + id,
     method: 'get'
+  })
+}
+
+// 编辑日程
+/*
+* data数据格式
+*  {
+*   content: 'ceshiceshi',
+*   startTime: '2017-09-15 15:02:52'
+*   endTime: '2017-09-17 15:02:52',
+*   address: 'wuhan132',
+*   partner: ['802d8152-3c6c-4ae8-9e3d-b082297786f2']，
+*   remind: '360000',
+*   scheduleId: 'ac858b32-b2bf-451a-b2b5-c864ce3ad5bb'
+*  }
+* */
+export function updateSchedule (data) {
+  return fetch({
+    url: '/restful/schedule/updateSchedule',
+    method: 'post',
+    data
+  })
+}
+// 删除日程
+/*
+* param
+* id: delete schedule id
+* */
+export function deleteSchedule (id) {
+  return fetch({
+    url: '/restful/schedule/deleteSchedule/' + id,
+    method: 'post'
+  })
+}
+
+// 编辑笔记
+/* params
+*  {
+*   content: 'ceshiceshi1111',
+*   startTime: '2017-09-15 15:02:52',
+*   notepadId: 'ac858b32-b2bf-451a-b2b5-c864ce3ad5bb'
+*  }
+* */
+export function updateNotepad (data) {
+  return fetch({
+    url: '/restful/notepad/updateNotepad',
+    method: 'post',
+    data
+  })
+}
+// 删除笔记
+/*
+* param
+* id: delete note id
+* */
+export function deleteNotepad (id) {
+  return fetch({
+    url: '/restful/notepad/deleteNotepad/' + id,
+    method: 'post'
   })
 }

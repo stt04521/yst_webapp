@@ -4,13 +4,13 @@
     </x-header>
     <view-box class="content-container">
       <div class="note-container">
-        <div class="note-content">笔记详情笔记详情笔记详情笔记详情笔记详情笔记详情笔记详情笔记详情笔记详情笔记详情笔记详情笔记详情笔记记详情笔记详情笔记详情笔记详情笔记详情笔记详情笔记详情笔记详情笔记详情笔记详情笔记详情笔记详情笔记详情笔记详情笔记详情笔记详情笔记详情笔记详情笔记详情笔记详情笔记详情笔记详情笔记详情笔记详情笔记详情</div>
-        <div class="start-time">开始时间：2017-7-26 18:00</div>
-        <div class="modify-time">13:00</div>
+        <div class="note-content">{{ info.content }}</div>
+        <div class="start-time">开始时间：{{this.$moment(info.startTime).format('YYYY-MM-DD HH:mm:ss')}}</div>
+        <div class="modify-time">{{this.$moment(info.updatedAt).format('YYYY-MM-DD HH:mm:ss')}}</div>
       </div>
       <div class="operate-container">
         <button class="operate-btn" @click="editNote">编辑</button>
-        <button class="delete-btn" @click="deleteNote">删除</button>
+        <button class="delete-btn" @click="cancelNote">删除</button>
       </div>
     </view-box>
 
@@ -25,35 +25,50 @@
       XHeader,
       ViewBox
     },
+    data () {
+      return {
+        info: {}
+      }
+    },
     methods: {
       ...mapActions([
-        'getNoteDetail'
+        'getNoteDetail',
+        'deleteNote'
       ]),
       back () {
         console.log('back')
       },
       editNote () {
+        let data = this.info
+        console.log('data: ', data)
         this.$router.push({
-          name: 'createNote'
+          name: 'createNote',
+          params: {
+            info: data
+          }
         })
       },
-      deleteNote () {
-        this.$router.go(-1)
+      cancelNote () {
+        this.deleteNote(this.info.id).then((res) => {
+          this.$router.go(-1)
+        }, (err) => {
+          console.log(err)
+        }).catch((err) => {
+          console.log(err)
+        })
       }
-      // toShowNote () {
-      //   console.log('111')
-      //   // this.$router.push({
-      //   //   path: '/schedule/showNote'
-      //   // })
-      // }
-    },
-    mounted () {
-      this.getNoteDetail()
     },
     created () {
-//      console.log('////')
-//      console.log(this.getNoteDetail())
-//      this.getNoteDetail()
+      let id = this.$route.params.id
+      console.log('id: ', id)
+      this.getNoteDetail(id).then((res) => {
+        this.info = res
+        console.log(this.info)
+      }, (err) => {
+        console.log(err)
+      }).catch((err) => {
+        console.log(err)
+      })
     }
   }
 </script>

@@ -6,15 +6,15 @@
     <!--主体内容-->
     <x-header title="新建日程" slot="overwrite-left" class="header">
       <span slot="overwrite-left" @click="cancleCreateSchedule">取消</span>
-      <span slot="right" @click="createNewSchedule">创建</span>
+      <span slot="right" @click="createNewSchedule">{{isEdit ? '保存' : '创建'}}</span>
     </x-header>
     <view-box class="content-container">
       <group>
         <x-textarea :max="1000" v-model="content" placeholder="请输入日程内容" @on-focus="onEvent('focus')" @on-blur="onEvent('blur')" :height="183"></x-textarea>
       </group>
       <group>
-        <datetime format="YYYY-MM-DD HH:mm" @on-change="startTimeChange" title="开始时间"></datetime>
-        <datetime format="YYYY-MM-DD HH:mm" @on-change="endTimeChange" :start-date="beginTime" title="截止时间"></datetime>
+        <datetime format="YYYY-MM-DD HH:mm" @on-change="startTimeChange" title="开始时间" v-model="startTime"></datetime>
+        <datetime format="YYYY-MM-DD HH:mm" @on-change="endTimeChange" :start-date="beginTime" title="截止时间" v-model="endTime"></datetime>
         <cell title="提醒" is-link :value="remindValue" @click.native="showActionSheet"></cell>
       </group>
       <group>
@@ -40,6 +40,7 @@
     name: 'createSchedule',
     data () {
       return {
+        isEdit: false,
         content: '',
         show1: false,
         startTime: '',
@@ -61,7 +62,10 @@
             label: '一天前',
             value: 86400000
           }
-        ]
+        ],
+        infoList: {},
+        placeHolder: '请输入日程内容',
+        id: ''
       }
     },
     components: {
@@ -79,7 +83,8 @@
     },
     methods: {
       ...mapActions([
-        'createSchedule'
+        'createSchedule',
+        'editSchedule'
       ]),
       onEvent (event) {
         console.log('on', event)
@@ -107,23 +112,66 @@
       },
       createNewSchedule () {
         let that = this
-        let paramData = {
-          content: this.content,
-          startTime: this.startTime,
-          endTime: this.endTime,
-          address: 'wuhan',
-          remind: this.remind,
-          partner: []
-        }
-        this.createSchedule(paramData).then(() => {
-          that.$router.push({
-            name: 'showSchedule'
+        let paramData
+        if (this.isEdit) {
+          paramData = {
+            content: this.content,
+            startTime: this.startTime,
+            endTime: this.endTime,
+            address: 'wuhan',
+            remind: this.remind,
+            partner: [],
+            scheduleId: this.id
+          }
+          console.log(paramData)
+          this.editSchedule(paramData).then(() => {
+            that.$router.push({
+              name: 'showSchedule'
+            })
+          }, (err) => {
+            console.log(err)
+          }).catch((err) => {
+            console.log(err)
           })
-        }, (err) => {
-          console.log(err)
-        }).catch(err => {
-          console.log(err)
-        })
+        } else {
+          paramData = {
+            content: this.content,
+            startTime: this.startTime,
+            endTime: this.endTime,
+            address: 'wuhan',
+            remind: this.remind,
+            partner: []
+          }
+          this.createSchedule(paramData).then(() => {
+            that.$router.push({
+              name: 'showSchedule'
+            })
+          }, (err) => {
+            console.log(err)
+          }).catch(err => {
+            console.log(err)
+          })
+        }
+      }
+    },
+    created () {
+      let info = this.$route.params.info
+      if (info.remind === 3600000) {
+        this.remindValue = '一小时'
+      }
+      if (info.remind === 86400000) {
+        this.remindValue = '一天前'
+      }
+      if (info.remind === -1) {
+        this.remindValue = '不提醒'
+      }
+      if (info) {
+        this.isEdit = true
+        this.infoList = info
+        this.content = info.content
+        this.startTime = this.$moment(info.startTime).format('YYYY-MM-DD HH:mm:ss')
+        this.endTime = this.$moment(info.endTime).format('YYYY-MM-DD HH:mm:ss')
+        this.id = info.id
       }
     }
   }

@@ -18,8 +18,8 @@
       </flexbox-item>
     </flexbox>
     <div class="content" :style="{height: height + 'px'}">
-      <show-schedule v-show="isShowSchedule" :scheduleList = 'list' :isShowAddress="true"></show-schedule>
-      <show-schedule v-show="isShowNote" :scheduleList = 'list' :isShowAddress="false"></show-schedule>
+      <show-schedule @refresh-schedule-list="getscheduleList" v-show="isShowSchedule" :scheduleList = 'list' :isShowAddress="true"></show-schedule>
+      <show-schedule @refresh-note-list="getnoteList" v-show="isShowNote" :scheduleList = 'list' :isShowAddress="false"></show-schedule>
       <showCalender v-show="isShowCalender"></showCalender>
     </div>
   </div>

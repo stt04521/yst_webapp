@@ -4,19 +4,19 @@
     </x-header>
     <div class="content-container">
       <div class="detail-container">
-        <div class="detail-title">瓦风机饿哦ii合法开绿灯解放打开了房间饿哦i俄方将阿娥ofi俄双方均为i哦才发觉诶佛教瓦风机饿哦i合法开绿灯解放打开了房间饿哦i俄方将阿娥ofi俄双方均为i哦才发觉诶佛教瓦风机饿哦i合法开绿灯解放打开了房间饿哦i俄方将阿娥ofi俄双方均为i哦才发觉诶佛教瓦风机饿哦i合法开绿灯解放打开了房间饿哦i俄方将阿娥ofi俄双方均为i哦才发觉诶佛教瓦风机饿哦ii合法开绿灯解放打开了房间饿哦i俄方将阿娥ofi俄双方均为i哦才发觉诶佛教瓦风机饿哦i合法开绿灯解放打开了房间饿哦i俄方将阿娥ofi俄双方均为i哦才发觉诶佛教瓦风机饿哦i合法开绿灯解放打开了房间饿哦i俄方将阿娥ofi俄双方均为i哦才发觉诶佛教瓦风机饿哦i合法开绿灯解放打开了房间饿哦i俄方将阿娥ofi俄双方均为i哦才发觉诶佛教</div>
-        <div class="detail-ite">开始时间：2017-7-26 18：00</div>
-        <div class="detail-ite">截止时间：2017-7-26 18：00</div>
-        <div class="detail-ite">地点：湖北省武汉市江夏区武大科技园</div>
+        <div class="detail-title">{{ info.content }}</div>
+        <div class="detail-ite">开始时间：{{ info.startTime }}</div>
+        <div class="detail-ite">截止时间：{{ info.endTime }}</div>
+        <div class="detail-ite">地点：{{ info.address }}</div>
         <div class="creator-detail">
           <img class="creator-img" src="../../assets/news/userImg.jpg"/>
-          <span class="creator">李明友发出的</span>
-          <span class="created-time">13: 00</span>
+          <span class="creator">{{ info.creator }}发出的</span>
+          <span class="created-time">{{ info.createdAt }}</span>
         </div>
       </div>
       <div class="participator">
         <div class="p-title">参与者</div>
-        <ul class="participate-container">
+        <ul class="participate-container" v-show="info.partner && info.partner.length">
           <li class="participate-item">
             <img class="avatar" src="../../assets/news/userImg.jpg">
             <span>李明友</span>
@@ -39,29 +39,45 @@
     components: {
       XHeader
     },
+    data () {
+      return {
+        info: {}
+      }
+    },
     methods: {
-      ...mapActions([{
-        getScheduleDetail: 'getScheduleDetail'
-      }]),
+      ...mapActions([
+        'getScheduleDetail',
+        'deleteSchedule'
+      ]),
       back () {
         console.log('back')
       },
       editDetail () {
-        // 点击参与人员的中的编辑，跳转到选择参与人员页面
+        // 跳转到编辑日程页面
+        let data = this.info
         this.$router.push({
-          name: 'chooseParticipator'
+          name: 'createSchedule',
+          params: {
+            info: data
+          }
         })
       },
       cancleSchedule () {
         // 取消日程，删除该条日程记录
-        console.log('cancle schedule')
-        this.$router.go(-1)
+        console.log(this.info.id)
+        this.deleteSchedule(this.info.id).then((res) => {
+          this.$router.go(-1)
+        }, (err) => {
+          console.log(err)
+        }).catch((err) => {
+          console.log(err)
+        })
       }
     },
     created () {
-      console.log('get schedule detail')
-      this.getScheduleDetail().then((res) => {
-        console.log('get schedule detail', res)
+      let id = this.$route.params.id
+      this.getScheduleDetail(id).then((res) => {
+        this.info = res
       }, (err) => {
         console.log(err)
       }).catch((err) => {
@@ -107,12 +123,16 @@
           .creator-img{
             width: 30px;
             height: 30px;
-            vertical-align: middle;
+            vertical-align: top;
           }
           .creator {
             display: inline-block;
             margin-left: 6px;
             font-weight: 700;
+            width: 100px;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            white-space: nowrap;
           }
           .created-time{
             position: absolute;

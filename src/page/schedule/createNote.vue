@@ -2,11 +2,11 @@
   <div class="create-note-wrapper">
     <x-header title="新建计划" slot="overwrite-left" class="header">
       <span slot="overwrite-left" @click="cancleCreateNote">取消</span>
-      <span slot="right" @click="create">创建</span>
+      <span slot="right" @click="create">{{isEdit ? '保存' : '创建'}}</span>
     </x-header>
     <view-box class="content-container">
       <group>
-        <x-textarea :max="1000" v-model="content" placeholder="请输入记事内容" @on-focus="onEvent('focus')" @on-blur="onEvent('blur')" :height="183"></x-textarea>
+        <x-textarea :max="1000" v-model="content" :placeholder="placeHolder" @on-focus="onEvent('focus')" @on-blur="onEvent('blur')" :height="183"></x-textarea>
       </group>
       <group>
         <datetime v-model="startTime" format="YYYY-MM-DD HH:mm" @on-change="startTimeChange" title="开始时间"></datetime>
@@ -28,13 +28,17 @@
     },
     data () {
       return {
+        isEdit: false,
         startTime: '',
-        content: ''
+        content: '',
+        placeHolder: '请输入记事内容',
+        id: ''
       }
     },
     methods: {
       ...mapActions([
-        'createNote'
+        'createNote',
+        'editNotepad'
       ]),
       startTimeChange (val) {
         console.log(val)
@@ -47,24 +51,45 @@
         this.$router.go(-1)
       },
       create () {
-        console.log('create note')
         let that = this
-        let data = {
-          content: this.content,
-          startTime: this.startTime
-        }
-        console.log('data', data)
-        this.createNote(data).then(() => {
-          that.$router.push({
-            name: 'showNote'
+        let data
+        if (this.isEdit) {
+          data = {
+            content: this.content,
+            startTime: this.startTime,
+            notepadId: this.id
+          }
+          console.log('true: ', data)
+          this.editNotepad(data).then(() => {
+            that.$router.push({
+              name: 'showNote'
+            })
+          }, (err) => {
+            console.log(err)
           })
-        }, (err) => {
-          console.log(err)
-        })
-
-        this.$router.push({
-          name: 'noteDetail'
-        })
+        } else {
+          data = {
+            content: this.content,
+            startTime: this.startTime
+          }
+          this.createNote(data).then(() => {
+            that.$router.push({
+              name: 'showNote'
+            })
+          }, (err) => {
+            console.log(err)
+          })
+        }
+      }
+    },
+    created () {
+      let info = this.$route.params.info
+      console.log('info: ', this.$route.params)
+      if (info) {
+        this.isEdit = true
+        this.content = info.content
+        this.startTime = this.$moment(info.startTime).format('YYYY-MM-DD HH:mm:ss')
+        this.id = info.id
       }
     }
   }

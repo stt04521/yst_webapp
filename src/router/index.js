@@ -447,6 +447,21 @@ export default new Router({
       component: (resolve) => {
         require(['@/page/mine/concatUs'], resolve)
       }
+    },
+    // 应用
+    {
+      path: '/singleApply',   // 个人应用
+      name: 'singleApply',
+      component: (resolve) => {
+        require(['@/page/apply/singleApply'], resolve)
+      }
+    },
+    {
+      path: '/payedApply',   // 已购应用
+      name: 'payedApply',
+      component: (resolve) => {
+        require(['@/page/apply/payedApply'], resolve)
+      }
     }
   ]
 })

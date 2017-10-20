@@ -290,7 +290,6 @@ export default new Router({
     {
       path: '/logIn',  // 登录
       name: 'logIn',
-      meta: { keepAlive: true },
       component: (resolve) => {
         require(['@/page/login/logIn'], resolve)
       }

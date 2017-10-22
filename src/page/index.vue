@@ -88,7 +88,7 @@
   import mine from './mine/mine'
   import { mapState, mapActions } from 'vuex'
   import Popover from '@/components/popover.vue'
-  import {eventBus} from '../eventBus'
+  import {eventBus} from '../utils/eventBus'
   import selectionList from '../components/selectionList'
   export default {
     directives: {

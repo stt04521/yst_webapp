@@ -91,6 +91,7 @@
       </cell-box>
 
     </group>
+    <div class="main"></div>
   </div>
 </template>
 
@@ -126,6 +127,12 @@
       border-radius: 50%;
       background: #03BD80;
     }
+
+  }
+  .main{
+    width:375px;
+    height:200px;
+    background: red;
   }
 
 </style>

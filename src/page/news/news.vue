@@ -89,9 +89,7 @@
           </Flexbox>
         </router-link>
       </cell-box>
-
     </group>
-    <div class="main"></div>
   </div>
 </template>
 
@@ -129,10 +127,4 @@
     }
 
   }
-  .main{
-    width:375px;
-    height:200px;
-    background: red;
-  }
-
 </style>

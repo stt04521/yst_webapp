@@ -4,7 +4,7 @@
       <div class="title-container">
         <span class="line"></span>
         <span class="title">{{ item.title }}<span v-show="item.isShowTip" class="tip">长按删除应用</span></span>
-        <span class="title-right" >{{item.isDelete ? '删除分组' : '显示全部'}}</span>
+        <span class="title-right" >{{isDelete ? '删除分组' : '显示全部'}}</span>
       </div>
       <div class="content-container">
         <div class="item-container" v-for="(val, index) in item.list" :key="index" v-longtap="{fn:onlongpress,name:'长按'}">
@@ -31,12 +31,18 @@
         placeholder="请输入分组名称"
         @on-confirm="onConfirm">
       </confirm>
+      <confirm
+        v-model="isShowConfirm"
+        content="删除应用需重新购买才能使用，格式化应用将清空该应用所有数据，请选择您的操作"
+        @on-confirm="onSure">
+      </confirm>
+      <toast v-model="showToast" type="success" text="删除成功"></toast>
     </div>
 
   </div>
 </template>
 <script>
-  import {Confirm, TransferDomDirective as TransferDom} from 'vux'
+  import {Confirm, TransferDomDirective as TransferDom, Toast} from 'vux'
   import { longtap } from '@/directives/vue-touch'
   export default {
     name: 'blockItem',
@@ -45,12 +51,20 @@
       longtap
     },
     components: {
-      Confirm
+      Confirm,
+      Toast
+    },
+    props: {
+      isDelete: {
+        type: Boolean
+      }
     },
     data () {
       return {
         val: '',
         isShowAddGroup: true,
+        showToast: false,
+        isShowConfirm: false,
         isShowAddApply: false,
         showConfirm: false,
         isShowDelete: false,
@@ -58,7 +72,6 @@
           {
             title: '常用',
             isShowTip: true,
-            isDelete: false,
             list: [
               {
                 icon: require('../assets/news/userImg.jpg'),
@@ -108,7 +121,6 @@
           },
           {
             title: '财务管理',
-            isDelete: false,
             isShowTip: false,
             list: [
               {
@@ -159,7 +171,6 @@
           },
           {
             title: '日常出行',
-            isDelete: false,
             isShowTip: false,
             list: [
               {
@@ -210,7 +221,6 @@
           },
           {
             title: '其他',
-            isDelete: false,
             isShowTip: false,
             list: [
               {
@@ -277,7 +287,15 @@
       },
       deleteApply (item) {
         console.log(item)
+        this.isShowConfirm = true
+      },
+      onSure () {
+        console.log('onSure')
+        this.showToast = true
       }
+    },
+    mounted () {
+      console.log(this.isDelete)
     }
   }
 </script>

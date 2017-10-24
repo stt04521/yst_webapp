@@ -74,7 +74,7 @@ const history = window.sessionStorage
 history.clear()
 let historyCount = history.getItem('count') * 1 || 0
 history.setItem('/', 0)
-
+// const whiteList = ['/logIn', '/forgetPassword', '/registry']
 router.beforeEach(function (to, from, next) {
   store.commit('updateLoadingStatus', {isLoading: true})
   const toIndex = history.getItem(to.path)
@@ -98,7 +98,7 @@ router.beforeEach(function (to, from, next) {
     if (getToken()) {
       next()
     } else {
-      if (to.path === '/logIn') {
+      if (to.path === '/logIn' || to.path.indexOf('/registry') !== -1 || to.path.indexOf('/sureRegistry') !== -1 || to.path.indexOf('/registrySuccess') !== -1) {
         next()
       } else {
         next({

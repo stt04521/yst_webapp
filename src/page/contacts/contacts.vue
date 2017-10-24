@@ -9,7 +9,7 @@
       </tab>
       <swiper v-model="index" :height="height + 'px'" :show-dots="false">
         <swiper-item>
-          <contact-list type="Friends"></contact-list>
+          <contact-list type="Friends" :list="FriendGroup" v-on:refresh="getAllGroup"></contact-list>
         </swiper-item>
         <swiper-item>
           <contact-list type="Colleague"></contact-list>
@@ -29,6 +29,7 @@
 <script>
   import { Search, Tab, TabItem, Swiper, SwiperItem, ViewBox } from 'vux'
   import contactList from './contactList.vue'
+  import {mapActions} from 'vuex'
   const list = () => ['好友', '同事', '群聊']
   export default {
     components: {
@@ -43,7 +44,14 @@
     mounted () {
       this.height = document.body.offsetHeight - 189
     },
+    created () {
+      this.getAllGroup()
+    },
+
     methods: {
+      ...mapActions([
+        'GetFriendGroup'
+      ]),
       onSubmit (val) {
         window.alert('on submit' + val)
       },
@@ -52,11 +60,19 @@
       },
       onFocus () {
         console.log('on focus')
+      },
+      getAllGroup () {
+        let self = this
+        self.GetFriendGroup().then(res => {
+          self.FriendGroup = res
+          console.log(res)
+        })
       }
     },
     data () {
       return {
         height: 0,
+        FriendGroup: [],
         isHailFellow: true,
         isColleague: false,
         demo2: '好友',

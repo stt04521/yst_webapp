@@ -44,7 +44,8 @@
     },
     methods: {
       ...mapActions([
-        'LoginByUsername'
+        'LoginByUsername',
+        'FriendGetGroup'
       ]),
       login () {
         let self = this
@@ -57,6 +58,7 @@
           return false
         }
         this.LoginByUsername(userInfo).then(() => {
+          self.FriendGetGroup()
           self.$router.push('/')
         }).catch(err => {
           self.showWarning = true
@@ -68,6 +70,7 @@
         }
       },
       toRegistry () {
+        console.log('/registry/registry')
         this.$router.push({
           path: '/registry/registry'
         })

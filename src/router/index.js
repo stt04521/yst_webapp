@@ -452,15 +452,53 @@ export default new Router({
     {
       path: '/singleApply',   // 个人应用
       name: 'singleApply',
+      redirect: '/singleApply/applyAdministration',
       component: (resolve) => {
         require(['@/page/apply/singleApply'], resolve)
-      }
+      },
+      children: [
+        {
+          path: 'applyAdministration',   // 应用管理
+          name: 'applyAdministration',
+          component: (resolve) => {
+            require(['@/components/blockItem'], resolve)
+          }
+        },
+        {
+          path: 'applyStore',   // 应用商店
+          name: 'applyStore',
+          component: (resolve) => {
+            require(['@/components/blockItem'], resolve)
+          }
+        },
+        {
+          path: 'applyUpdate',   // 应用升级
+          name: 'applyUpdate',
+          component: (resolve) => {
+            require(['@/page/apply/applyUpdate'], resolve)
+          }
+        }
+      ]
     },
     {
       path: '/payedApply',   // 已购应用
       name: 'payedApply',
       component: (resolve) => {
         require(['@/page/apply/payedApply'], resolve)
+      }
+    },
+    {
+      path: '/applyDetail',   // 应用详情
+      name: 'applyDetail',
+      component: (resolve) => {
+        require(['@/page/apply/applyDetail'], resolve)
+      }
+    },
+    {
+      path: '/shoppingCart',   // 购物车
+      name: 'shoppingCart',
+      component: (resolve) => {
+        require(['@/page/apply/shoppingCart'], resolve)
       }
     }
   ]

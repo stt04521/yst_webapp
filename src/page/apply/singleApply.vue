@@ -5,13 +5,15 @@
     </x-header>
     <tab class="tab-container">
       <tab-item selected>
-        <router-link to="">应用管理</router-link>
+        <router-link :to="{name: 'applyAdministration',params: {isDelete: true}}">应用管理</router-link>
       </tab-item>
-      <tab-item>应用商店</tab-item>
-      <tab-item>应用升级</tab-item>
+      <tab-item :to="{name: 'applyStore',params: {isDelete: false}}">应用商店</tab-item>
+      <tab-item :to="{name: 'applyUpdate'}">应用升级</tab-item>
     </tab>
     <div class="content-wrapper" :style="{height: height + 'px'}">
-      <block-item></block-item>
+      <!--<router-view></router-view>-->
+      <!--<block-item :isDelete="true"></block-item>-->
+      <apply-update></apply-update>
     </div>
     <selection-list :dataList="selectionList" @toggle-model-show="toggleModelShow" @change-item="changeOrganize" :showModel="showModel"></selection-list>
   </div>
@@ -20,6 +22,7 @@
   import {XHeader, Tab, TabItem} from 'vux'
   import blockItem from '@/components/blockItem'
   import selectionList from '@/components/selectionList'
+  import applyUpdate from './applyUpdate.vue'
 //  import {eventBus} from '../../eventBus'
   export default {
     name: 'singleApply',
@@ -28,7 +31,8 @@
       Tab,
       TabItem,
       blockItem,
-      selectionList
+      selectionList,
+      applyUpdate
     },
     data () {
       return {
@@ -51,6 +55,7 @@
     },
     mounted () {
       this.height = document.body.offsetHeight - 83
+      console.log(this.isDelete)
     }
   }
 </script>

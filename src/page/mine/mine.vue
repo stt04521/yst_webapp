@@ -58,6 +58,10 @@
           {
             icon: require('../../assets/help.png'),
             title: '我的组织'
+          },
+          {
+            icon: require('../../assets/help.png'),
+            title: '购物车'
           }
         ],
         changeOrganize: false

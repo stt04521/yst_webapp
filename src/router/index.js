@@ -500,6 +500,27 @@ export default new Router({
       component: (resolve) => {
         require(['@/page/apply/shoppingCart'], resolve)
       }
+    },
+    {
+      path: '/purchaseApply',   // 购物车
+      name: 'purchaseApply',
+      component: (resolve) => {
+        require(['@/page/apply/purchaseApply'], resolve)
+      }
+    },
+    {
+      path: '/purchaseSuccess',   // 购物车
+      name: 'purchaseSuccess',
+      component: (resolve) => {
+        require(['@/page/apply/purchaseSuccess'], resolve)
+      }
+    },
+    {
+      path: '/othersPay',   // 找人代付
+      name: 'othersPay',
+      component: (resolve) => {
+        require(['@/page/apply/othersPay'], resolve)
+      }
     }
   ]
 })

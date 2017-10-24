@@ -3,17 +3,22 @@
     <x-header :title="pageTitle">
       <span slot="right" @click="toggleModelShow">切换</span>
     </x-header>
-    <tab class="tab-container">
+    <tab class="tab-container" :line-width="1" custom-bar-width="60px" active-color="#108ee9">
       <tab-item selected>
-        <router-link :to="{name: 'applyAdministration',params: {isDelete: true}}">应用管理</router-link>
+        <router-link to="/singleApply/applyAdministration">应用管理</router-link>
       </tab-item>
-      <tab-item :to="{name: 'applyStore',params: {isDelete: false}}">应用商店</tab-item>
-      <tab-item :to="{name: 'applyUpdate'}">应用升级</tab-item>
+      <tab-item>
+        <router-link to="/singleApply/applyStore">应用商店</router-link>
+      </tab-item>
+      <tab-item>
+        <router-link to="/singleApply/applyUpdate">应用升级</router-link>
+      </tab-item>
     </tab>
     <div class="content-wrapper" :style="{height: height + 'px'}">
       <!--<router-view></router-view>-->
-      <!--<block-item :isDelete="true"></block-item>-->
-      <apply-update></apply-update>
+      <block-item :isDelete="true" v-show="isShowAd" :isShowAddApply="true" @show-detail="showDetail" @add-apply="addApply"></block-item>
+      <block-item :isDelete="false" v-show="isShowAs" :isShowAddApply="false"></block-item>
+      <apply-update v-show="isShowAu"></apply-update>
     </div>
     <selection-list :dataList="selectionList" @toggle-model-show="toggleModelShow" @change-item="changeOrganize" :showModel="showModel"></selection-list>
   </div>
@@ -36,6 +41,9 @@
     },
     data () {
       return {
+        isShowAd: true,
+        isShowAs: false,
+        isShowAu: false,
         pageTitle: '个人应用',
         height: 0,
         showModel: false,
@@ -51,11 +59,39 @@
         this.pageTitle = item.value
         this.toggleModelShow()
         // 点击选择组织和个人之后，获取数据，刷新页面
+      },
+      showDetail (val) {
+        console.log('111', val)
+        this.$router.push({
+          name: 'applyDetail'
+        })
+      },
+      addApply () {
+        console.log('add apply')
       }
     },
     mounted () {
       this.height = document.body.offsetHeight - 83
       console.log(this.isDelete)
+    },
+    watch: {
+      $route (to, from) {
+        if (to.path === '/singleApply/applyAdministration' || to.path === '/singleApply') {
+          this.isShowAd = true
+          this.isShowAs = false
+          this.isShowAu = false
+        }
+        if (to.path === '/singleApply/applyStore') {
+          this.isShowAd = false
+          this.isShowAu = false
+          this.isShowAs = true
+        }
+        if (to.path === '/singleApply/applyUpdate') {
+          this.isShowAd = false
+          this.isShowAs = false
+          this.isShowAu = true
+        }
+      }
     }
   }
 </script>

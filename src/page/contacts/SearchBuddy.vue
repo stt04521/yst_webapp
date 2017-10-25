@@ -57,7 +57,8 @@
       ...mapActions([
         'FindUserByPhone',
         'GetDefaultGroup',
-        'FriendAddFriend'
+        'FriendAddFriend',
+        'FuzzySearch'
       ]),
       setFocus () {
         this.$refs.search.setFocus()
@@ -67,11 +68,16 @@
       },
       getResult (val) {
         let self = this
-        self.FindUserByPhone(val).then(res => {
-          console.log(res)
-          self.userInfo = res
-          self.isShow = true
-        })
+        if (self.$route.params.type === 'search') {
+          self.FuzzySearch(val).then(res => {
+            console.log(res)
+          })
+        } else {
+          self.FindUserByPhone(val).then(res => {
+            self.userInfo = res
+            self.isShow = true
+          })
+        }
       },
       onSubmit () {
         this.$refs.search.setBlur()

@@ -9,9 +9,8 @@ db.version(1).stores({
   friendGroup: 'index,id',
   group: '++id',
   groupMembers: '++id',
-  personInfo: '++id',
-  userInfo: '++id',
-  fiendOnlyGroup: '++id'
+  personInfo: '++id,personInfo.realName',
+  userInfo: '++id'
 })
 
 export default db

@@ -33,7 +33,7 @@
                 {{item1.personInfo.realName}}
                 <Popover :ref="'groupItem'+index1" >
                   <div slot="content">
-                    <p @click.stop="onJutmp('/MobilePacket')">移动分组</p>
+                    <p @click.stop="onJutmp({path: '/MobilePacket', query:{id: item1.personInfo.userId}})">移动分组</p>
                     <hr>
                     <p @click.stop="onShowDele(item1.personInfo.userId)">删除好友</p>
                   </div>

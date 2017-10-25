@@ -47,7 +47,6 @@
     created () {
       this.getAllGroup()
     },
-
     methods: {
       ...mapActions([
         'GetFriendGroup'

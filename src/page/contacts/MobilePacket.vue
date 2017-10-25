@@ -3,7 +3,7 @@
     <x-header>移动分组</x-header>
     <group >
       <group >
-        <radio :options="radio001" @on-change="change"></radio>
+        <radio :options="FriendGroup" @on-change="change"></radio>
       </group>
     </group>
     <div class="button_group">
@@ -15,7 +15,7 @@
 
 <script>
   import { Cell, CellBox, Group, Badge, XHeader, XButton, Radio } from 'vux'
-
+  import { mapActions } from 'vuex'
   export default {
     mounted () {
     },
@@ -28,20 +28,49 @@
       XButton,
       Radio
     },
+    created () {
+      this.getAllGroup()
+    },
     methods: {
+      ...mapActions([
+        'GetFriendGroup',
+        'MoveFriendToGroup'
+      ]),
       change (value, label) {
+        this.GroupId = value
         console.log('change:', value, label)
       },
       onSure () {
-        this.$vux.toast.show({
-          type: 'success',
-          text: '移动成功'
+        let self = this
+        let request = {
+          friendId: self.$route.query.id,
+          friendGroupId: self.GroupId
+        }
+        self.MoveFriendToGroup(request).then(res => {
+          self.$vux.toast.show({
+            type: 'success',
+            text: '移动成功'
+          })
+          self.$router.push('/contacts')
+        })
+      },
+      getAllGroup () {
+        let self = this
+        self.GetFriendGroup().then(res => {
+          self.FriendGroup = res.map(item => {
+            return {
+              value: item.name,
+              key: item.id
+            }
+          })
+          console.log(res)
         })
       }
     },
     data () {
       return {
-        radio001: [ '好友', '家人', '同学', '其他' ]
+        GroupId: '',
+        FriendGroup: []
       }
     }
   }

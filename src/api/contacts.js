@@ -103,3 +103,12 @@ export function friendAddFriend (data) {
     data
   })
 }
+// 移动好友到新的分组
+export function moveFriendToGroup (data) {
+  return fetch({
+    url: '/restful/friendGroup/friend/moveFriendToGroup',
+    method: 'post',
+    data
+  })
+}
+

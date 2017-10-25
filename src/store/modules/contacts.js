@@ -1,7 +1,7 @@
 /**
  * Created by shishitengteng on 2017/10/23.
  */
-import { getAllFriend, friendDelFriend, groupSortGroup, friendAddGroup, friendDelGroup, findUserByPhone, findPersonInfoByUserId, friendAddFriend } from '@/api/contacts'
+import { getAllFriend, friendDelFriend, groupSortGroup, friendAddGroup, friendDelGroup, findUserByPhone, findPersonInfoByUserId, friendAddFriend, moveFriendToGroup } from '@/api/contacts'
 import db from '../../db'
 const contacts = {
   state: {
@@ -32,7 +32,6 @@ const contacts = {
       let res = await getAllFriend()
       let _friendArr = []
       let _personInfoArr = []
-      let _fiendOnlyGroup = []
       let _friendGroupArr = res.data.result.map((itemL1) => {
         itemL1.friend.map((itemL2) => {
           if (itemL2.id === undefined) return
@@ -42,12 +41,6 @@ const contacts = {
             friendGroupId: itemL2.friendGroupId
           })
           _personInfoArr.push(itemL2)
-        })
-        _fiendOnlyGroup.push({
-          id: itemL1.id,
-          index: itemL1.index,
-          name: itemL1.name,
-          userId: itemL1.userId
         })
         return {
           id: itemL1.id,
@@ -59,8 +52,6 @@ const contacts = {
         }
       })
       // _personInfoArr.push(myInfo.result)
-      db.table('fiendOnlyGroup').clear()
-      db.table('fiendOnlyGroup').bulkPut(_fiendOnlyGroup)
       db.table('friendGroup').clear()
       db.table('friendGroup').bulkPut(_friendGroupArr)
       db.table('friend').clear()
@@ -70,6 +61,10 @@ const contacts = {
       commit('SET_FRIENDGROUP', _friendGroupArr)
       commit('SET_FRIEND', _friendArr)
       commit('SET_PERSONINFO', _personInfoArr)
+    },
+    // 模糊查询
+    FuzzySearch ({commit}, value) {
+      return db.table('personInfo').where('personInfo.realName').toArray()
     },
     // 获取默认分组
     GetDefaultGroup ({commit}) {
@@ -116,6 +111,11 @@ const contacts = {
           reject(err)
         })
       })
+    },
+    // 移动好友到新分组
+    async MoveFriendToGroup ({dispatch, commit}, data) {
+      await moveFriendToGroup(data)
+      await dispatch('FriendGetGroup')
     }
   }
 }

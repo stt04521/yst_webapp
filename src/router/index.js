@@ -521,6 +521,13 @@ export default new Router({
       component: (resolve) => {
         require(['@/page/apply/othersPay'], resolve)
       }
+    },
+    {
+      path: '/applyScreen',   // 找人代付
+      name: 'applyScreen',
+      component: (resolve) => {
+        require(['@/page/apply/applyScreen'], resolve)
+      }
     }
   ]
 })

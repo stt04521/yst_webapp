@@ -44,7 +44,7 @@
           <span v-if="route.path === '/schedule/showSchedule'" slot="right" style="font-size: 17px; color: #fff" @click="addSchedule">添加日程</span>
           <span v-if="route.path === '/schedule/showNote'" slot="right" style="font-size: 17px; color: #fff" @click="addNote">添加记事</span>
           <span v-if="route.path === '/work' || route.path === '/work/todoList' || route.path === '/work/finishedList'" slot="right" style="font-size: 17px; color: #fff" @click="toggleModelShow">切换
-            <selection-list :dataList="selectionList" @toggle-model-show="toggleModelShow" @change-item="changeOrganize" :showModel="showModel"></selection-list>
+            <selection-list :top="45" :dataList="selectionList" @toggle-model-show="toggleModelShow" @change-item="changeOrganize" :showModel="showModel"></selection-list>
           </span>
         </x-header>
         <transition

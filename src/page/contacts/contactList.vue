@@ -1,57 +1,57 @@
 <template>
   <div class="list">
-    <actionsheet v-model="show3" :menus="menus3" @on-click-menu="click" @on-click-menu-delete="onDelete" show-cancel></actionsheet>
-
+    <div v-transfer-dom>
+      <actionsheet v-model="show3" :menus="menus3" @on-click-menu="click" @on-click-menu-delete="onDelete" show-cancel></actionsheet>
+    </div>
     <!--好友列表-->
-    <group v-if="type == 'Friends'">
-      <cell
-        is-link
-        :border-intent="false"
-        :arrow-direction="showContent001 ? 'up' : 'down'"
-        @click.native="showContent001 = !showContent001"
-        v-longtap="{fn:onlongpress,name:'长按'}"
-        data-id="1"
-      >
-        <div slot="title" data-id="1">
-          好友
-          <Popover ref="group1">
-            <div slot="content">
-              <p @click.stop="onJutmp('/GroupManagement')">分组管理</p>
-              <hr>
-              <p>姓氏排序</p>
-            </div>
-          </Popover>
-        </div>
-      </cell>
-      <template v-if="showContent001 && !select">
-          <cell data-id="2"  v-longtap="{fn:onItemLongpress,name:'长按'}" @click.native="onJutmp(`/ContactInfo/${type}`)">
-            <div slot="title" data-id="2">
-              General
-              <Popover ref="group2" >
-                <div slot="content">
-                  <p @click.stop="onJutmp('/MobilePacket')">移动分组</p>
-                  <hr>
-                  <p @click.stop="onShowDele">删除好友</p>
-                </div>
-              </Popover>
-            </div>
-            <img slot="icon" width="40" style="display:block;padding-right:25px;" src="../../assets/news/userImg.jpg" data-id="2">
-          </cell>
-        <cell>
-          <span slot="title">General</span>
-          <img slot="icon" width="40" style="display:block;margin-right:25px;" src="../../assets/news/userImg.jpg">
+    <group v-if="type == 'Friends'" >
+      <div v-for="item,index in list" :key="item.id">
+        <cell
+          is-link
+          :border-intent="false"
+          :arrow-direction="item.showContent ? 'up' : 'down'"
+          @click.native="item.showContent = !item.showContent"
+          v-longtap="{fn:onlongpress,name:'长按'}"
+          :data-id="index"
+        >
+          <div slot="title" :data-id="index">
+            {{item.name}}
+            <Popover :ref="'group'+index">
+              <div slot="content">
+                <p @click.stop="onJutmp('/GroupManagement')">分组管理</p>
+                <hr>
+                <p>姓氏排序</p>
+              </div>
+            </Popover>
+          </div>
         </cell>
-        <cell>
-          <span slot="title">General</span>
-          <img slot="icon" width="40" style="display:block;margin-right:25px;" src="../../assets/news/userImg.jpg">
-        </cell>
-      </template>
-      <template v-if="showContent001 && select == 'true'">
-        <checklist  label-position="left" required :options="radio003" v-model="checklist001" >
-          <img slot="icon" width="40" style="display:block;margin-right:25px;" src="../../assets/news/userImg.jpg">
-        </checklist>
-      </template>
+        <template v-if="item.showContent">
+          <template v-for="item1,index1 in item.friend" >
+            <!--好友列表-->
+            <cell :data-id="index1"  v-longtap="{fn:onItemLongpress,name:'长按'}" @click.native.stop="onJutmp(`/ContactInfo/${type}`)" v-if="!select && item1.personInfo">
+              <div slot="title" :data-id="index1" >
+                {{item1.personInfo.realName}}
+                <Popover :ref="'groupItem'+index1" >
+                  <div slot="content">
+                    <p @click.stop="onJutmp('/MobilePacket')">移动分组</p>
+                    <hr>
+                    <p @click.stop="onShowDele(item1.personInfo.userId)">删除好友</p>
+                  </div>
+                </Popover>
+              </div>
+              <img slot="icon" class="icon" :src="item1.personInfo.portrait" :data-id="index1" >
+            </cell>
+            <!--选择联系人-->
+            <checklist  label-position="left" required :options="radio003" v-model="checklist001" v-if="select == 'true' && item1.personInfo">
+              <img slot="icon" class="icon" :src="item1.personInfo.portrait">
+            </checklist>
+            <!--没有好友-->
+            <cell v-if="!item1.personInfo" title="此分组为空"></cell>
+          </template>
+        </template>
+      </div>
     </group>
+
     <!--同事列表-->
     <group v-if="type == 'Colleague'">
       <cell
@@ -99,15 +99,15 @@
         </template>
 
       </template>
-
     </group>
 
   </div>
 </template>
 <script>
-  import { Cell, CellBox, CellFormPreview, Group, Badge, Actionsheet, Checklist } from 'vux'
+  import { Cell, CellBox, CellFormPreview, Group, Badge, Actionsheet, Checklist, TransferDom } from 'vux'
   import Popover from '@/components/popover.vue'
   import { longtap } from '@/directives/vue-touch'
+  import {mapActions} from 'vuex'
   export default {
     name: 'applyShow',
     components: {
@@ -122,26 +122,33 @@
     },
     props: {
       type: String,
-      select: String
+      select: String,
+      list: Array
     },
     directives: {
-      longtap
+      longtap,
+      TransferDom
     },
     mounted () {
+
     },
     computed: {
     },
     methods: {
+      ...mapActions([
+        'FriendDelFriend'
+      ]),
       onlongpress (e) {
         e.preventDefault()
         let id = e.target.getAttribute('data-id')
-        this.$refs['group' + id].onShow(true)
+        let attr = 'group' + id
+        this.$refs[attr][0].onShow(true)
       },
       onItemLongpress (e) {
         e.preventDefault()
         console.log(e.target)
         let id = e.target.getAttribute('data-id')
-        this.$refs['group' + id].onShow(true)
+        this.$refs['groupItem' + id][0].onShow(true)
       },
       onJutmp (url) {
         this.$router.push(url)
@@ -149,18 +156,25 @@
       click (key) {
         console.log(key)
       },
+      // 删除好友
       onDelete () {
-        this.$vux.toast.show({
-          type: 'success',
-          text: '删除成功'
+        let self = this
+        self.FriendDelFriend(self.delid).then(res => {
+          self.$emit('refresh')
+          self.$vux.toast.show({
+            type: 'success',
+            text: '删除成功'
+          })
         })
       },
-      onShowDele () {
+      onShowDele (id) {
+        this.delid = id
         this.show3 = true
       }
     },
     data () {
       return {
+        delid: '',
         showContent001: false,
         showContent002: false,
         showContent003: false,
@@ -189,6 +203,11 @@
   .list{
     .weui-cells{
       overflow: initial !important;
+    }
+    .icon{
+      width: 40px;
+      display: block;
+      padding-right: 25px;
     }
   }
 

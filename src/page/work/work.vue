@@ -20,7 +20,7 @@
 <script>
   import { Tab, TabItem } from 'vux'
   import applyShow from './applyShow.vue'
-  import {eventBus} from '../../eventBus'
+  import {eventBus} from '../../utils/eventBus'
 //  import selectionList from '../../components/selectionList.vue'
   export default {
     name: 'work',

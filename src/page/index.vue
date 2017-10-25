@@ -47,8 +47,6 @@
             <selection-list :dataList="selectionList" @toggle-model-show="toggleModelShow" @change-item="changeOrganize" :showModel="showModel"></selection-list>
           </span>
         </x-header>
-
-
         <transition
           @after-enter="$vux.bus && $vux.bus.$emit('vux:after-view-enter')"
           :name="'vux-pop-' + (direction === 'forward' ? 'in' : 'out')">
@@ -88,7 +86,7 @@
   import mine from './mine/mine'
   import { mapState, mapActions } from 'vuex'
   import Popover from '@/components/popover.vue'
-  import {eventBus} from '../eventBus'
+  import {eventBus} from '../utils/eventBus'
   import selectionList from '../components/selectionList'
   export default {
     directives: {
@@ -131,7 +129,14 @@
         selectionList: [{key: '0', value: '组织01'}, {key: '1', value: '组织02'}, {key: '2', value: '组织03'}, {key: '3', value: '个人'}]
       }
     },
+    created () {
+
+    },
     methods: {
+      ...mapActions([
+        'updateDemoPosition',
+        'FriendGetGroup'
+      ]),
       onShowModeChange (val) {
         /** hide drawer before changing showMode **/
         this.drawerVisibility = false
@@ -149,9 +154,6 @@
       onClickMore () {
         this.showMenu = true
       },
-      ...mapActions([
-        'updateDemoPosition'
-      ]),
       showPopover () {
         console.log(this.$refs['group1'])
         this.$refs['group1'].onShow()

@@ -20,9 +20,9 @@
     <contact-list v-show="$route.params.type == 'search' && isShow" type="Friends"></contact-list>
     <Group v-show="$route.params.type == 'addFriends' && isShow">
       <cell>
-        <span slot="title">General</span>
-        <img slot="icon" width="40" style="display:block;margin-right:25px;" src="../../assets/news/userImg.jpg">
-        <x-button mini plain>加为好友</x-button>
+        <span slot="title">{{userInfo.name}}</span>
+        <img slot="icon" width="40" style="display:block;margin-right:25px;" :src="userInfo.portrait">
+        <x-button mini plain @click.native="AddFriend">加为好友</x-button>
       </cell>
     </Group>
   </div>
@@ -31,6 +31,7 @@
 <script>
   import { Search, Group, Cell, XButton, Flexbox, FlexboxItem, Divider } from 'vux'
   import contactList from './contactList.vue'
+  import {mapActions} from 'vuex'
   export default {
     components: {
       Search,
@@ -43,15 +44,6 @@
       contactList
     },
     computed: {
-      isShow () {
-        if (this.value) {
-          console.log(this.value)
-          return true
-        } else {
-          console.log(this.value)
-          return false
-        }
-      },
       placeholder () {
         console.log(this.$route.params.type)
         if (this.$route.params.type === 'search') {
@@ -62,6 +54,11 @@
       }
     },
     methods: {
+      ...mapActions([
+        'FindUserByPhone',
+        'GetDefaultGroup',
+        'FriendAddFriend'
+      ]),
       setFocus () {
         this.$refs.search.setFocus()
       },
@@ -69,8 +66,12 @@
         window.alert('you click the result item: ' + JSON.stringify(item))
       },
       getResult (val) {
-        console.log(val)
-        this.results = val ? getResult(this.value) : []
+        let self = this
+        self.FindUserByPhone(val).then(res => {
+          console.log(res)
+          self.userInfo = res
+          self.isShow = true
+        })
       },
       onSubmit () {
         this.$refs.search.setBlur()
@@ -88,27 +89,31 @@
       },
       onBack () {
         this.$router.go(-1)
+      },
+      AddFriend () {
+        let self = this
+        self.GetDefaultGroup().then(res => {
+          console.log(self.userInfo)
+          let request = {
+            friendId: self.userInfo.userId,
+            friendGroupId: res.id
+          }
+          self.FriendAddFriend(request).then(res => {
+            self.$router.push('/contacts')
+          })
+        })
       }
     },
     data () {
       return {
         results: [],
+        isShow: false,
+        userInfo: {},
         value: '',
         autoFixed: false,
         backSrc: require('@/assets/contacts/back.png')
       }
     }
-  }
-
-  function getResult (val) {
-    let rs = []
-    for (let i = 0; i < 20; i++) {
-      rs.push({
-        title: `${val} result: ${i + 1} `,
-        other: i
-      })
-    }
-    return rs
   }
 </script>
 

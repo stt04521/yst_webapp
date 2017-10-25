@@ -89,7 +89,6 @@
           </Flexbox>
         </router-link>
       </cell-box>
-
     </group>
   </div>
 </template>
@@ -126,6 +125,6 @@
       border-radius: 50%;
       background: #03BD80;
     }
-  }
 
+  }
 </style>

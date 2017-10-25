@@ -8,11 +8,11 @@
       </div>
       <div class="content-container">
         <div class="item-container" v-for="(val, index) in item.list" :key="index" v-longtap="{fn:onlongpress,name:'长按'}">
-          <img :src="val.icon" class="apply-icon">
+          <img :src="val.icon" class="apply-icon" @click="showDetail(val)">
           <x-icon type="ios-close" size="20" class="delete-icon" @click="deleteApply(val)" v-show="isShowDelete"></x-icon>
           <span class="name">{{ val.name }}</span>
         </div>
-        <div class="item-container" v-show='isShowAddApply'>
+        <div class="item-container" v-show='isShowAddApply' @click="addApply">
           <img src="../assets/add_more.png" class="apply-icon">
           <span class="name">添加应用</span>
         </div>
@@ -57,6 +57,9 @@
     props: {
       isDelete: {
         type: Boolean
+      },
+      isShowAddApply: {
+        type: Boolean
       }
     },
     data () {
@@ -65,7 +68,6 @@
         isShowAddGroup: true,
         showToast: false,
         isShowConfirm: false,
-        isShowAddApply: false,
         showConfirm: false,
         isShowDelete: false,
         dataList: [
@@ -292,6 +294,14 @@
       onSure () {
         console.log('onSure')
         this.showToast = true
+      },
+      showDetail (item) {
+        console.log('item: ', item)
+        this.$emit('show-detail', item)
+      },
+      addApply () {
+        console.log('add apply ')
+        this.$emit('add-apply')
       }
     },
     mounted () {

@@ -4,7 +4,7 @@
     <div class="mine-container">
       <div class="header-container">
         <img src="../../assets/news/userImg.jpg" class="avatar" alt="">
-        <span class="name">李明友</span>
+        <span class="name">{{ myInfo.realName }}</span>
         <div class="organize" @click="selectOrganize">
           <span class="organize-name">武汉黎宁游科技有限公司</span>
           <span class="triangle" :class="changeOrganize ? 'triangle-top' : 'triangle-bottom'"></span>
@@ -30,10 +30,12 @@
   </div>
 </template>
 <script>
+  import {mapActions} from 'vuex'
   export default {
     name: 'mine',
     data () {
       return {
+        myInfo: {},
         operateList: [
           {
             icon: require('../../assets/help.png'),
@@ -68,6 +70,9 @@
       }
     },
     methods: {
+      ...mapActions([
+        'getMyInfo'
+      ]),
       dealClick (item) {
         // console.log(item.title)
         if (item.title === '我的订单') {
@@ -96,6 +101,17 @@
       selectOrganize () {
         this.changeOrganize = !this.changeOrganize
       }
+    },
+    created () {
+      console.log('mine')
+      this.getMyInfo().then((res) => {
+        console.log('mine: ', res)
+        this.myInfo = res
+      }, (err) => {
+        console.log(err)
+      }).catch((err) => {
+        console.log(err)
+      })
     }
   }
 </script>
@@ -152,10 +168,10 @@
         }
       }
       .operate-container{
-        height: 396px;
+        /*height: 396px;*/
         .operate-item{
           height: 62px;
-          line-height: 62px;
+          line-height: 63px;
           padding-left: 30px;
           font-size: 16px;
           font-weight: 100;

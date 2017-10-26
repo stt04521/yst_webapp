@@ -1,11 +1,11 @@
 <template>
-  <div class="list">
+  <div class="list" :style="{height: height+'px',overflow: 'auto'}">
     <div v-transfer-dom>
       <actionsheet v-model="show3" :menus="menus3" @on-click-menu="click" @on-click-menu-delete="onDelete" show-cancel></actionsheet>
     </div>
     <!--好友列表-->
     <group v-if="type == 'Friends'" >
-      <div v-for="item,index in list" :key="item.id">
+      <template v-for="item,index in list" >
         <cell
           is-link
           :border-intent="false"
@@ -28,7 +28,7 @@
         <template v-if="item.showContent">
           <template v-for="item1,index1 in item.friend" >
             <!--好友列表-->
-            <cell :data-id="index1"  v-longtap="{fn:onItemLongpress,name:'长按'}" @click.native.stop="onJutmp(`/ContactInfo/${type}`)" v-if="!select && item1.personInfo">
+            <cell :data-id="index1"  v-longtap="{fn:onItemLongpress,name:'长按'}" @click.native.stop="onJutmp({path: `/ContactInfo/${type}`, query: {id: item1.id}})" v-if="!select && item1.personInfo">
               <div slot="title" :data-id="index1" >
                 {{item1.personInfo.realName}}
                 <Popover :ref="'groupItem'+index1" >
@@ -49,7 +49,7 @@
             <cell v-if="!item1.personInfo" title="此分组为空"></cell>
           </template>
         </template>
-      </div>
+      </template>
     </group>
 
     <!--同事列表-->
@@ -79,7 +79,6 @@
             </cell>
           </router-link>
         </template>
-
       </template>
 
       <template v-if="showContent002 && select == 'true'">
@@ -100,14 +99,44 @@
 
       </template>
     </group>
-
+    <!--群组列表-->
+    <group v-if="type == 'GroupChat'" >
+      <div v-for="item,index in list" :key="item.index">
+        <cell
+          is-link
+          :title="item.name"
+          :border-intent="false"
+          :arrow-direction="item.showContent ? 'up' : 'down'"
+          @click.native="item.showContent = !item.showContent"
+          :data-id="index"
+        >
+        </cell>
+        <div v-show="item.showContent">
+          <template v-for="item1,index1 in item.value" >
+            <!--群组列表-->
+            <cell :data-id="index1"  v-longtap="{fn:onItemLongpress,name:'长按'}" @click.native.stop="onJutmp({path: '/GroupChatData',query:{id: item1.id}})" v-if="!select">
+              <div slot="title" :data-id="index1" >
+                {{item1.name}}
+                <Popover :ref="'groupItem'+index1" >
+                  <div slot="content">
+                    <p @click.stop="onShowDele(item1.id)">退出群聊</p>
+                  </div>
+                </Popover>
+              </div>
+              <div class="img" slot="icon"></div>
+              <!--<img slot="icon" class="icon" src="" :data-id="index1" >-->
+            </cell>
+          </template>
+        </div>
+      </div>
+    </group>
   </div>
 </template>
 <script>
   import { Cell, CellBox, CellFormPreview, Group, Badge, Actionsheet, Checklist, TransferDom } from 'vux'
   import Popover from '@/components/popover.vue'
   import { longtap } from '@/directives/vue-touch'
-  import {mapActions} from 'vuex'
+  import { mapActions } from 'vuex'
   export default {
     name: 'applyShow',
     components: {
@@ -130,13 +159,14 @@
       TransferDom
     },
     mounted () {
-
+      this.height = document.documentElement.clientHeight - 189
     },
     computed: {
     },
     methods: {
       ...mapActions([
-        'FriendDelFriend'
+        'FriendDelFriend',
+        'DelGroupMembers'
       ]),
       onlongpress (e) {
         e.preventDefault()
@@ -146,7 +176,6 @@
       },
       onItemLongpress (e) {
         e.preventDefault()
-        console.log(e.target)
         let id = e.target.getAttribute('data-id')
         this.$refs['groupItem' + id][0].onShow(true)
       },
@@ -159,17 +188,29 @@
       // 删除好友
       onDelete () {
         let self = this
-        self.FriendDelFriend(self.delid).then(res => {
+        let delFun = self.type !== 'GroupChat' ? self.FriendDelFriend : self.DelGroupMembers
+        delFun(self.delid).then(res => {
           self.$emit('refresh')
           self.$vux.toast.show({
             type: 'success',
-            text: '删除成功'
+            text: self.type !== 'GroupChat' ? '删除成功' : '退出成功'
           })
         })
       },
       onShowDele (id) {
         this.delid = id
         this.show3 = true
+        if (this.type !== 'GroupChat') {
+          this.menus3 = {
+            title: '<span style="color:#999999;font-size: 14px">您将与该好友接触好友关系</span>',
+            delete: '<span style="color:red">确定删除</span>'
+          }
+        } else {
+          this.menus3 = {
+            title: '<span style="color:#999999;font-size: 14px">你将退出该群聊</span>',
+            delete: '<span style="color:red">确定</span>'
+          }
+        }
       }
     },
     data () {
@@ -181,10 +222,8 @@
         showContent004: false,
         checklist001: [],
         show3: false,
-        menus3: {
-          title: '<span style="color:#999999;font-size: 14px">您将与该好友接触好友关系</span>',
-          delete: '<span style="color:red">确定删除</span>'
-        },
+        menus3: {},
+        height: 0,
         radio003: [{
           icon: 'http://dn-placeholder.qbox.me/110x110/FF2D55/000',
           key: '001',
@@ -208,6 +247,13 @@
       width: 40px;
       display: block;
       padding-right: 25px;
+    }
+    .img{
+      width: 40px;
+      height: 40px;
+      border-radius: 50%;
+      margin-right: 30px;
+      background: deepskyblue;
     }
   }
 

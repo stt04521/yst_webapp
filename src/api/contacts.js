@@ -111,4 +111,10 @@ export function moveFriendToGroup (data) {
     data
   })
 }
-
+// 获取用户信息
+export function myInfo () {
+  return fetch({
+    url: '/restful/person/info/myInfo',
+    method: 'get'
+  })
+}

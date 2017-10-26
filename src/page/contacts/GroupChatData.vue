@@ -2,28 +2,26 @@
   <div class="hello">
     <x-header
       title="群聊资料"
-    ></x-header>
+    >
+      <span slot="right" style="font-size: 17px; color: #fff">
+        添加人员
+      </span>
+    </x-header>
     <div class="member">
       <h2>本组织成员</h2>
       <Flexbox wrap="wrap" :gutter="0" >
-        <FlexboxItem :span="2" v-for="i in 11" :key="i">
-          <img  src="../../assets/news/userImg.jpg"  >
-          <p>陈周</p>
-        </FlexboxItem>
-        <FlexboxItem :span="2" >
-          <img  :src="require('@/assets/contacts/addGroup.jpg')" >
+        <FlexboxItem :span="2" v-for="i in GroupList" :key="i.id">
+          <img  :src="require('@/assets/DefaultAvatar.svg')" onerror="onerror=null;src='123.jpg'">
+          <p>{{i.personInfo.realName}}</p>
         </FlexboxItem>
       </Flexbox>
-      <h2>武汉先天科技有限公司</h2>
-      <Flexbox wrap="wrap" :gutter="0" >
-        <FlexboxItem :span="2" v-for="i in 3" :key="i">
-          <img  src="../../assets/news/userImg.jpg"  >
-          <p>陈周</p>
-        </FlexboxItem>
-        <FlexboxItem :span="2" >
-          <img  :src="require('@/assets/contacts/addGroup.jpg')" >
-        </FlexboxItem>
-      </Flexbox>
+      <!--<h2>武汉先天科技有限公司</h2>-->
+      <!--<Flexbox wrap="wrap" :gutter="0" >-->
+        <!--<FlexboxItem :span="2" v-for="i in 3" :key="i">-->
+          <!--<img  src="../../assets/news/userImg.jpg"  >-->
+          <!--<p>陈周</p>-->
+        <!--</FlexboxItem>-->
+      <!--</Flexbox>-->
       </div>
     <group >
       <cell title="群聊名称">
@@ -50,6 +48,8 @@
 
 <script>
   import { XHeader, Flexbox, FlexboxItem, Cell, Group, XSwitch, XButton } from 'vux'
+  import { mapActions } from 'vuex'
+  import { longtap } from '@/directives/vue-touch'
   export default {
     name: 'hello',
     components: {
@@ -61,9 +61,26 @@
       XSwitch,
       XButton
     },
+    directives: {
+      longtap
+    },
     data () {
       return {
-        msg: 'Welcome to Your Vue.js App'
+        GroupList: []
+      }
+    },
+    created () {
+      this.getGroupList(this.$route.query.id)
+    },
+    methods: {
+      ...mapActions([
+        'GetGroupInfo'
+      ]),
+      getGroupList (id) {
+        let self = this
+        this.GetGroupInfo(id).then(res => {
+          self.GroupList = res
+        })
       }
     }
   }

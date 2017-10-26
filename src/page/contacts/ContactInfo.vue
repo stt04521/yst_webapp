@@ -1,21 +1,24 @@
 <template>
   <div class="Info">
-    <x-header>好友资料</x-header>
+    <x-header
+      title="好友资料"
+    >
+    </x-header>
     <group>
       <cell>
-        <span slot="title">General</span>
-        <img slot="icon" width="40" style="display:block;margin-right:25px;" src="../../assets/news/userImg.jpg">
+        <span slot="title">{{contactInfo.realName || '未填写'}}</span>
+        <img slot="icon" width="40" style="display:block;margin-right:25px;" :src="contactInfo.portrait">
       </cell>
     </group>
     <group title="基本信息">
       <cell title="手机号">
         <div slot="value">
-          <span class="f_b">{{'132-1254-1536'}}</span>
+          <span class="f_b">{{contactInfo.phone}}</span>
         </div>
       </cell>
       <cell title="Email">
         <div slot="value">
-          <span class="f_b">{{'未填写'}}</span>
+          <span class="f_b">{{contactInfo.email || '未填写'}}</span>
         </div>
       </cell>
     </group>
@@ -39,17 +42,12 @@
     <group title="身份信息">
       <cell title="姓名">
         <div slot="value">
-          <span class="f_b">{{'李明友'}}</span>
+          <span class="f_b">{{contactInfo.realName || '未填写'}}</span>
         </div>
       </cell>
       <cell title="性别">
         <div slot="value">
-          <span class="f_b">{{'男'}}</span>
-        </div>
-      </cell>
-      <cell title="身份证号">
-        <div slot="value">
-          <span class="f_b">{{'420443****1254'}}</span>
+          <span class="f_b">{{contactInfo.sex || '未填写'}}</span>
         </div>
       </cell>
     </group>
@@ -63,12 +61,13 @@
 
 <script>
   import { Cell, CellBox, Group, Badge, XHeader, XButton } from 'vux'
-
+  import { mapActions } from 'vuex'
   export default {
-    mounted () {
-      setTimeout(() => {
-        this.money = -1024
-      }, 2000)
+    created () {
+      let self = this
+      self.FriendData(self.$route.query.id).then(res => {
+        self.contactInfo = res
+      })
     },
     components: {
       Group,
@@ -79,12 +78,16 @@
       XButton
     },
     methods: {
+      ...mapActions([
+        'FriendData'
+      ]),
       onClick () {
         console.log('on click')
       }
     },
     data () {
       return {
+        contactInfo: {}
       }
     }
   }

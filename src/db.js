@@ -7,8 +7,8 @@ const db = new Dexie('YuanSuDB')
 db.version(1).stores({
   friend: '++id',
   friendGroup: 'index,id',
-  group: '++id',
-  groupMembers: '++id',
+  group: 'id',
+  groupMembers: 'id,groupId',
   personInfo: '++id,personInfo.realName',
   userInfo: '++id'
 })

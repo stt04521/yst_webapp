@@ -1,7 +1,8 @@
 /**
  * Created by shishitengteng on 2017/10/23.
  */
-import { getAllFriend, friendDelFriend, groupSortGroup, friendAddGroup, friendDelGroup, findUserByPhone, findPersonInfoByUserId, friendAddFriend, moveFriendToGroup } from '@/api/contacts'
+import { myInfo, getAllFriend, friendDelFriend, groupSortGroup, friendAddGroup, friendDelGroup, findUserByPhone, findPersonInfoByUserId, friendAddFriend, moveFriendToGroup } from '@/api/contacts'
+import { findUserInfoByUserId } from '@/api/login'
 import db from '../../db'
 const contacts = {
   state: {
@@ -28,8 +29,9 @@ const contacts = {
 
   actions: {
     // 分组信息
-    async  FriendGetGroup ({commit}) {
+    async FriendGetGroup ({commit}) {
       let res = await getAllFriend()
+      const userInfo = await myInfo()
       let _friendArr = []
       let _personInfoArr = []
       let _friendGroupArr = res.data.result.map((itemL1) => {
@@ -40,7 +42,7 @@ const contacts = {
             friendId: itemL2.friendId,
             friendGroupId: itemL2.friendGroupId
           })
-          _personInfoArr.push(itemL2)
+          _personInfoArr.push(itemL2.personInfo)
         })
         return {
           id: itemL1.id,
@@ -51,16 +53,13 @@ const contacts = {
           showContent: false
         }
       })
-      // _personInfoArr.push(myInfo.result)
+      _personInfoArr.push(userInfo.data.result)
       db.table('friendGroup').clear()
       db.table('friendGroup').bulkPut(_friendGroupArr)
       db.table('friend').clear()
       db.table('friend').bulkPut(_friendArr)
       db.table('personInfo').clear()
       db.table('personInfo').bulkPut(_personInfoArr)
-      commit('SET_FRIENDGROUP', _friendGroupArr)
-      commit('SET_FRIEND', _friendArr)
-      commit('SET_PERSONINFO', _personInfoArr)
     },
     // 模糊查询
     FuzzySearch ({commit}, value) {
@@ -116,6 +115,13 @@ const contacts = {
     async MoveFriendToGroup ({dispatch, commit}, data) {
       await moveFriendToGroup(data)
       await dispatch('FriendGetGroup')
+    },
+    // 获取好友资料
+    async FriendData ({dispatch, commit}, data) {
+      let user = await db.table('personInfo').where('id').equals(data).first()
+      let userData = await findUserInfoByUserId(user.personInfo.userId)
+      let result = Object.assign(userData.data.result, user.personInfo)
+      return result
     }
   }
 }

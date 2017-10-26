@@ -15,7 +15,7 @@
           <contact-list type="Colleague"></contact-list>
         </swiper-item>
         <swiper-item>
-          <contact-list type="Friends"></contact-list>
+          <contact-list type="GroupChat" :list="ChatGroup" v-on:refresh="getChatGroup"></contact-list>
         </swiper-item>
       </swiper>
       <!--<div class="content">-->
@@ -42,14 +42,26 @@
       ViewBox
     },
     mounted () {
-      this.height = document.body.offsetHeight - 189
+      this.height = document.documentElement.clientHeight - 189
     },
     created () {
       this.getAllGroup()
     },
+    watch: {
+      index (value) {
+        switch (value) {
+          case 2:
+            this.getChatGroup()
+            break
+          default:
+            break
+        }
+      }
+    },
     methods: {
       ...mapActions([
-        'GetFriendGroup'
+        'GetFriendGroup',
+        'GetChatGroup'
       ]),
       onSubmit (val) {
         window.alert('on submit' + val)
@@ -64,7 +76,12 @@
         let self = this
         self.GetFriendGroup().then(res => {
           self.FriendGroup = res
-          console.log(res)
+        })
+      },
+      getChatGroup () {
+        let self = this
+        self.GetChatGroup().then(res => {
+          self.ChatGroup = [{name: '好友', value: res, showContent: false, index: 1}]
         })
       }
     },
@@ -72,6 +89,7 @@
       return {
         height: 0,
         FriendGroup: [],
+        ChatGroup: [],
         isHailFellow: true,
         isColleague: false,
         demo2: '好友',
@@ -90,7 +108,7 @@
 
 <style scoped lang="less">
 
-  .contacts .vux-slider .vux-swiper{
-    overflow: auto !important;
-  }
+  /*.contacts .vux-slider .vux-swiper{*/
+    /*overflow: auto !important;*/
+  /*}*/
 </style>

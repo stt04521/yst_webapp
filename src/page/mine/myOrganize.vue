@@ -1,12 +1,12 @@
 <template>
   <div class="my-organize-wrapper">
-    <x-header title="我的组织" slot="overwrite-left" class="header">
+    <x-header :left-options="{showBack: true}" @on-click-back="goBack" title="我的组织" slot="overwrite-left" class="header">
     </x-header>
     <div class="my-organize-container">
       <ul>
         <li class="organize-item vux-1px-b" v-for="(item, index) in organizeList" :key="index">
-          <img :src="item.logo" class="logo" alt="">
-          <span class="title">{{item.name}}</span>
+          <img :src="item.logo ? item.logo : defaultLogo" class="logo" alt="">
+          <span class="title">{{item.organizeName}}</span>
           <button class="btn vux-1px" @click="invitate">邀请成员</button>
         </li>
       </ul>
@@ -23,34 +23,8 @@
     },
     data () {
       return {
-        organizeList: []
-//        organizeList: [
-//          {
-//            logo: require('../../assets/news/userImg.jpg'),
-//            name: '武汉黎宁游科技有限公司'
-//          },
-//          {
-//            logo: require('../../assets/news/userImg.jpg'),
-//            name: '上海美泰科技有限公司'
-//          },
-//          {
-//            logo: require('../../assets/news/userImg.jpg'),
-//            name: '武汉黎宁游科技有限公司'
-//          },
-//          {
-//            logo: require('../../assets/news/userImg.jpg'),
-//            name: '上海美泰科技有限公司'
-//          },
-//          {
-//            logo: require('../../assets/news/userImg.jpg'),
-//            name: '武汉黎宁游科技有限公司'
-//          },
-//          {
-//            logo: require('../../assets/news/userImg.jpg'),
-//            name: '上海美泰科技有限公司'
-//          }
-//
-//        ]
+        organizeList: [],
+        defaultLogo: require('../../assets/default_organize_logo.png')
       }
     },
     methods: {
@@ -61,14 +35,13 @@
         this.$router.push({
           name: 'createOrganize'
         })
+      },
+      goBack () {
+        console.log('2222')
       }
     },
     created () {
-      console.log(this.$store.getters.organizeId)
       this.organizeList = this.$store.getters.organizeId
-//      this.organizeList = this.$store.getters.organizeList
-//      console.log(this.$store.getters.organizeList)
-//      console.log(this.$state.organizeList)
     }
   }
 </script>

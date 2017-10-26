@@ -50,31 +50,38 @@
         operateList: [
           {
             icon: require('../../assets/help.png'),
-            title: '邀请好友'
+            title: '邀请好友',
+            key: 'INVITE_FRIEND'
           },
           {
             icon: require('../../assets/help.png'),
-            title: '加入组织'
+            title: '加入组织',
+            key: 'ENTER_ORGANIZE'
           },
           {
             icon: require('../../assets/help.png'),
-            title: '创建群聊'
+            title: '创建群聊',
+            key: 'CREATE_GROUP_CHAT'
           },
           {
             icon: require('../../assets/help.png'),
-            title: '我的应用'
+            title: '我的应用',
+            key: 'MY_APPLY'
           },
           {
             icon: require('../../assets/help.png'),
-            title: '我的订单'
+            title: '我的订单',
+            key: 'MY_ORDER_LIST'
           },
           {
             icon: require('../../assets/help.png'),
-            title: '我的组织'
+            title: '我的组织',
+            key: 'MY_ORGANIZE'
           },
           {
             icon: require('../../assets/help.png'),
-            title: '购物车'
+            title: '购物车',
+            key: 'MY_PURCHASE_CART'
           }
         ],
         changeOrganize: false,
@@ -90,13 +97,12 @@
         'getMyInfo'
       ]),
       dealClick (item) {
-        // console.log(item.title)
-        if (item.title === '我的订单') {
+        if (item.key === 'MY_ORDER_LIST') {
           this.$router.push({
             name: 'orderList'
           })
         }
-        if (item.title === '我的组织') {
+        if (item.key === 'MY_ORGANIZE') {
           this.$router.push({
             name: 'myOrganize'
           })

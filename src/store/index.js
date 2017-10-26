@@ -9,6 +9,7 @@ import news from './modules/news'
 import schedule from './modules/schedule'
 import task from './modules/task'
 import contacts from './modules/contacts'
+import groupChat from './modules/groupChat'
 import work from './modules/work'
 import getters from './getters'
 
@@ -22,7 +23,8 @@ const store = new Vuex.Store({
     news,
     schedule,
     task,
-    work
+    work,
+    groupChat
   },
   getters
 })

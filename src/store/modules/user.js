@@ -1,6 +1,6 @@
 import { getToken, setToken, removeToken } from '@/utils/auth'
-import { loginByUsername, logout, getUserInfo, register, loginByPhone, forgetPassword } from '@/api/login'
-
+import { loginByUsername, logout, getUserInfo, register, loginByPhone, forgetPassword, syncUserInfo } from '@/api/login'
+import db from '../../db'
 const login = {
   state: {
     user: '',
@@ -45,13 +45,16 @@ const login = {
 
   actions: {
     // 用户名登录
-    LoginByUsername ({ commit }, userInfo) {
+    LoginByUsername ({ dispatch, commit }, userInfo) {
       const user = userInfo.user.trim()
       return new Promise((resolve, reject) => {
         loginByUsername(user, userInfo.password).then(response => {
           const data = response.data
           setToken(response.data.result.token)
           commit('SET_TOKEN', data.result.token)
+          dispatch('FriendGetGroup')
+          dispatch('dataSyncGroup')
+          dispatch('dataSyncUserInfo')
           resolve()
         }).catch(error => {
           reject(error)
@@ -122,6 +125,15 @@ const login = {
           reject(error)
         })
       })
+    },
+    // 同步用户信息
+    async dataSyncUserInfo () {
+      let userInfo = await syncUserInfo()
+      db.table('userInfo').clear()
+      db.table('userInfo').put(userInfo.data.result)
+    },
+    GetSyncUserInfo () {
+      return db.table('userInfo').toCollection().first()
     }
   }
 }

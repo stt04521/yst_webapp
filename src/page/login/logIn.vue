@@ -44,8 +44,7 @@
     },
     methods: {
       ...mapActions([
-        'LoginByUsername',
-        'FriendGetGroup'
+        'LoginByUsername'
       ]),
       login () {
         let self = this
@@ -58,7 +57,6 @@
           return false
         }
         this.LoginByUsername(userInfo).then(() => {
-          self.FriendGetGroup()
           self.$router.push('/')
         }).catch(err => {
           self.showWarning = true

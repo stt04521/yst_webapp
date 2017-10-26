@@ -31,13 +31,14 @@
         class="search"
       >
       </search>
-      <contact-list type="Friends" select="true"></contact-list>
+      <contact-list type="Friends" select="true" :list="FriendGroup"></contact-list>
     </div>
   </div>
 </template>
 
 <script>
   import { XHeader, Flexbox, FlexboxItem, Cell, Group, XSwitch, XButton, Search } from 'vux'
+  import { mapActions } from 'vuex'
   import contactList from './contactList'
   export default {
     components: {
@@ -53,7 +54,22 @@
     },
     data () {
       return {
+        FriendGroup: [],
         msg: 'Welcome to Your Vue.js App'
+      }
+    },
+    created () {
+      this.getAllGroup()
+    },
+    methods: {
+      ...mapActions([
+        'GetFriendGroup'
+      ]),
+      getAllGroup () {
+        let self = this
+        self.GetFriendGroup().then(res => {
+          self.FriendGroup = res
+        })
       }
     }
   }

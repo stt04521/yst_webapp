@@ -42,10 +42,24 @@ export function loginByPhone (data) {
     data
   })
 }
+// 根据用户ID查好友
+export function findUserInfoByUserId (id) {
+  return fetch({
+    url: `/restful/oauth/findUserByUserId/${id}`,
+    method: 'get'
+  })
+}
 export function getUserInfo (token) {
   return fetch({
     url: '/user/info',
     method: 'get',
     params: { token }
+  })
+}
+// 获取账户信息
+export function syncUserInfo () {
+  return fetch({
+    url: '/restful/oauth/myAccountInfo',
+    method: 'get'
   })
 }

@@ -63,7 +63,7 @@
           {name: '第二步', value: '选择群成员'},
           {name: '第三步', value: '编辑群名称'}
         ],
-        step: 3,
+        step: 1,
         list: [{key: 'gd', value: '好友'}, {key: 'gx', value: '同事'}],
         value2: 'gd'
       }

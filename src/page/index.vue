@@ -44,7 +44,7 @@
           <span v-if="route.path === '/schedule/showSchedule'" slot="right" style="font-size: 17px; color: #fff" @click="addSchedule">添加日程</span>
           <span v-if="route.path === '/schedule/showNote'" slot="right" style="font-size: 17px; color: #fff" @click="addNote">添加记事</span>
           <span v-if="route.path === '/work' || route.path === '/work/todoList' || route.path === '/work/finishedList'" slot="right" style="font-size: 17px; color: #fff" @click="toggleModelShow">切换
-            <selection-list :dataList="selectionList" @toggle-model-show="toggleModelShow" @change-item="changeOrganize" :showModel="showModel"></selection-list>
+            <selection-list :top="45" :dataList="selectionList" @toggle-model-show="toggleModelShow" @change-item="changeOrganize" :showModel="showModel"></selection-list>
           </span>
         </x-header>
         <transition
@@ -56,23 +56,23 @@
         <tabbar class="vux-demo-tabbar" id="vux-demo-tabbar" icon-class="vux-center" slot="bottom">
           <tabbar-item :link="{path:'/news'}" :selected="route.path === '/news'" badge="99+">
             <!--<span class="demo-icon-22 vux-demo-tabbar-icon-home" slot="icon" style="position:relative;top: -2px;">&#xe637;</span>-->
-            <img slot="icon" src="../assets/news_ns.png">
-            <img slot="icon-active" src="../assets/news.png">
+            <img class="tab-image" slot="icon" src="../assets/news_ns.png">
+            <img class="tab-image" slot="icon-active" src="../assets/news.png">
             <span slot="label">消息</span>
           </tabbar-item>
           <tabbar-item :link="{path:'/work'}" :selected="route.path === '/work'" >
-            <img slot="icon" src="../assets/work_ns.png">
-            <img slot="icon-active" src="../assets/work.png">
+            <img class="tab-image" slot="icon" src="../assets/work_ns.png">
+            <img class="tab-image" slot="icon-active" src="../assets/work.png">
             <span slot="label"><span v-if="componentName" class="vux-demo-tabbar-component">{{componentName}}</span><span v-else>工作</span></span>
           </tabbar-item>
           <tabbar-item :link="{path:'/contacts'}" :selected="route.path === '/contacts'" show-dot badge="New">
-            <img slot="icon" src="../assets/contacts_ns.png">
-            <img slot="icon-active" src="../assets/contacts.png">
+            <img class="tab-image" slot="icon" src="../assets/contacts_ns.png">
+            <img class="tab-image" slot="icon-active" src="../assets/contacts.png">
           <span slot="label">联系人</span>
           </tabbar-item>
           <tabbar-item :link="{path:'/schedule'}" :selected="route.path === '/schedule'" show-dot>
-            <img slot="icon" src="../assets/schedule_ns.png">
-            <img slot="icon-active" src="../assets/schedule.png">
+            <img class="tab-image" slot="icon" src="../assets/schedule_ns.png">
+            <img class="tab-image" slot="icon-active" src="../assets/schedule.png">
             <span slot="label">日程</span>
           </tabbar-item>
         </tabbar>
@@ -270,12 +270,14 @@
   }
   .vux-demo-tabbar .weui-bar__item_on .demo-icon-22 {
     color: #F70968;
+
   }
   .vux-demo-tabbar .weui-tabbar_item.weui-bar__item_on .vux-demo-tabbar-icon-home {
     color: rgb(53, 73, 94);
   }
   .demo-icon-22:before {
     content: attr(icon);
+    font-size: 48px;
   }
   .vux-demo-tabbar-component {
     background-color: #F70968;

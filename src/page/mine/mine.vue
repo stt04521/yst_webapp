@@ -3,12 +3,19 @@
     <span class="title">元数通</span>
     <div class="mine-container">
       <div class="header-container">
-        <img src="../../assets/news/userImg.jpg" class="avatar" alt="">
-        <span class="name">李明友</span>
+        <img :src="userAvatar" class="avatar" alt="">
+        <span class="name">{{ myInfo.realName }}</span>
         <div class="organize" @click="selectOrganize">
-          <span class="organize-name">武汉黎宁游科技有限公司</span>
+          <span class="organize-name">{{ orTitle }}</span>
           <span class="triangle" :class="changeOrganize ? 'triangle-top' : 'triangle-bottom'"></span>
+          <Popover ref="popGroup">
+            <div slot="content" class="content">
+              <span class="pop-item" v-for="(item, index) in chooseList" :key="index" @click="hidePop($event, item)">{{ item.organizeName }}</span>
+            </div>
+          </Popover>
         </div>
+
+        <!--<selection-list :top="165" :dataList="selectionList" @toggle-model-show="selectOrganize" @change-item="changeorganize" :showModel="changeOrganize"></selection-list>-->
       </div>
       <ul class="operate-container">
         <li class="operate-item" v-for="(item, index) in operateList" :key="index" @click="dealClick(item)">
@@ -30,10 +37,16 @@
   </div>
 </template>
 <script>
+  import {mapActions} from 'vuex'
+//  import selectionList from '../../components/selectionList'
+  import Popover from '@/components/popover.vue'
   export default {
     name: 'mine',
     data () {
       return {
+        myInfo: {},
+        userAvatar: '',
+        orTitle: '个人',
         operateList: [
           {
             icon: require('../../assets/help.png'),
@@ -64,10 +77,18 @@
             title: '购物车'
           }
         ],
-        changeOrganize: false
+        changeOrganize: false,
+        chooseList: [{key: 0, organizeName: '个人'}],
+        selectionList: [{key: '0', value: '组织01'}, {key: '1', value: '组织02'}, {key: '2', value: '组织03'}, {key: '3', value: '个人'}]
       }
     },
+    components: {
+      Popover
+    },
     methods: {
+      ...mapActions([
+        'getMyInfo'
+      ]),
       dealClick (item) {
         // console.log(item.title)
         if (item.title === '我的订单') {
@@ -94,12 +115,41 @@
         console.log('help')
       },
       selectOrganize () {
-        this.changeOrganize = !this.changeOrganize
+        this.changeOrganize = true
+        this.$refs['popGroup'].onShow()
+      },
+      hidePop (e, item) {
+        e.cancelBubble = true
+        this.changeOrganize = false
+        this.$refs['popGroup'].onHide()
+        this.orTitle = item.title
       }
+    },
+    created () {
+      this.getMyInfo().then((res) => {
+        console.log('mine: ', res)
+        this.myInfo = res
+        if (this.myInfo.portrait) {
+          this.userAvatar = this.myInfo.portrait
+        } else {
+          this.userAvatar = require('../../assets/news/qq.png')
+        }
+        // 如果organizeId存在则向chooseList中push organizeId
+        // 如果organizeId不存在，跳过
+        if (res.organizeId) {
+          this.chooseList = this.chooseList.concat(res.organizeId)
+          console.log('this.chooseList: ', this.chooseList)
+        }
+      }, (err) => {
+        console.log(err)
+      }).catch((err) => {
+        console.log(err)
+      })
     }
   }
 </script>
-<style scoped lang="less">
+<style lang="less">
+
   .mine-wrapper{
     height: 100%;
     overflow: hidden;
@@ -127,6 +177,27 @@
           display: block;
           margin-top: 5px;
         }
+        .organize {
+          .vux-popover{
+            background-color: #fff;
+            color: #000;
+            top: 165px;
+            .vux-popover-arrow-up{
+              border-bottom-color: #fff;
+            }
+            .content{
+              padding: 0px;
+              padding-top: 2px;
+              padding-bottom: 2px;
+              text-align: center;
+              .pop-item{
+                display: block;
+                overflow: hidden;
+                white-space: nowrap;
+              }
+            }
+          }
+        }
         .organize-name{
           font-size: 13px;
           font-weigh: 100;
@@ -152,10 +223,10 @@
         }
       }
       .operate-container{
-        height: 396px;
+        /*height: 396px;*/
         .operate-item{
           height: 62px;
-          line-height: 62px;
+          line-height: 63px;
           padding-left: 30px;
           font-size: 16px;
           font-weight: 100;

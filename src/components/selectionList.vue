@@ -1,9 +1,9 @@
 <template>
   <div class="list-wrapper">
-    <div v-show="showModel" class="choose-organize">
+    <div v-show="showModel" class="choose-organize" :style="{top: top + 'px'}">
       <div class="status-item" @click="changeItem(item)" v-for="(item, index) in dataList" :key="index">{{item.value}}</div>
     </div>
-    <div class="bg-color" v-if="showModel" @click="toggleModelShow"></div>
+    <div class="bg-color" v-if="showModel" @click="toggleModelShow" :style="{top: top + 'px'}"></div>
   </div>
 </template>
 <script>
@@ -16,6 +16,9 @@
       showModel: {
         type: Boolean,
         default: false
+      },
+      top: {
+        type: Number
       }
     },
     methods: {
@@ -35,7 +38,6 @@
     .choose-organize{
       z-index: 3;
       position: fixed;
-      top: 45px;
       left: 0px;
       right: 0px;
       background-color: #fff;
@@ -52,7 +54,6 @@
       height: 100%;
       background-color: rgba(7,17,27,0.7);
       position: fixed;
-      top: 45px;
       right: 0px;
       left: 0px;
       z-index:2;

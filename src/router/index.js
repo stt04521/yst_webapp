@@ -352,12 +352,13 @@ export default new Router({
         require(['@/page/mine/myOrganize'], resolve)
       }
     },
-    // {
-    //   path: '/createOrganize',  // 创建组织
-    //   component: (resolve) => {
-    //     require(['@/page/mine/createOrganize'], resolve)
-    //   }
-    // },
+    {
+      path: '/createOrganize',  // 创建组织
+      name: 'createOrganize',
+      component: (resolve) => {
+        require(['@/page/mine/createOrganize'], resolve)
+      }
+    },
     {
       path: '/authentication/:type/:paramList',  // 组织认证
       name: 'authentication',
@@ -521,6 +522,13 @@ export default new Router({
       name: 'othersPay',
       component: (resolve) => {
         require(['@/page/apply/othersPay'], resolve)
+      }
+    },
+    {
+      path: '/applyScreen',   // 找人代付
+      name: 'applyScreen',
+      component: (resolve) => {
+        require(['@/page/apply/applyScreen'], resolve)
       }
     }
   ]

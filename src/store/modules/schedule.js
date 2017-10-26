@@ -20,8 +20,8 @@ const schedule = {
         createSchedule(data).then((res) => {
           console.log(res)
           resolve()
-        }).catch(() => {
-          reject()
+        }).catch((err) => {
+          reject(err)
         })
       })
     },

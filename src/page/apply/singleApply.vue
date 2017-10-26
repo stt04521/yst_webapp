@@ -20,7 +20,7 @@
       <block-item :isDelete="false" v-show="isShowAs" :isShowAddApply="false"></block-item>
       <apply-update v-show="isShowAu"></apply-update>
     </div>
-    <selection-list :dataList="selectionList" @toggle-model-show="toggleModelShow" @change-item="changeOrganize" :showModel="showModel"></selection-list>
+    <selection-list :top="45" :dataList="selectionList" @toggle-model-show="toggleModelShow" @change-item="changeOrganize" :showModel="showModel"></selection-list>
   </div>
 </template>
 <script>

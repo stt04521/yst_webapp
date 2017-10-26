@@ -13,9 +13,9 @@
         >
         </x-input>
         <cell class="reset-padding" title="组织类型" :value="type" is-link @click.native="changeType" :border-intent="false"></cell>
-        <x-address title="所在地区" v-model="area" :list="addressData" @on-shadow-change="onShadowChange" placeholder="必填"></x-address>
+        <x-address title="所在地区" v-model="area" :list="addressData" placeholder="必填"></x-address>
       </group>
-      <button class="btn" :class="organizeName.length > 2 && area.length > 0 && type !== '必填' ? 'create' : ''" @click="createOrganize">创建组织</button>
+      <button class="btn" :class="organizeName.length > 2 && area.length > 0 && type !== '必填' ? 'create' : ''" @click="createorganize">创建组织</button>
       <actionsheet v-model="showTypeChoose" :menus="typeList" @on-click-menu="chooseType" show-cancel></actionsheet>
 
     </div>
@@ -23,7 +23,8 @@
   </div>
 </template>
 <script>
-  import {XHeader, Group, XInput, Cell, Actionsheet, XAddress, ChinaAddressV4Data} from 'vux'
+  import {XHeader, Group, XInput, Cell, Actionsheet, XAddress, ChinaAddressV4Data, Value2nameFilter as value2name} from 'vux'
+  import {mapActions} from 'vuex'
   export default {
     name: 'createOrganize',
     components: {
@@ -64,6 +65,9 @@
       }
     },
     methods: {
+      ...mapActions([
+        'createOrganize'
+      ]),
       verificate () {
         console.log(this.organizeName.length)
       },
@@ -78,14 +82,24 @@
       changeArea () {
         console.log('changeArea')
       },
-      createOrganize () {
+      createorganize () {
+        console.log('1111')
         if (this.organizeName.length > 2 && this.area.length > 0 && this.type !== '必填') {
-          console.log('组织名称： ', this.organizeName, '组织地址： ', this.area, '组织类型： ', this.type)
-          console.log('createOrganize')
+          let paramsData = {
+            organizeType: this.type,
+            organizeName: this.organizeName,
+            address: value2name(this.area, ChinaAddressV4Data)
+          }
+          console.log('params data: ', paramsData)
+          this.createOrganize(paramsData).then((res) => {
+            this.$router.push({
+              name: 'myOrganize'
+            })
+            console.log('createOrganize page: ', res)
+          }, (err) => {
+            console.log(err)
+          })
         }
-      },
-      onShadowChange (ids, names) {
-        console.log(this.area)
       }
     }
   }

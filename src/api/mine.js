@@ -41,8 +41,23 @@ export function editInfo (data) {
 export function identityVerification (data) {
   return fetch({
     url: '/restful/person/cert/create',
-    method: 'post'
+    method: 'post',
+    data
   })
 }
 
-//
+// 创建组织
+/* params
+* {
+*   organizeType: '123',
+*   organizeName: '123456',
+*   address: '55555'
+*  }
+* */
+export function createOrganize (data) {
+  return fetch({
+    url: '/restful/organize/create',
+    method: 'post',
+    data
+  })
+}

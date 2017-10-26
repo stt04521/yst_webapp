@@ -23,33 +23,34 @@
     },
     data () {
       return {
-        organizeList: [
-          {
-            logo: require('../../assets/news/userImg.jpg'),
-            name: '武汉黎宁游科技有限公司'
-          },
-          {
-            logo: require('../../assets/news/userImg.jpg'),
-            name: '上海美泰科技有限公司'
-          },
-          {
-            logo: require('../../assets/news/userImg.jpg'),
-            name: '武汉黎宁游科技有限公司'
-          },
-          {
-            logo: require('../../assets/news/userImg.jpg'),
-            name: '上海美泰科技有限公司'
-          },
-          {
-            logo: require('../../assets/news/userImg.jpg'),
-            name: '武汉黎宁游科技有限公司'
-          },
-          {
-            logo: require('../../assets/news/userImg.jpg'),
-            name: '上海美泰科技有限公司'
-          }
-
-        ]
+        organizeList: []
+//        organizeList: [
+//          {
+//            logo: require('../../assets/news/userImg.jpg'),
+//            name: '武汉黎宁游科技有限公司'
+//          },
+//          {
+//            logo: require('../../assets/news/userImg.jpg'),
+//            name: '上海美泰科技有限公司'
+//          },
+//          {
+//            logo: require('../../assets/news/userImg.jpg'),
+//            name: '武汉黎宁游科技有限公司'
+//          },
+//          {
+//            logo: require('../../assets/news/userImg.jpg'),
+//            name: '上海美泰科技有限公司'
+//          },
+//          {
+//            logo: require('../../assets/news/userImg.jpg'),
+//            name: '武汉黎宁游科技有限公司'
+//          },
+//          {
+//            logo: require('../../assets/news/userImg.jpg'),
+//            name: '上海美泰科技有限公司'
+//          }
+//
+//        ]
       }
     },
     methods: {
@@ -57,8 +58,17 @@
         console.log('邀请成员')
       },
       createOrganize () {
-        console.log('create organize')
+        this.$router.push({
+          name: 'createOrganize'
+        })
       }
+    },
+    created () {
+      console.log(this.$store.getters.organizeId)
+      this.organizeList = this.$store.getters.organizeId
+//      this.organizeList = this.$store.getters.organizeList
+//      console.log(this.$store.getters.organizeList)
+//      console.log(this.$state.organizeList)
     }
   }
 </script>

@@ -374,6 +374,7 @@ export default new Router({
     },
     {
       path: '/personnelInfo',  // 个人信息
+      name: 'personnelInfo',
       component: (resolve) => {
         require(['@/page/mine/personnelInfo'], resolve)
       }
@@ -403,6 +404,7 @@ export default new Router({
     },
     {
       path: '/countSafe',  // 账户安全
+      name: 'countSafe',
       component: (resolve) => {
         require(['@/page/mine/countSafe'], resolve)
       }
@@ -525,7 +527,7 @@ export default new Router({
       }
     },
     {
-      path: '/applyScreen',   // 找人代付
+      path: '/applyScreen',   // 应用搜索
       name: 'applyScreen',
       component: (resolve) => {
         require(['@/page/apply/applyScreen'], resolve)

@@ -9,6 +9,7 @@ const getters = {
   status: state => state.user.status,
   roles: state => state.user.roles,
   setting: state => state.user.setting,
-  organizeId: state => state.mine.organizeId  // 所有组织
+  organizeId: state => state.mine.organizeId,  // 所有组织
+  myInfo: state => state.mine  // 我的资料
 }
 export default getters

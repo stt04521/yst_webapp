@@ -43,7 +43,9 @@
         }, 2000)
       },
       showCountSafe () {
-        this.$router.push('/countSafe')
+        this.$router.push({
+          name: 'countSafe'
+        })
       }
     }
   }

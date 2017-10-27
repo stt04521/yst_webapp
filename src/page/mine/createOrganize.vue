@@ -90,12 +90,10 @@
             organizeName: this.organizeName,
             address: value2name(this.area, ChinaAddressV4Data)
           }
-          console.log('params data: ', paramsData)
           this.createOrganize(paramsData).then((res) => {
             this.$router.push({
               name: 'myOrganize'
             })
-            console.log('createOrganize page: ', res)
           }, (err) => {
             console.log(err)
           })

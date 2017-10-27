@@ -55,6 +55,7 @@ const login = {
           dispatch('FriendGetGroup')
           dispatch('dataSyncGroup')
           dispatch('dataSyncUserInfo')
+          dispatch('MyInfo')
           resolve()
         }).catch(error => {
           reject(error)

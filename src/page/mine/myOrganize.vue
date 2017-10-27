@@ -42,6 +42,8 @@
     },
     created () {
       this.organizeList = this.$store.getters.organizeId
+      console.log('this.organize: ', this.organizeList)
+      console.log('this.$store.getters: ', this.$store.getters)
     }
   }
 </script>

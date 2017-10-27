@@ -1,4 +1,5 @@
-import {getMyInfo, findPersonInfoByUserId, editInfo, identityVerification, createOrganize} from '@/api/mine'
+import {getMyInfo, findPersonInfoByUserId, editInfo, identityVerification, createOrganize, editEmailOrPhone, changePassword} from '@/api/mine'
+import db from '../../db'
 const mine = {
   state: {
     organizeId: []
@@ -13,17 +14,15 @@ const mine = {
 
   actions: {
     // 获取个人信息
-    getMyInfo ({commit}) {
-      return new Promise((resolve, reject) => {
-        getMyInfo().then((res) => {
-          let result = res.data.result
-          console.log('actions, resule.organized: ', result.organizeId)
-          commit('SET_ORGANIZEID', result.organizeId)
-          resolve(result)
-        }).catch((err) => {
-          reject(err)
-        })
-      })
+    async MyInfo ({commit}) {
+      let myInfo = await getMyInfo()
+      let result = myInfo.data.result
+      commit('SET_ORGANIZEID', result.organizeId)
+      db.table('myInfo').clear()
+      db.table('myInfo').put(result)
+    },
+    GetMyInfo ({commit}) {
+      return db.table('myInfo').toCollection().first()
     },
     // 通过id查找信息
     findPersonInfoByUserId ({commit}, id) {
@@ -51,7 +50,6 @@ const mine = {
     identityVerification ({commit}, data) {
       return new Promise((resolve, reject) => {
         identityVerification(data).then((res) => {
-          console.log('actions: ', res)
           resolve(res)
         }).catch((err) => {
           reject(err)
@@ -59,15 +57,40 @@ const mine = {
       })
     },
     // 创建组织
-    createOrganize ({commit, state}, data) {
-      console.log('mine state: ', state)
+    createOrganize ({dispatch, commit}, data) {
       return new Promise((resolve, reject) => {
         createOrganize(data).then((res) => {
+          dispatch('MyInfo')
           resolve(res)
         }).catch((err) => {
           reject(err)
         })
       })
+    },
+    // 修改手机号或者邮箱
+    editEmailOrPhone ({commit, dispatch}, data) {
+      return new Promise((resolve, reject) => {
+        editEmailOrPhone(data).then((res) => {
+          dispatch('dataSyncUserInfo')
+          resolve(res)
+        }).catch((err) => {
+          reject(err)
+        })
+      })
+    },
+    // 修改密码
+    changePassword ({commit}, data) {
+      return new Promise((resolve, reject) => {
+        changePassword(data).then((res) => {
+          resolve(res)
+        }).catch((err) => {
+          reject(err)
+        })
+      })
+    },
+    async personnelInfo ({dispatch, commit}) {
+      let myInfo = await db.table('myInfo').toCollection().first()
+      console.log('stt', myInfo)
     }
   }
 }

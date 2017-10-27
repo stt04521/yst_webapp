@@ -1,5 +1,5 @@
 <template>
-  <div class="list" :style="{height: height+'px',overflow: 'auto'}">
+  <div class="list" :style="{height: height+'px',overflow: select == 'true' ? 'inherit':'auto'}">
     <div v-transfer-dom>
       <actionsheet v-model="show3" :menus="menus3" @on-click-menu="click" @on-click-menu-delete="onDelete" show-cancel></actionsheet>
     </div>
@@ -42,7 +42,8 @@
               <img slot="icon" class="icon" :src="item1.personInfo.portrait" :data-id="index1" >
             </cell>
             <!--选择联系人-->
-            <checklist  label-position="left" required :options="radio003" v-model="checklist001" v-if="select == 'true' && item1.personInfo">
+            <checklist  label-position="left" required :options="item.friend" v-model="checklist001" v-if="select == 'true' && item1.personInfo">
+              <span>sss</span>
               <img slot="icon" class="icon" :src="item1.personInfo.portrait">
             </checklist>
             <!--没有好友-->
@@ -114,7 +115,7 @@
         <div v-show="item.showContent">
           <template v-for="item1,index1 in item.value" >
             <!--群组列表-->
-            <cell :data-id="index1"  v-longtap="{fn:onItemLongpress,name:'长按'}" @click.native.stop="onJutmp({path: '/GroupChatData',query:{id: item1.id}})" v-if="!select">
+            <cell :data-id="index1"  v-longtap="{fn:onItemLongpress,name:'长按'}" @click.native.stop="onJutmp({path: '/GroupChatData',query:{id: item1.id, name: item1.name}})" v-if="!select">
               <div slot="title" :data-id="index1" >
                 {{item1.name}}
                 <Popover :ref="'groupItem'+index1" >

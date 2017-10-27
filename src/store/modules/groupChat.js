@@ -43,8 +43,15 @@ const groupChat = {
     // 群组资料
     async GetGroupInfo ({dispatch, commit}, groupId) {
       return db.table('groupMembers').where('groupId').equals(groupId).toArray()
+    },
+    // 删除群成员
+    async DelMembers ({dispatch, commit}, data) {
+      await delGroupMembers(data)
+      await db.table('groupMembers').where('id').equals(data.userId).delete()
+      await dispatch('dataSyncGroup')
     }
   }
+
 }
 
 export default groupChat

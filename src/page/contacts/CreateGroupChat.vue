@@ -6,10 +6,10 @@
       :left-options="leftOptions"
     >
       <div slot="left">
-        <span v-if="step == 2 || step == 3">上一步</span>
+        <span v-if="step == 2 || step == 3" @click="changeStep(step-1)">上一步</span>
       </div>
       <div slot="right">
-        <span v-if="step == 1 || step == 2">下一步</span>
+        <span v-if="step == 1 || step == 2" @click="changeStep(step+1)">下一步</span>
         <span v-if="step == 3">创建</span>
       </div>
     </x-header>
@@ -24,14 +24,13 @@
     <hr>
     <div class="step_one" v-if="step == 1">
       <h2>选择群类型：</h2>
-      <select class="chat_type">
-        <option>好友</option>
-        <option>同事</option>
-      </select>
-      <select class="chat_type">
-        <option>武汉新华科技有…</option>
-        <option>武汉新华科技有…</option>
-      </select>
+      <span class="chat_type">
+        好友
+      </span>
+      <!--<select class="chat_type">-->
+        <!--<option>武汉新华科技有…</option>-->
+        <!--<option>武汉新华科技有…</option>-->
+      <!--</select>-->
     </div>
     <div class="step_two" v-if="step == 2">
       <div class="group_list">
@@ -42,7 +41,7 @@
           </div>
         </div>
       </div>
-      <contact-list type="Friends" select="true"></contact-list>
+      <contact-list type="Friends" select="true" :list="FriendGroup"></contact-list>
     </div>
     <div class="step_three" v-if="step == 3">
       <label for="groupName">群名称：</label>
@@ -54,6 +53,7 @@
 <script>
   import { XHeader, Flexbox, FlexboxItem, Divider, Selector, Group } from 'vux'
   import contactList from './contactList'
+  import { mapActions } from 'vuex'
   export default {
     name: 'hello',
     data () {
@@ -63,6 +63,7 @@
           {name: '第二步', value: '选择群成员'},
           {name: '第三步', value: '编辑群名称'}
         ],
+        FriendGroup: [],
         step: 1,
         list: [{key: 'gd', value: '好友'}, {key: 'gx', value: '同事'}],
         value2: 'gd'
@@ -84,6 +85,23 @@
         } else {
           return {showBack: false}
         }
+      }
+    },
+    created () {
+      this.getAllGroup()
+    },
+    methods: {
+      ...mapActions([
+        'GetFriendGroup'
+      ]),
+      changeStep (num) {
+        this.step = num
+      },
+      getAllGroup () {
+        let self = this
+        self.GetFriendGroup().then(res => {
+          self.FriendGroup = res
+        })
       }
     }
   }

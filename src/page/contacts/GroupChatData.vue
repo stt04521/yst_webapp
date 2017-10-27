@@ -1,5 +1,6 @@
 <template>
   <div class="hello">
+    <actionsheet v-model="show3" :menus="menus3"  @on-click-menu-delete="onDelete" show-cancel></actionsheet>
     <x-header
       title="群聊资料"
     >
@@ -10,8 +11,9 @@
     <div class="member">
       <h2>本组织成员</h2>
       <Flexbox wrap="wrap" :gutter="0" >
-        <FlexboxItem :span="2" v-for="i in GroupList" :key="i.id">
-          <img  :src="require('@/assets/DefaultAvatar.svg')" onerror="onerror=null;src='123.jpg'">
+        <FlexboxItem :span="2" v-for="i in GroupList" :key="i.id" class="relative">
+          <img :src="require('@/assets/close.svg')"  class="close" v-show="isClose" @click="delMembers(i.userId)">
+          <img :src="require('@/assets/DefaultAvatar.svg') || i.personInfo.portrait"  class="img" v-longtap="{fn:onlongpress,name:'长按'}">
           <p>{{i.personInfo.realName}}</p>
         </FlexboxItem>
       </Flexbox>
@@ -25,14 +27,10 @@
       </div>
     <group >
       <cell title="群聊名称">
-        <div>
-          <span style="color: black"> 产品组</span>
-        </div>
+          <span style="color: black"> {{$route.query.name}}</span>
       </cell>
       <cell title="群二维码">
-        <div>
           <img  :src="require('@/assets/contacts/qcode.jpg')" width="20">
-        </div>
       </cell>
     </group>
     <group >
@@ -47,7 +45,7 @@
 </template>
 
 <script>
-  import { XHeader, Flexbox, FlexboxItem, Cell, Group, XSwitch, XButton } from 'vux'
+  import { XHeader, Flexbox, FlexboxItem, Cell, Group, XSwitch, XButton, Actionsheet } from 'vux'
   import { mapActions } from 'vuex'
   import { longtap } from '@/directives/vue-touch'
   export default {
@@ -59,14 +57,22 @@
       Cell,
       Group,
       XSwitch,
-      XButton
+      XButton,
+      Actionsheet
     },
     directives: {
       longtap
     },
     data () {
       return {
-        GroupList: []
+        isClose: false,
+        GroupList: [],
+        show3: false,
+        request: {},
+        menus3: {
+          title: '<span style="color:#999999;font-size: 14px">您将在群聊中删除该好友</span>',
+          delete: '<span style="color:red">确定删除</span>'
+        }
       }
     },
     created () {
@@ -74,13 +80,32 @@
     },
     methods: {
       ...mapActions([
-        'GetGroupInfo'
+        'GetGroupInfo',
+        'DelMembers'
       ]),
       getGroupList (id) {
         let self = this
-        this.GetGroupInfo(id).then(res => {
+        self.GetGroupInfo(id).then(res => {
           self.GroupList = res
         })
+      },
+      onlongpress () {
+        let self = this
+        self.isClose = true
+      },
+      onDelete () {
+        let self = this
+        self.DelMembers(self.request).then(res => {
+          self.getGroupList(self.$route.query.id)
+        })
+      },
+      delMembers (id) {
+        let self = this
+        self.show3 = true
+        self.request = {
+          groupId: self.$route.query.id,
+          userId: id
+        }
       }
     }
   }
@@ -96,7 +121,12 @@
     p{
       text-align: center;
     }
-    img{
+    .close{
+      width: 20px;
+      position: absolute;
+      right: 0;
+    }
+    .img{
       width: 40px;
     }
     .vux-flexbox .vux-flexbox-item{

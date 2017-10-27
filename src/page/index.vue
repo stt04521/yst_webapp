@@ -35,7 +35,7 @@
               <div slot="content" class="">
                 <p @click="onJutmp('/SearchBuddy/addFriends')"><img :src="require('@/assets/contacts/addF.jpeg')">添加好友</p>
                 <hr>
-                <p><img :src="require('@/assets/contacts/groupChat.jpeg')">创建群聊</p>
+                <p @click="onJutmp('/CreateGroupChat')"><img :src="require('@/assets/contacts/groupChat.jpeg')"  >创建群聊</p>
                 <hr>
                 <p><img :src="require('@/assets/contacts/Scan.jpeg')">扫一扫</p>
               </div>

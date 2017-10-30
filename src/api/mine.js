@@ -61,3 +61,31 @@ export function createOrganize (data) {
     data
   })
 }
+// 修改手机号或者邮箱
+/* params
+* {
+*   type: 'email or phone'
+*   email/ phone: '11111'
+*  }
+* */
+export function editEmailOrPhone (data) {
+  return fetch({
+    url: `/restful/oauth/editUser/${data.type}`,
+    method: 'post',
+    data
+  })
+}
+// 修改密码
+/* params
+* {
+*   password: '123456',
+*   newPassword: '523648'
+*  }
+* */
+export function changePassword (data) {
+  return fetch({
+    url: '/restful/oauth/changePassword',
+    method: 'post',
+    data
+  })
+}

@@ -19,6 +19,7 @@
 </template>
 <script>
   import {XHeader, Group, XInput, Icon, XButton} from 'vux'
+  import {mapActions} from 'vuex'
   export default {
     name: 'inputInfo',
     components: {
@@ -46,24 +47,65 @@
       let paramList = this.$route.params
       this.infoList = paramList.setInfo
       this.setType = paramList.setType
-      if (this.setType === 'tel') {
+      if (this.setType === 'SET_TEL') {
         this.isShowNewPsw = false
         this.isShowTestcode = true
-      } else if (this.setType === 'password') {
+      } else if (this.setType === 'SET_PSW') {
         this.isShowTestcode = false
         this.isShowNewPsw = true
       } else {
         this.isShowTestcode = false
         this.isShowNewPsw = false
       }
-      console.log(this.isShowNewPsw)
-      console.log(this.isShowTestcode)
     },
     methods: {
+      ...mapActions([
+        'editEmailOrPhone',
+        'ForgetPassword',
+        'changePassword'
+      ]),
       ensureInfo () {
         // 根据setType值的不同，处理不同的提交事件
-        console.log(this.tel)
-        console.log(this.testCode)
+//        console.log(this.tel)
+//        console.log(this.testCode)
+        if (this.setType === 'SET_TEL') {
+          let paramsData = {
+            type: 'phone',
+            phone: this.tel
+          }
+          this.editEmailOrPhone(paramsData).then((res) => {
+            this.$router.push({
+              name: 'countSafe'
+            })
+          }, (err) => {
+            console.log(err)
+          })
+        }
+        if (this.setType === 'SET_EMAIL') {
+          let paramsData = {
+            type: 'email',
+            email: this.tel
+          }
+          this.editEmailOrPhone(paramsData).then((res) => {
+            this.$router.push({
+              name: 'countSafe'
+            })
+          }, (err) => {
+            console.log(err)
+          })
+        }
+        if (this.setType === 'SET_PSW') {
+          let paramsData = {
+            password: this.tel,
+            newPassword: this.newPassword
+          }
+          console.log('input info password: ', paramsData)
+          this.changePassword(paramsData).then((res) => {
+            console.log('input info : ', res)
+          }, (err) => {
+            console.log(err)
+          })
+        }
       },
       changePasswordType () {
         this.isWatchPw = !this.isWatchPw

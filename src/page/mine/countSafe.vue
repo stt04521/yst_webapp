@@ -2,9 +2,9 @@
   <div class="count-safe-wrapper">
     <x-header title="帐号安全"></x-header>
     <group :gutter="0">
-      <cell title="用户名" value="limingyou" class="cell-item"></cell>
-      <cell title="手机号" value="15236478934" class="cell-item" @click.native="changeInfo('tele')"></cell>
-      <cell title="Email" value="未绑定" class="cell-item" @click.native="changeInfo('email')"></cell>
+      <cell title="用户名" :value="accountInfo.user" class="cell-item"></cell>
+      <cell title="手机号" :value="accountInfo.phone" class="cell-item" @click.native="changeInfo('tele')"></cell>
+      <cell title="Email" :value="accountInfo.email && accountInfo.email.length > 0 ? accountInfo.email : '未绑定'" class="cell-item" @click.native="changeInfo('email')"></cell>
       <cell title="密码" value="*****" class="cell-item" @click.native="changeInfo('password')"></cell>
     </group>
     <span class="toast-tip">提示： 绑定手机号或邮箱后，可直接用于帐号登录</span>
@@ -12,30 +12,19 @@
 </template>
 <script>
   import {XHeader, Group, Cell} from 'vux'
+  import {mapActions} from 'vuex'
   export default {
     name: 'countSafe',
     data () {
       return {
         dataList: {},
         setType: '',
-        countInfo: [
-          {
-            title: '用户名',
-            value: '李明友'
-          },
-          {
-            title: '手机号',
-            value: '132547931'
-          },
-          {
-            title: 'Email',
-            value: '未绑定'
-          },
-          {
-            title: '密码',
-            value: '*******'
-          }
-        ],
+        accountInfo: {
+          user: '',
+          phone: '',
+          email: '',
+          password: ''
+        },
         setTel: {
           title: '手机号',
           title01: '新手机号',
@@ -63,19 +52,22 @@
       Cell
     },
     methods: {
+      ...mapActions([
+        'GetSyncUserInfo'
+      ]),
       changeInfo (val) {
         console.log(val)
         if (val === 'tele') {
           this.dataList = this.setTel
-          this.setType = 'tel'
+          this.setType = 'SET_TEL'
         }
         if (val === 'email') {
           this.dataList = this.setEmail
-          this.setType = 'email'
+          this.setType = 'SET_EMAIL'
         }
         if (val === 'password') {
           this.dataList = this.setPsw
-          this.setType = 'password'
+          this.setType = 'SET_PSW'
         }
         this.$router.push({
           name: 'inputInfo',
@@ -85,6 +77,15 @@
           }
         })
       }
+    },
+    created () {
+      console.log('created')
+      this.GetSyncUserInfo().then((res) => {
+        this.accountInfo = res
+        console.log(res)
+      }, (err) => {
+        console.log(err)
+      })
     }
   }
 </script>

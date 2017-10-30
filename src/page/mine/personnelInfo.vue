@@ -6,24 +6,24 @@
       <group class="user-info" :gutter="0">
         <cell value="编辑头像" is-link>
           <div slot="title">
-            <img src="../../assets/news/userImg.jpg" class="avatar" alt="">
-            <span class="name">李明友</span>
-            <img src="../../assets/news/userImg.jpg" class="code" alt="">
+            <img :src="infoList.portrait ? infoList.portrait : defaultAvatar" class="avatar" alt="">
+            <span class="name">{{ infoList.realName }}</span>
+            <img src="../../assets/erwei_code.png" class="code" alt="">
           </div>
         </cell>
       </group>
       <group title="基本信息">
-        <cell title="用户名" :value="infoList.spellName"></cell>
-        <cell title="手机号" :value="infoList.tel"></cell>
-        <cell title="Email" :value="infoList.Email"></cell>
+        <cell title="用户名" :value="accountInfo.user"></cell>
+        <cell title="手机号" :value="accountInfo.phone"></cell>
+        <cell title="Email" :value="accountInfo.email"></cell>
       </group>
-      <group title="组织信息" v-if="infoList.organize && infoList.organize.length > 0">
-        <cell title="组织" :value="infoList.organize[0].name" is-link></cell>
-        <cell title="工号" :value="infoList.organize[0].address"></cell>
-        <cell title="部门" :value="infoList.organize[0].partMent"></cell>
-        <cell title="职务" :value="infoList.organize[0].personPart"></cell>
+      <group title="组织信息" v-show="infoList.organizeId && infoList.organizeId.length > 0">
+        <cell title="组织" :value="infoList.organizeId[0].organizeName" is-link></cell>
+        <cell title="工号" :value="infoList.organizeId[0].address"></cell>
+        <cell title="部门" value="暂无数据"></cell>
+        <cell title="职务" value="暂无数据"></cell>
       </group>
-      <group v-if="infoList.id" title="身份信息">
+      <group v-if="infoList.authState" title="身份信息">
         <cell title="姓名" :value="infoList.realName"></cell>
         <cell title="性别" :value="infoList.sex"></cell>
         <cell title="身份证号" :value="infoList.id"></cell>
@@ -39,6 +39,7 @@
 </template>
 <script>
   import {XHeader, Group, Cell, GroupTitle} from 'vux'
+  import {mapActions} from 'vuex'
   export default {
     name: 'personnelInfo',
     components: {
@@ -49,6 +50,7 @@
     },
     data () {
       return {
+        defaultAvatar: require('../../assets/default_organize_logo.png'),
         personnelAuthenticationInfo: {
           type: 'personnel',
           pageTitle: '身份认证',
@@ -57,25 +59,14 @@
           title03: '资质证明',
           title04: '身份证'
         },
-        infoList: {
-          realName: '李明友',
-          tel: '12233455666',
-          Email: '1111@111.com',
-          spellName: 'limingyou',
-//          id: '326483920543572390451',
-          sex: '女',
-          organize: [
-            {
-              name: '武汉李宁游科技有限公司',
-              address: '123132',
-              partMent: '产品部',
-              personPart: '产品助理'
-            }
-          ]
-        }
+        infoList: {},
+        accountInfo: {}
       }
     },
     methods: {
+      ...mapActions([
+        'GetSyncUserInfo'
+      ]),
       gotoAuthentication () {
         console.log('personnelInfo')
         this.$router.push({
@@ -86,6 +77,15 @@
           }
         })
       }
+    },
+    created () {
+      this.infoList = this.$store.getters.myInfo
+      console.log('infoList.organizeId: ', this.infoList.organizeId)
+      this.GetSyncUserInfo().then((res) => {
+        this.accountInfo = res
+      }).catch((err) => {
+        console.log(err)
+      })
     }
   }
 </script>
@@ -104,7 +104,10 @@
           border-radius: 50%;
           vertical-align: middle;
         }
-        .name{}
+        .name{
+          min-width: 50px;
+          display: inline-block;
+        }
         .code{
           width: 20px;
           height: 20px;

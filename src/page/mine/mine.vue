@@ -3,7 +3,7 @@
     <span class="title">元数通</span>
     <div class="mine-container">
       <div class="header-container">
-        <img :src="userAvatar" class="avatar" alt="">
+        <img :src="userAvatar" class="avatar" alt="" @click="showUserInfo">
         <span class="name">{{ myInfo.realName }}</span>
         <div class="organize" @click="selectOrganize">
           <span class="organize-name">{{ orTitle }}</span>
@@ -56,7 +56,7 @@
           {
             icon: require('../../assets/help.png'),
             title: '加入组织',
-            key: 'ENTER_ORGANIZE'
+            key: 'JOIN_ORGANIZE'
           },
           {
             icon: require('../../assets/help.png'),
@@ -85,8 +85,7 @@
           }
         ],
         changeOrganize: false,
-        chooseList: [{key: 0, organizeName: '个人'}],
-        selectionList: [{key: '0', value: '组织01'}, {key: '1', value: '组织02'}, {key: '2', value: '组织03'}, {key: '3', value: '个人'}]
+        chooseList: [{key: 0, organizeName: '个人'}]
       }
     },
     components: {
@@ -94,9 +93,26 @@
     },
     methods: {
       ...mapActions([
-        'getMyInfo'
+        'GetMyInfo'
       ]),
+      showUserInfo () {
+        this.$router.push({
+          name: 'personnelInfo'
+        })
+      },
       dealClick (item) {
+        if (item.key === 'INVITE_FRIEND') {
+          console.log('邀请好友')
+        }
+        if (item.key === 'JOIN_ORGANIZE') {
+          console.log('加入组织')
+        }
+        if (item.key === 'CREATE_GROUP_CHAT') {
+          console.log('创建群聊')
+        }
+        if (item.key === 'MY_APPLY') {
+          console.log('我的应用')
+        }
         if (item.key === 'MY_ORDER_LIST') {
           this.$router.push({
             name: 'orderList'
@@ -106,6 +122,9 @@
           this.$router.push({
             name: 'myOrganize'
           })
+        }
+        if (item.key === 'MY_PURCHASE_CART') {
+          console.log('购物车')
         }
       },
       setUp () {
@@ -128,28 +147,21 @@
         e.cancelBubble = true
         this.changeOrganize = false
         this.$refs['popGroup'].onHide()
-        this.orTitle = item.title
+        this.orTitle = item.organizeName
       }
     },
     created () {
-      this.getMyInfo().then((res) => {
-        console.log('mine: ', res)
+      let self = this
+      self.GetMyInfo().then(res => {
         this.myInfo = res
         if (this.myInfo.portrait) {
           this.userAvatar = this.myInfo.portrait
         } else {
           this.userAvatar = require('../../assets/news/qq.png')
         }
-        // 如果organizeId存在则向chooseList中push organizeId
-        // 如果organizeId不存在，跳过
         if (res.organizeId) {
           this.chooseList = this.chooseList.concat(res.organizeId)
-          console.log('this.chooseList: ', this.chooseList)
         }
-      }, (err) => {
-        console.log(err)
-      }).catch((err) => {
-        console.log(err)
       })
     }
   }

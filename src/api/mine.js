@@ -46,6 +46,23 @@ export function identityVerification (data) {
   })
 }
 
+// 组织验证
+/* params
+* {
+*   organizeName: '组织名称',
+*   cerditCode: '1112110',
+*   organizeLicense: [{url:"123"}, {url: "123123"}],
+*   organizeBasicInfoId: "d499fd70-b588-4b20-8779-291b67230bfb"
+* }
+* */
+export function organizeVerification (data) {
+  return fetch({
+    url: '/restful/organize/createAuth',
+    method: 'post',
+    data
+  })
+}
+
 // 创建组织
 /* params
 * {

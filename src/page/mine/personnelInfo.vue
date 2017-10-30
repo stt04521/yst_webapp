@@ -17,9 +17,10 @@
         <cell title="手机号" :value="accountInfo.phone"></cell>
         <cell title="Email" :value="accountInfo.email"></cell>
       </group>
-      <group title="组织信息" v-show="infoList.organizeId && infoList.organizeId.length > 0">
-        <cell title="组织" :value="infoList.organizeId[0].organizeName" is-link></cell>
-        <cell title="工号" :value="infoList.organizeId[0].address"></cell>
+      <group v-show="organizeList">
+        <group-title slot="title">组织信息<span style="float:right; color: #0099ff" @click="showMoreOrganize">更多组织>></span></group-title>
+        <cell title="组织" :value="name"></cell>
+        <cell title="工号" value="暂无数据"></cell>
         <cell title="部门" value="暂无数据"></cell>
         <cell title="职务" value="暂无数据"></cell>
       </group>
@@ -40,6 +41,7 @@
 <script>
   import {XHeader, Group, Cell, GroupTitle} from 'vux'
   import {mapActions} from 'vuex'
+//  import {eventBus} from '../../utils/eventBus'
   export default {
     name: 'personnelInfo',
     components: {
@@ -50,6 +52,8 @@
     },
     data () {
       return {
+        organizeList: [],
+        choosedId: '',
         defaultAvatar: require('../../assets/default_organize_logo.png'),
         personnelAuthenticationInfo: {
           type: 'personnel',
@@ -76,16 +80,40 @@
             paramList: this.personnelAuthenticationInfo
           }
         })
+      },
+      showMoreOrganize () {
+        this.$router.push({
+          name: 'myOptionalOrganize',
+          params: {
+            id: this.organizeList.id
+          }
+        })
+      },
+      changeOrganize () {
+        console.log('change organize')
       }
     },
     created () {
       this.infoList = this.$store.getters.myInfo
-      console.log('infoList.organizeId: ', this.infoList.organizeId)
+      this.organizeList = this.infoList.organizeId[0]
       this.GetSyncUserInfo().then((res) => {
         this.accountInfo = res
       }).catch((err) => {
         console.log(err)
       })
+    },
+    computed: {
+      name () {
+        if (this.$route.query.id) {
+          let result = this.infoList.organizeId.filter(res => {
+            return res.id === this.$route.query.id
+          })
+          return result[0].organizeName
+        } else {
+          console.log(this.infoList.organizeId[0])
+          return this.infoList.organizeId[0].organizeName
+        }
+      }
     }
   }
 </script>

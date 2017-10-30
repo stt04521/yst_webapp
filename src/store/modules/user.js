@@ -56,6 +56,7 @@ const login = {
           dispatch('dataSyncGroup')
           dispatch('dataSyncUserInfo')
           dispatch('MyInfo')
+          dispatch('LoginIm')
           resolve()
         }).catch(error => {
           reject(error)

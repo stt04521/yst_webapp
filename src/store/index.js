@@ -11,6 +11,7 @@ import task from './modules/task'
 import contacts from './modules/contacts'
 import groupChat from './modules/groupChat'
 import work from './modules/work'
+import chat from './modules/chat'
 import getters from './getters'
 
 Vue.use(Vuex)
@@ -24,7 +25,8 @@ const store = new Vuex.Store({
     schedule,
     task,
     work,
-    groupChat
+    groupChat,
+    chat
   },
   getters
 })

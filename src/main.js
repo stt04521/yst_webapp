@@ -1,5 +1,6 @@
 // The Vue build version to load with the `import` command
 // (runtime-only or standalone) has been set in webpack.base.conf with an alias.
+// require('./utils/pomeloclient_2')
 import Vue from 'vue'
 import FastClick from 'fastclick'
 import VueRouter from 'vue-router'
@@ -12,6 +13,7 @@ import './lib/flexible'
 import _ from 'lodash'
 import moment from 'moment'
 import { getToken } from '@/utils/auth' // 验权
+import createWebSocketPlugin from '@/plugins/socket'
 require('es6-promise').polyfill()
 
 Vue.use(Vuex)
@@ -118,5 +120,6 @@ router.afterEach(function (to) {
 new Vue({
   store,
   router,
+  plugins: [createWebSocketPlugin],
   render: h => h(App)
 }).$mount('#app-box')

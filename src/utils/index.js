@@ -1,4 +1,5 @@
-export function parseTime(time, cFormat) {
+/* eslint-disable */
+export function parseTime (time, cFormat) {
   if (arguments.length === 0) {
     return null
   }
@@ -30,7 +31,7 @@ export function parseTime(time, cFormat) {
   return time_str
 }
 
-export function formatTime(time, option) {
+export function formatTime (time, option) {
   time = +time * 1000
   const d = new Date(time)
   const now = Date.now()
@@ -54,7 +55,7 @@ export function formatTime(time, option) {
 }
 
 // 格式化时间
-export function getQueryObject(url) {
+export function getQueryObject (url) {
   url = url == null ? window.location.href : url
   const search = url.substring(url.lastIndexOf('?') + 1)
   const obj = {}
@@ -69,7 +70,7 @@ export function getQueryObject(url) {
   return obj
 }
 
-export function objectMerge(target, source) {
+export function objectMerge (target, source) {
   /* Merges two  objects,
    giving the last one precedence */
 
@@ -92,7 +93,7 @@ export function objectMerge(target, source) {
   return target
 }
 
-export function deepClone(source) {
+export function deepClone (source) {
   if (!source && typeof source !== 'object') {
     throw new Error('error arguments', 'shallowClone')
   }
@@ -118,9 +119,9 @@ export const url = {
 
   pomeloServerAddress: '192.168.0.12',
 
-  fileUrl:'http://192.168.0.12:7000/file/upload',
+  fileUrl: 'http://192.168.0.12:7000/file/upload',
 
-  picUrl:'http://192.168.0.12:7000'
+  picUrl: 'http://192.168.0.12:7000'
 
 
 }

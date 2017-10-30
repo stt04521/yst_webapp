@@ -1,4 +1,5 @@
 /* eslint-disable */
+var io = require('socket.io-client');
 (function() {
   var isArray = Array.isArray;
 
@@ -305,7 +306,8 @@ var bt2Str = function(byteArray,start,end) {
     return result;
 }
 
-})('object' === typeof module ? module.exports : (this.Protocol = {}), this);
+})
+('object' === typeof module ? module.exports : (this.Protocol = {}), this);
 
 (function() {
   if (typeof Object.create !== 'function') {
@@ -317,7 +319,7 @@ var bt2Str = function(byteArray,start,end) {
   }
 
   var root = window;
-  var pomelo = Object.create(EventEmitter.prototype); // object extend from object
+  var pomelo = Object.create(module.exports.EventEmitter.prototype); // object extend from object
   root.pomelo = pomelo;
   var socket = null;
   var id = 1;
@@ -333,6 +335,7 @@ var bt2Str = function(byteArray,start,end) {
     if(port) {
       url +=  ':' + port;
     }
+
 
     socket = io(url, {'force new connection': true, reconnect: false});
 
@@ -380,7 +383,7 @@ var bt2Str = function(byteArray,start,end) {
     }
     var msg = {};
     var cb;
-    arguments = Array.prototype.slice.apply(arguments);
+    // arguments = Array.prototype.slice.apply(arguments);
     if(arguments.length === 2){
       if(typeof arguments[1] === 'function'){
         cb = arguments[1];
@@ -394,7 +397,7 @@ var bt2Str = function(byteArray,start,end) {
     msg = filter(msg,route);
   id++;
   callbacks[id] = cb;
-  var sg = Protocol.encode(id,route,msg);
+  var sg = module.exports.encode(id,route,msg);
     socket.send(sg);
   };
 

@@ -31,6 +31,7 @@
 </template>
 <script>
   import {XHeader, Group, Cell, XInput, Actionsheet} from 'vux'
+  import {mapActions} from 'vuex'
   export default {
     name: 'authentication',
     components: {
@@ -70,6 +71,10 @@
       }
     },
     methods: {
+      ...mapActions([
+        'identityVerification',
+        'organizeVerification'
+      ]),
       upLoadImg () {
         console.log('upLoadImg')
         this.showUploadChoose = true
@@ -79,9 +84,26 @@
         console.log(this.enterpriseName)
         console.log(this.imgList)
         if (this.$route.params.type === 'etag') {
-          console.log('企业认证')
+          let paramsData = {
+            organizeName: this.enterpriseName,
+            creditCode: this.creditCode,
+            organizeLicense: ''
+          }
+          this.organizeVerification(paramsData).then((res) => {
+            console.log(res)
+          }).catch(err => console.log(err))
         } else if (this.$route.params.type === 'personnel') {
-          console.log('个人认证')
+          let paramsData = {
+            IdentityCard: this.creditCode,
+            IdentityName: this.enterpriseName,
+            IdentityCardImg: ''
+          }
+          console.log('paramsData: ', paramsData)
+          this.identityVerification(paramsData).then((res) => {
+            console.log(res)
+          }).catch((err) => {
+            console.log(err)
+          })
         } else {
           console.log('error')
         }

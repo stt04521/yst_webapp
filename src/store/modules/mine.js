@@ -1,4 +1,4 @@
-import {getMyInfo, findPersonInfoByUserId, editInfo, identityVerification, createOrganize, editEmailOrPhone, changePassword} from '@/api/mine'
+import {getMyInfo, findPersonInfoByUserId, editInfo, identityVerification, createOrganize, editEmailOrPhone, changePassword, organizeVerification} from '@/api/mine'
 import db from '../../db'
 const mine = {
   state: {
@@ -53,6 +53,16 @@ const mine = {
           resolve(res)
         }).catch((err) => {
           reject(err)
+        })
+      })
+    },
+    // 组织验证
+    organizeVerification ({commit}, data) {
+      return new Promise((resolve, reject) => {
+        organizeVerification(data).then((res) => {
+          resolve(res)
+        }).catch((err) => {
+          console.log(err)
         })
       })
     },

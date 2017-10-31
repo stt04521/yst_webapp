@@ -4,7 +4,7 @@
     </x-header>
     <div class="my-organize-container">
       <ul>
-        <li class="organize-item vux-1px-b" v-for="(item, index) in organizeList" :key="index">
+        <li @click="showOrganizeDetail(item)" class="organize-item vux-1px-b" v-for="(item, index) in organizeList" :key="index">
           <img :src="item.logo ? item.logo : defaultLogo" class="logo" alt="">
           <span class="title">{{item.organizeName}}</span>
           <button class="btn vux-1px" @click="invitate">邀请成员</button>
@@ -28,7 +28,8 @@
       }
     },
     methods: {
-      invitate () {
+      invitate (e) {
+        e.cancelBubble = true
         console.log('邀请成员')
       },
       createOrganize () {
@@ -38,6 +39,14 @@
       },
       goBack () {
         console.log('2222')
+      },
+      showOrganizeDetail (item) {
+        this.$router.push({
+          name: 'organizeInfo',
+          params: {
+            id: item.id
+          }
+        })
       }
     },
     created () {
@@ -73,17 +82,18 @@
         }
         .btn{
           width: 78px;
-          height: 22px;
-          line-height: 22px;
+          height: 26px;
+          line-height: 26px;
           background-color: #fff;
-          border: 1px solid #0099ff;
-          border-radius: 2px;
+          border: none;
+          border-radius: 4px;
           color: #0099ff;
           position: absolute;
           top: 20px;
-          right: 5px;
+          right: 15px;
           &::before{
             border-color: #0099ff;
+            border-radius: 4px;
           }
         }
       }
@@ -97,7 +107,7 @@
         border: none;
         background-color: #0099ff;
         color: #fff;
-        font-size: 15px;
+        font-size: 17px;
       }
     }
   }

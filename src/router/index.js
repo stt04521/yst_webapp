@@ -353,6 +353,13 @@ export default new Router({
       }
     },
     {
+      path: '/myOptionalOrganize/:id',  // 我所在的组织
+      name: 'myOptionalOrganize',
+      component: (resolve) => {
+        require(['@/page/mine/myOptionalOrganize'], resolve)
+      }
+    },
+    {
       path: '/createOrganize',  // 创建组织
       name: 'createOrganize',
       component: (resolve) => {
@@ -367,7 +374,8 @@ export default new Router({
       }
     },
     {
-      path: '/organizeInfo',  // 组织信息
+      path: '/organizeInfo/:id',  // 组织信息
+      name: 'organizeInfo',
       component: (resolve) => {
         require(['@/page/mine/organizeInfo'], resolve)
       }
@@ -513,7 +521,7 @@ export default new Router({
       }
     },
     {
-      path: '/purchaseSuccess',   // 购物车
+      path: '/purchaseSuccess',   // 购买成功
       name: 'purchaseSuccess',
       component: (resolve) => {
         require(['@/page/apply/purchaseSuccess'], resolve)

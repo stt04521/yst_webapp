@@ -124,7 +124,9 @@
           })
         }
         if (item.key === 'MY_PURCHASE_CART') {
-          console.log('购物车')
+          this.$router.push({
+            name: 'shoppingCart'
+          })
         }
       },
       setUp () {

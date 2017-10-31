@@ -52,6 +52,7 @@
     },
     data () {
       return {
+        orId: '',
         organizeList: [],
         choosedId: '',
         defaultAvatar: require('../../assets/default_organize_logo.png'),
@@ -69,7 +70,8 @@
     },
     methods: {
       ...mapActions([
-        'GetSyncUserInfo'
+        'GetSyncUserInfo',
+        'GetMyInfo'
       ]),
       gotoAuthentication () {
         console.log('personnelInfo')
@@ -82,10 +84,16 @@
         })
       },
       showMoreOrganize () {
+        let orId
+        if (this.$route.query.id) {
+          orId = this.$route.query.id
+        } else {
+          orId = this.organizeList[0].id
+        }
         this.$router.push({
           name: 'myOptionalOrganize',
           params: {
-            id: this.organizeList.id
+            id: orId
           }
         })
       },
@@ -95,7 +103,11 @@
     },
     created () {
       this.infoList = this.$store.getters.myInfo
-      this.organizeList = this.infoList.organizeId[0]
+      this.organizeList = this.infoList.organizeId
+      // 其他地方获取不到数据
+//      let res = await this.GetMyInfo()
+//      this.infoList = res
+//      this.organizeList = res.organizeId
       this.GetSyncUserInfo().then((res) => {
         this.accountInfo = res
       }).catch((err) => {
@@ -110,7 +122,6 @@
           })
           return result[0].organizeName
         } else {
-          console.log(this.infoList.organizeId[0])
           return this.infoList.organizeId[0].organizeName
         }
       }

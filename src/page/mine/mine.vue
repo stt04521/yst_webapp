@@ -3,14 +3,14 @@
     <span class="title">元数通</span>
     <div class="mine-container">
       <div class="header-container">
-        <img :src="userAvatar" class="avatar" alt="" @click="showUserInfo">
+        <img :src="defaultLogo" class="avatar" alt="" @click="showUserInfo">
         <span class="name">{{ myInfo.realName }}</span>
         <div class="organize" @click="selectOrganize">
           <span class="organize-name">{{ orTitle }}</span>
           <span class="triangle" :class="changeOrganize ? 'triangle-top' : 'triangle-bottom'"></span>
           <Popover ref="popGroup">
             <div slot="content" class="content">
-              <span class="pop-item" v-for="(item, index) in chooseList" :key="index" @click="hidePop($event, item)">{{ item.organizeName }}</span>
+              <span :style="{color: index ===5 ? '#0099ff' : ''}" class="pop-item" v-for="(item, index) in chooseList" :key="index" @click="hidePop($event, item)">{{ item.organizeName }}</span>
             </div>
           </Popover>
         </div>
@@ -46,6 +46,7 @@
       return {
         myInfo: {},
         userAvatar: '',
+        defaultLogo: require('../../assets/default_organize_logo.png'),
         orTitle: '个人',
         operateList: [
           {
@@ -85,7 +86,7 @@
           }
         ],
         changeOrganize: false,
-        chooseList: [{key: 0, organizeName: '个人'}]
+        chooseList: [{organizeType: 'SINGLER', organizeName: '个人'}]
       }
     },
     components: {
@@ -150,6 +151,16 @@
         this.changeOrganize = false
         this.$refs['popGroup'].onHide()
         this.orTitle = item.organizeName
+        // 点击更多跳转到组织选择页面，选择组织之后，返回到new页面
+//        if (item.organizeType === 'SHOW_MORE') {
+//          this.$router.push({
+//            name: 'myOptionalOrganize'
+//          })
+//        } else {
+//          this.changeOrganize = false
+//          this.$refs['popGroup'].onHide()
+//          this.orTitle = item.organizeName
+//        }
       }
     },
     created () {
@@ -161,9 +172,17 @@
         } else {
           this.userAvatar = require('../../assets/news/qq.png')
         }
-        if (res.organizeId) {
-          this.chooseList = this.chooseList.concat(res.organizeId)
-        }
+        this.chooseList = this.chooseList.concat(res.organizeId)
+        //  超过五个显示更多
+//        if (res.organizeId.length > 5) {
+//          this.chooseList = this.chooseList.concat(res.organizeId.slice(0, 4))
+//          this.chooseList[5] = {
+//            organizeName: '更多>>',
+//            organizeType: 'SHOW_MORE'
+//          }
+//        } else {
+//          this.chooseList = this.chooseList.concat(res.organizeId)
+//        }
       })
     }
   }

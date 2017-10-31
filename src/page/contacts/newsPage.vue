@@ -13,13 +13,14 @@
       </div>
     </div>
     <div class="send-msg-container">
-      <input type="text" class="input-msg" placeholder="请输入消息">
-      <button type="primary" class="send-btn" mini>发送</button>
+      <input type="text" class="input-msg" placeholder="请输入消息" v-model="msg">
+      <x-button  class="send-btn" mini @click.native="sendMsg">发送</x-button>
     </div>
   </div>
 </template>
 <script>
   import {XHeader, Group, XInput, XButton} from 'vux'
+  import { mapActions } from 'vuex'
   export default {
     name: 'newsPage',
     components: {
@@ -31,6 +32,7 @@
     data () {
       return {
         title: '',
+        msg: '',
         newsList: {
           friendNick: '就叫李明友吧',
           list: [
@@ -84,6 +86,16 @@
     },
     created () {
       this.title = this.$route.params.username
+    },
+    methods: {
+      ...mapActions([
+        'sendIm'
+      ]),
+      sendMsg () {
+        console.log(this.msg)
+        let self = this
+        this.sendIm({id: self.$route.query.id, msg: self.msg})
+      }
     }
   }
 </script>

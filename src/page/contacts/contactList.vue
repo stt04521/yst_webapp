@@ -28,7 +28,7 @@
         <template v-if="item.showContent">
           <template v-for="item1,index1 in item.friend" >
             <!--好友列表-->
-            <cell :data-id="index1"  v-longtap="{fn:onItemLongpress,name:'长按'}" @click.native.stop="onJutmp({path: `/ContactInfo/${type}`, query: {id: item1.id}})" v-if="!select && item1.personInfo">
+            <cell :data-id="index1"  v-longtap="{fn:onItemLongpress,name:'长按'}" @click.native.stop="onJutmp({path: `/ContactInfo/${type}`, query: {id: item1.personInfo.userId}})" v-if="!select && item1.personInfo">
               <div slot="title" :data-id="index1" >
                 {{item1.personInfo.realName}}
                 <Popover :ref="'groupItem'+index1" >

@@ -10,8 +10,9 @@ db.version(1).stores({
   group: 'id',
   myInfo: 'id',
   groupMembers: 'id,groupId',
-  personInfo: '++id,personInfo.realName',
-  userInfo: '++id'
+  personInfo: '++id,personInfo.realName,userId',
+  userInfo: '++id',
+  chatMsg: 'speakerId,speakerName,speakerPortrait,audienceId,content'
 })
 
 export default db

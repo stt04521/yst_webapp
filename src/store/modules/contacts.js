@@ -118,9 +118,9 @@ const contacts = {
     },
     // 获取好友资料
     async FriendData ({dispatch, commit}, data) {
-      let user = await db.table('personInfo').where('id').equals(data).first()
-      let userData = await findUserInfoByUserId(user.personInfo.userId)
-      let result = Object.assign(userData.data.result, user.personInfo)
+      let user = await db.table('personInfo').where('userId').equals(data).first()
+      let userData = await findUserInfoByUserId(user.userId)
+      let result = Object.assign(userData.data.result, user)
       return result
     }
   }

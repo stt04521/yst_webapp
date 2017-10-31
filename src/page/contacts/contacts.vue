@@ -46,6 +46,7 @@
     },
     created () {
       this.getAllGroup()
+      console.log(window)
     },
     watch: {
       index (value) {

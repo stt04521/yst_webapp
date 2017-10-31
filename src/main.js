@@ -115,11 +115,11 @@ router.beforeEach(function (to, from, next) {
 router.afterEach(function (to) {
   store.commit('updateLoadingStatus', {isLoading: false})
 })
-
+const plugin = createWebSocketPlugin()
 /* eslint-disable no-new */
 new Vue({
   store,
   router,
-  plugins: [createWebSocketPlugin],
+  plugins: [plugin],
   render: h => h(App)
 }).$mount('#app-box')

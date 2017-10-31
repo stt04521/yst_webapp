@@ -1,12 +1,12 @@
 /**
  * Created by shishitengteng on 2017/10/27.
  */
-const Pomelo = require('yuan-pomeloclient')
-const pomelo = new Pomelo()
+import { pomelo } from '../store/modules/chat'
 export default function createWebSocketPlugin (socket) {
   return store => {
-    pomelo.on('data', data => {
-      store.commit('receiveData', data)
+    pomelo.on('onChat', data => {
+      console.log(data)
+      store.dispatch('saveMsg', data)
     })
     // store.subscribe(mutation => {
     //   if (mutation.type === 'UPDATE_DATA') {

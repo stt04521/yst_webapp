@@ -5,7 +5,7 @@
       <div class="item-container vux-1px-b" v-for="(item, index) in organizeId" :key="index">
         <img :src="item.logo ? item.logo : defaultLogo" class="etag-icon">
         <span class="etag-name">{{ item.organizeName }}</span>
-        <div class="choose-btn" :class="item.id === choosedId ? 'is-choosed' : ''" @click="chooseOrganize(item)">{{ item.isChoose ? '已选择' : '选择' }}</div>
+        <div class="choose-btn" :class="item.id === choosedId ? 'is-choosed' : ''" @click="chooseOrganize(item)">{{ item.id === choosedId ? '已选择' : '选择' }}</div>
       </div>
     </div>
   </div>

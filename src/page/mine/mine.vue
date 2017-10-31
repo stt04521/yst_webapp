@@ -3,7 +3,7 @@
     <span class="title">元数通</span>
     <div class="mine-container">
       <div class="header-container">
-        <img :src="userAvatar" class="avatar" alt="" @click="showUserInfo">
+        <img :src="defaultLogo" class="avatar" alt="" @click="showUserInfo">
         <span class="name">{{ myInfo.realName }}</span>
         <div class="organize" @click="selectOrganize">
           <span class="organize-name">{{ orTitle }}</span>
@@ -46,6 +46,7 @@
       return {
         myInfo: {},
         userAvatar: '',
+        defaultLogo: require('../../assets/default_organize_logo.png'),
         orTitle: '个人',
         operateList: [
           {

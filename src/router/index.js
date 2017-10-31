@@ -40,7 +40,6 @@ export default new Router({
       },
       {
         path: 'contacts', // 联系人
-        meta: { keepAlive: true },
         component: (resolve) => {
           require(['@/page/contacts/contacts'], resolve)
         }

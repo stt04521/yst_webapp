@@ -68,6 +68,7 @@
       },
       getResult (val) {
         let self = this
+        if (!this.value) return
         if (self.$route.params.type === 'search') {
           self.FuzzySearch(val).then(res => {
             console.log(res)

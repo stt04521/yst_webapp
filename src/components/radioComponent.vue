@@ -5,7 +5,7 @@
         <img :src="item.avatar" class="left-img">
         <span class="left-name">{{ item.name }}</span>
       </div>
-      <icon type="success-no-circle" class="radio-icon" v-show="choosedList.indexOf(item) > -1"></icon>
+      <icon type="success-no-circle" class="radio-icon" v-show="result.choosedList.indexOf(item) > -1"></icon>
     </div>
   </div>
 </template>
@@ -23,6 +23,9 @@
       },
       dataList: {
         type: Array
+      },
+      result: {
+        type: Object
       }
     },
     data () {
@@ -32,25 +35,24 @@
     },
     methods: {
       toggleChoose (item) {
-        console.log(this.radioType)
         if (this.radioType === 'mulRadio') {
-          if (this.choosedList.indexOf(item) > -1) {
-            this.choosedList = this._.remove(this.choosedList, (ite) => {
+          if (this.result.choosedList.indexOf(item) > -1) {
+            this.result.choosedList = this._.remove(this.result.choosedList, (ite) => {
               return ite.id !== item.id
             })
           } else {
-            this.choosedList = this.choosedList.concat(item)
+            this.result.choosedList = this.result.choosedList.concat(item)
           }
         }
         if (this.radioType === 'radio') {
-          if (this.choosedList.length === 0 || this.choosedList.indexOf(item) < 0) {
-            this.choosedList.splice(0, 1)
-            this.choosedList = this.choosedList.concat(item)
+          if (this.result.choosedList.length === 0 || this.result.choosedList.indexOf(item) < 0) {
+            this.result.choosedList.splice(0, 1)
+            this.result.choosedList = this.result.choosedList.concat(item)
           } else {
-            this.choosedList = []
+            this.result.choosedList = []
           }
         }
-        this.$emit('choose-list', this.choosedList)
+        console.log(this.result.choosedList)
       }
     }
   }

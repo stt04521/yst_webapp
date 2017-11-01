@@ -33,7 +33,7 @@
         @on-submit="onSubmit"
         ref="search"></search>
     </div>
-    <radio-component :radioType="radioType" :dataList="list"></radio-component>
+    <radio-component :radioType="radioType" :result="result" :dataList="list"></radio-component>
   </div>
 </template>
 <script>
@@ -53,6 +53,10 @@
         searchValue: '',
         radioType: 'radio',
         results: [],
+        resultList: [],
+        result: {
+          choosedList: []
+        },
         list: [
           {
             avatar: require('../../assets/news/userImg.jpg'),
@@ -112,7 +116,7 @@
         console.log('cancel')
       },
       sure () {
-        console.log('sure')
+        console.log('this.result.choosedList', this.result.choosedList)
       }
     }
   }

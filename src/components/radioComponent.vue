@@ -18,8 +18,7 @@
     },
     props: {
       radioType: {
-        type: String,
-        default: 'radio'
+        type: String
       },
       dataList: {
         type: Array
@@ -52,7 +51,6 @@
             this.result.choosedList = []
           }
         }
-        console.log(this.result.choosedList)
       }
     }
   }

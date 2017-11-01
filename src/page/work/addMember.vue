@@ -34,6 +34,8 @@
         ref="search"></search>
     </div>
     <radio-component :radioType="radioType" :result="result" :dataList="list"></radio-component>
+    <hr>
+    <radio-component :radioType="radioType" :result="result" :dataList="list2"></radio-component>
   </div>
 </template>
 <script>
@@ -51,13 +53,45 @@
     data () {
       return {
         searchValue: '',
-        radioType: 'radio',
+        radioType: 'mulRadio',
         results: [],
         resultList: [],
         result: {
           choosedList: []
         },
         list: [
+          {
+            avatar: require('../../assets/news/userImg.jpg'),
+            name: '111',
+            id: '2'
+          },
+          {
+            avatar: require('../../assets/news/userImg.jpg'),
+            name: '111',
+            id: '1'
+          },
+          {
+            avatar: require('../../assets/news/userImg.jpg'),
+            name: '111',
+            id: '3'
+          },
+          {
+            avatar: require('../../assets/news/userImg.jpg'),
+            name: '111',
+            id: '4'
+          },
+          {
+            avatar: require('../../assets/news/userImg.jpg'),
+            name: '111',
+            id: '5'
+          },
+          {
+            avatar: require('../../assets/news/userImg.jpg'),
+            name: '111',
+            id: '6'
+          }
+        ],
+        list2: [
           {
             avatar: require('../../assets/news/userImg.jpg'),
             name: '111',
@@ -113,10 +147,23 @@
         console.log('on cancel')
       },
       cancel () {
-        console.log('cancel')
+        this.$router.go(-1)
       },
       sure () {
         console.log('this.result.choosedList', this.result.choosedList)
+        let role = this.$route.query.role
+        this.$router.push({
+          name: 'createTask',
+          query: {
+            role: role,
+            result: this.result.choosedList
+          }
+        })
+      }
+    },
+    created () {
+      if (this.$route.query && this.$route.query.radioType) {
+        this.radioType = this.$route.query.radioType
       }
     }
   }

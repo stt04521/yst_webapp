@@ -235,6 +235,7 @@ export default new Router({
     {
       path: '/createTask',  // 新建任务
       name: 'createTask',
+      meta: { keepAlive: true },
       component: (resolve) => {
         require(['@/page/work/createTask'], resolve)
       }

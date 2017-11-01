@@ -235,8 +235,16 @@ export default new Router({
     {
       path: '/createTask',  // 新建任务
       name: 'createTask',
+      meta: { keepAlive: true },
       component: (resolve) => {
         require(['@/page/work/createTask'], resolve)
+      }
+    },
+    {
+      path: '/addMember',  // 添加人员
+      name: 'addMember',
+      component: (resolve) => {
+        require(['@/page/work/addMember'], resolve)
       }
     },
     {

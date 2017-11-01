@@ -100,7 +100,7 @@
         console.log(item)
         if (item.title === '任务') {
           this.$router.push({
-            name: 'taskDetail'
+            name: 'taskList'
           })
         }
         if (item.title === '计划') {

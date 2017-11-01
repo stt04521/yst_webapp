@@ -240,6 +240,13 @@ export default new Router({
       }
     },
     {
+      path: '/addMember',  // 添加人员
+      name: 'addMember',
+      component: (resolve) => {
+        require(['@/page/work/addMember'], resolve)
+      }
+    },
+    {
       path: '/planList',  // 计划列表
       name: 'planList',
       component: (resolve) => {

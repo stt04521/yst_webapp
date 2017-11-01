@@ -1,4 +1,6 @@
 /* eslint-disable */
+import {EventEmitter} from 'events';
+export const notify = Object.create(EventEmitter.prototype)
 export function parseTime (time, cFormat) {
   if (arguments.length === 0) {
     return null

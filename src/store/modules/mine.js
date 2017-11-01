@@ -14,15 +14,26 @@ const mine = {
 
   actions: {
     // 获取个人信息
-    async MyInfo ({commit}) {
+    async MyInfo ({dispatch, commit}) {
       let myInfo = await getMyInfo()
       let result = myInfo.data.result
       commit('SET_ORGANIZEID', result.organizeId)
-      db.table('myInfo').clear()
-      db.table('myInfo').put(result)
+      await db.table('myInfo').clear()
+      await db.table('myInfo').put(result)
+      await dispatch('LoginIm')
     },
     GetMyInfo ({commit}) {
-      return db.table('myInfo').toCollection().first()
+      return new Promise((resolve, reject) => {
+        db.table('myInfo').toCollection().first(res => {
+          if (res) {
+            resolve(res)
+          } else {
+            getMyInfo().then(data => {
+              resolve(data.data.result)
+            })
+          }
+        })
+      })
     },
     // 通过id查找信息
     findPersonInfoByUserId ({commit}, id) {

@@ -38,7 +38,7 @@
       <x-switch title="置顶群聊"></x-switch>
     </group>
     <div class="button_group">
-      <x-button class="blue_bg">发消息</x-button>
+      <x-button class="blue_bg" @click.native="onJutmp({path: `/newsPage/${$route.query.name}`, query: {id: $route.query.id, type: 1}})">发消息</x-button>
     </div>
   </div>
 
@@ -83,6 +83,9 @@
         'GetGroupInfo',
         'DelMembers'
       ]),
+      onJutmp (url) {
+        this.$router.push(url)
+      },
       getGroupList (id) {
         let self = this
         self.GetGroupInfo(id).then(res => {

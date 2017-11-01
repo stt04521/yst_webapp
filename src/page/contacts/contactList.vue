@@ -10,7 +10,7 @@
           is-link
           :border-intent="false"
           :arrow-direction="item.showContent ? 'up' : 'down'"
-          @click.native="item.showContent = !item.showContent"
+          @click.native.stop="item.showContent = !item.showContent"
           v-longtap="{fn:onlongpress,name:'长按'}"
           :data-id="index"
         >
@@ -41,14 +41,12 @@
               </div>
               <img slot="icon" class="icon" :src="item1.personInfo.portrait" :data-id="index1" >
             </cell>
-            <!--选择联系人-->
-            <checklist  label-position="left" required :options="item.friend" v-model="checklist001" v-if="select == 'true' && item1.personInfo">
-              <span>sss</span>
-              <img slot="icon" class="icon" :src="item1.personInfo.portrait">
-            </checklist>
             <!--没有好友-->
             <cell v-if="!item1.personInfo" title="此分组为空"></cell>
           </template>
+          <!--选择联系人-->
+          <checklist  label-position="left" required :options="radio003" v-model="checklist001" v-if="select == 'true'&& !Array.isArray(item.friend[0])" @on-change="checkChange">
+          </checklist>
         </template>
       </template>
     </group>
@@ -185,6 +183,9 @@
       },
       click (key) {
         console.log(key)
+      },
+      checkChange (val) {
+        console.log(val)
       },
       // 删除好友
       onDelete () {

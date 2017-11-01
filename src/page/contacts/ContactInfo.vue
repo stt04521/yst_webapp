@@ -52,7 +52,7 @@
       </cell>
     </group>
     <div class="button_group">
-      <x-button class="blue_bg" @click.native="onJutmp({path: `/newsPage/${contactInfo.realName}`, query: {id: $route.query.id}})">发消息</x-button>
+      <x-button class="blue_bg" @click.native="onJutmp({path: `/newsPage/${contactInfo.realName}`, query: {id: $route.query.id, type: 0}})">发消息</x-button>
       <x-button class="blue_bg" v-if="$route.params.type == 'Colleague'">加为好友</x-button>
     </div>
 

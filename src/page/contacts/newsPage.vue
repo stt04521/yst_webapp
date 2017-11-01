@@ -2,14 +2,14 @@
   <div class="news-page-wrapper">
     <x-header :title="title"></x-header>
     <div class="news-page-container">
-      <div class="news-page-item" v-for="(item, index) in newsList.list" :key="index" :class="item.isMe ? 'stay-right' : ''">
-        <div v-show="item.time" class="time">{{ item.time }}</div>
-        <img :src="item.avatar" v-show="!item.isMe" class="avatar">
+      <div class="news-page-item" v-for="(item, index) in newsList" :key="index" :class="item.speakerId !=$route.query.id ? 'stay-right' : ''">
+        <div v-show="item.createdAt" class="time">{{ new Date(item.createdAt).toLocaleString() }}</div>
+        <img :src="item.speakerPortrait" v-if="item.speakerId == $route.query.id" class="avatar" :onerror="errorImg">
         <div class="news-container">
           <span class="triangle"></span>
-          <span class="news-detail">{{ item.newsDetail }}</span>
+          <span class="news-detail">{{ item.content }}</span>
         </div>
-        <img v-show="item.isMe" :src="item.avatar" class="avatar">
+        <img v-if="item.speakerId !=$route.query.id " :src="item.speakerPortrait" class="avatar" :onerror="errorImg">
       </div>
     </div>
     <div class="send-msg-container">
@@ -21,6 +21,7 @@
 <script>
   import {XHeader, Group, XInput, XButton} from 'vux'
   import { mapActions } from 'vuex'
+  import { notify } from '@/utils'
   export default {
     name: 'newsPage',
     components: {
@@ -33,68 +34,45 @@
       return {
         title: '',
         msg: '',
-        newsList: {
-          friendNick: '就叫李明友吧',
-          list: [
-            {
-              isMe: false,
-              avatar: require('../../assets/news/userImg.jpg'),
-              newsDetail: '你早上说的问题我没听明白',
-              time: '15:20'
-            },
-            {
-              isMe: true,
-              avatar: require('../../assets/news/userImg.jpg'),
-              newsDetail: '没听清楚还是没听明白',
-              time: '15:30'
-            },
-            {
-              isMe: false,
-              avatar: require('../../assets/news/userImg.jpg'),
-              newsDetail: '没听清楚'
-            },
-            {
-              isMe: true,
-              avatar: require('../../assets/news/userImg.jpg'),
-              newsDetail: '活该，该你，谁让你不好好听的'
-            },
-            {
-              isMe: false,
-              avatar: require('../../assets/news/userImg.jpg'),
-              newsDetail: '谁让你说那么快的，谁让你说那么快的,谁让你说那么快的,是谁，是谁，你说啊',
-              time: '16:10'
-            },
-            {
-              isMe: true,
-              avatar: require('../../assets/news/userImg.jpg'),
-              newsDetail: '再说，再说就把你删掉',
-              time: '15:50'
-            },
-            {
-              isMe: true,
-              avatar: require('../../assets/news/userImg.jpg'),
-              newsDetail: '再说，再说就把你删掉'
-            },
-            {
-              isMe: true,
-              avatar: require('../../assets/news/userImg.jpg'),
-              newsDetail: '再说，再说就把你删掉'
-            }
-          ]
-        }
+        errorImg: 'this.src="' + require('@/assets/DefaultAvatar.svg') + '"',
+        newsList: []
       }
     },
     created () {
+      let self = this
       this.title = this.$route.params.username
+      this.initMsgBox()
+      notify.on('upData', self.initMsgBox)
+    },
+    beforeDestroy () {
+      notify.removeListener('upData', this.initMsgBox)
     },
     methods: {
       ...mapActions([
-        'sendIm'
+        'sendIm',
+        'msgBox',
+        'sendGroupIm'
       ]),
-      sendMsg () {
-        console.log(this.msg)
+      initMsgBox  (id, isGroup) {
         let self = this
-        this.sendIm({id: self.$route.query.id, msg: self.msg})
+        console.log('111')
+        self.msgBox({id: self.$route.query.id, isGroupChat: self.$route.query.type}).then(data => {
+          self.newsList = data
+        })
+      },
+      sendMsg () {
+        let self = this
+        let send = self.$route.query.type === 0 ? self.sendIm : self.sendGroupIm
+        send({id: self.$route.query.id, msg: self.msg})
+      }
+    },
+    watch: {
+      newsList () {
+        let self = this
+        self.$nextTick(() => {
+          let container = self.$el.querySelector('.news-page-container')
+          container.scrollTop = container.scrollHeight
+        })
       }
     }
   }
@@ -108,10 +86,10 @@
       height: 568px;
       overflow-y: auto;
       .time{
-        width: 40px;
         height: 20px;
         line-height: 20px;
         margin: 0 auto;
+        text-align: center;
       }
       .stay-right{
         text-align: right;

@@ -12,7 +12,7 @@ db.version(1).stores({
   groupMembers: 'id,groupId',
   personInfo: '++id,personInfo.realName,userId',
   userInfo: '++id',
-  chatMsg: 'speakerId,speakerName,speakerPortrait,audienceId,content'
+  chatMsg: '++createdAt,speakerId,speakerName,speakerPortrait,audienceId,content,[audienceId+isGroupChat],[speakerId+isGroupChat],updatedAt,[isGroupChat+isRead]'
 })
 
 export default db

@@ -38,7 +38,8 @@
         </router-link>
       </cell-box>
       <cell-box>
-        <Flexbox>
+        <router-link to="/newsList" class="w100">
+        <Flexbox >
           <FlexboxItem :span="2">
             <div class="news_img">
               <img src="" alt="">
@@ -53,6 +54,7 @@
             <badge text="888"></badge>
           </FlexboxItem>
         </Flexbox>
+        </router-link>
       </cell-box>
       <cell-box>
         <Flexbox>
@@ -111,7 +113,6 @@
       }
     },
     created () {
-      console.log(window)
     }
   }
 </script>

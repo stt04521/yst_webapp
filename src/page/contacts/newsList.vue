@@ -19,6 +19,7 @@
 </template>
 <script>
   import {XHeader, Badge} from 'vux'
+  import { mapActions } from 'vuex'
   export default {
     name: 'newsList',
     components: {
@@ -68,7 +69,13 @@
         ]
       }
     },
+    created () {
+      this.msgList()
+    },
     methods: {
+      ...mapActions([
+        'msgList'
+      ]),
       tonewsPage (val) {
         this.$router.push({
           name: 'newsPage',
@@ -91,10 +98,8 @@
         height: 50px;
         line-height: 50px;
         position: relative;
-        margin-left: 5px;
         padding: 5px 5px 5px 10px;
         background-color: #fff;
-        border-left: 1px solid #eee;
         border-bottom: 1px solid #eee;
         .avatar{
           width: 40px;

@@ -3,7 +3,7 @@
  */
 const Pomelo = require('yuan-pomeloclient')
 export const pomelo = new Pomelo()
-import { url } from '@/utils/index'
+import { url, notify } from '@/utils/index'
 import db from '../../db'
 import store from '../index'
 pomelo.on('onChat', function (data) {
@@ -43,6 +43,7 @@ export const chat = {
     // 登陆
     async LoginIm ({dispatch, commit}) {
       let user = await dispatch('GetMyInfo')
+      console.log(user)
       let uid = user.userId
       await queryEntry(uid, function (host, port) {
         pomelo.init({
@@ -77,35 +78,51 @@ export const chat = {
         content: data.msg,
         from: user.id,
         target: data.id
+      }, function (result) {
+        console.log(result)
+        if (result.error) {
+          console.log(result.error)
+          return false
+        }
+        dispatch('saveMsg', {from: user.id, msg: data.msg, route: 'onChat', target: 'user|' + data.id})
+        return true
+      })
+    },
+    // 发送群消息
+    async sendGroupIm ({dispatch, commit}, data) {
+      let user = await dispatch('GetSyncUserInfo')
+      const route = 'chat.chatHandler.sendGroup'
+      pomelo.request(route, {
+        rid: 'yuan',
+        content: data.msg,
+        from: user.id,
+        target: data.id
       }, function (data) {
-        console.log(data)
         if (data.error) {
           console.log(data.error)
           return false
         }
-        // _this.saveMsg({from: accountInfo.id, msg: msg, route: 'onChat', target: 'user|' + target});
-        // notify.emit('store', {action: 'imMsg', result: '新的即时消息', state: true});
         return true
       })
     },
     // 保存消息
     async saveMsg ({dispatch, commit}, msg) {
-      console.log(msg)
       const target = msg.target.split('|')
       if (target[0] === 'user') {
-        db.table('personInfo').where('userId').equals(msg.from).first().then(data => {
-          const _msg = {
-            speakerId: msg.from,
-            speakerName: data.realName || '',
-            speakerPortrait: data.portrait || '',
-            audienceId: target[1],
-            content: msg.msg,
-            isGroupChat: false
-          }
-          db.table('chatMsg').put(_msg)
-        })
-      }
-      if (target[0] === 'group') {
+        let userChat = await db.table('personInfo').where('userId').equals(msg.from).first()
+        const _msg = {
+          speakerId: msg.from,
+          speakerName: userChat.realName || '',
+          speakerPortrait: userChat.portrait || '',
+          audienceId: target[1],
+          content: msg.msg,
+          isGroupChat: 0,
+          createdAt: new Date().getTime(),
+          updatedAt: new Date().getTime(),
+          isRead: 0
+        }
+        await db.table('chatMsg').add(_msg)
+      } else if (target[0] === 'group') {
         let _msg = {
           speakerId: msg.from,
           speakerName: '',
@@ -113,21 +130,34 @@ export const chat = {
           audienceId: target[1],
           audienceName: '',
           content: msg.msg,
-          isGroupChat: true
+          isGroupChat: 1,
+          createdAt: new Date().getTime(),
+          updatedAt: new Date().getTime(),
+          isRead: 0
         }
-        db.table('personInfo').where('userId').equals(msg.from).first().then(data => {
-          data.realName ? _msg.speakerName = data.realName : ''
-          data.portrait ? _msg.speakerPortrait = data.portrait : ''
-          return
-        }).then(() => {
-          db.table('group').where('id').equals(target[1]).first(res => {
-            return res
-          })
-        }).then(data => {
-          data.name ? _msg.audienceName = data.name : ''
-          db.table('chatMsg').put(_msg)
-        })
+        let data = await db.table('personInfo').where('userId').equals(msg.from).first()
+        data.realName ? _msg.speakerName = data.realName : ''
+        data.portrait ? _msg.speakerPortrait = data.portrait : ''
+        let audience = await db.table('group').where('id').equals(target[1]).first()
+        audience.name ? _msg.audienceName = audience.name : ''
+        await db.table('chatMsg').add(_msg)
       }
+      await notify.emit('upData', {action: 'upData'})
+    },
+    // 消息盒子
+    async msgBox ({dispatch, commit}, data) {
+      let query = db.table('chatMsg').where('[audienceId+isGroupChat]').equals([data.id, data.isGroupChat]).or('[speakerId+isGroupChat]').equals([data.id, data.isGroupChat])
+      let result = await query.sortBy('createdAt')
+      await query.modify({isRead: 1}).then(res => {})
+      return result
+    },
+    // 消息列表
+    async msgList ({dispatch, commit}, data) {
+      // let user = await dispatch('GetSyncUserInfo')
+      // let uid = user.userId
+      db.table('chatMsg').where({isGroupChat: 0, isRead: 0}).sortBy('createdAt').then(res => {
+        console.log(res)
+      })
     }
   }
 }

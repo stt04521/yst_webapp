@@ -1,9 +1,9 @@
 <template>
   <div>
-    <div class="radio-component-wrapper vux-1px-b" v-for="(item, index) in dataList" @click="toggleChoose(item)">
+    <div class="radio-component-wrapper vux-1px-b" v-for="(item, index) in dataList" @click="toggleChoose($event, item)">
       <div class="left-container">
-        <img :src="item.avatar" class="left-img">
-        <span class="left-name">{{ item.name }}</span>
+        <img :src="baseurl + item.portrait" class="left-img">
+        <span class="left-name">{{ item.realName }}</span>
       </div>
       <icon type="success-no-circle" class="radio-icon" v-show="result.choosedList.indexOf(item) > -1"></icon>
     </div>
@@ -29,11 +29,13 @@
     },
     data () {
       return {
-        choosedList: []
+        choosedList: [],
+        baseurl: 'http://192.168.0.12:7000'
       }
     },
     methods: {
-      toggleChoose (item) {
+      toggleChoose (e, item) {
+        e.cancelBubble = true
         if (this.radioType === 'mulRadio') {
           if (this.result.choosedList.indexOf(item) > -1) {
             this.result.choosedList = this._.remove(this.result.choosedList, (ite) => {

@@ -7,11 +7,11 @@
     </x-header>
     <view-box class="content-container">
       <group :gutter="0">
-        <x-textarea :max="1000" placeholder="请输入任务内容" @on-focus="onEvent('focus')" @on-blur="onEvent('blur')" :height="183"></x-textarea>
+        <x-textarea :max="1000" v-model="content" placeholder="请输入任务内容(必填)" @on-focus="onEvent('focus')" @on-blur="onEvent('blur')" :height="183"></x-textarea>
       </group>
       <group :gutter="0" style="margin-top: 10px;">
-        <datetime format="YYYY-MM-DD HH:mm" @on-change="startTimeChange" title="开始时间"></datetime>
-        <datetime format="YYYY-MM-DD HH:mm" @on-change="endTimeChange" :start-date="beginTime" title="截止时间"></datetime>
+        <datetime format="YYYY-MM-DD HH:mm" v-model="startTime" @on-change="startTimeChange" title="开始时间"></datetime>
+        <datetime format="YYYY-MM-DD HH:mm" v-model="endTime" @on-change="endTimeChange" :start-date="beginTime" title="截止时间"></datetime>
       </group>
       <!--<group>-->
         <!--<cell v-for="(item, index) in relatedList"-->
@@ -30,30 +30,29 @@
         <!--</cell>-->
       <!--</group>-->
       <group :gutter="0" style="margin-top: 10px;">
-        <cell title="责任人" is-link @click.native="choosePlays('principal')">
-          <div v-show="principalList.length">
-            <!--<img :src="principalList.img" alt="">-->
-            <!--<span>{{ principalList.name }}</span>-->
-            <img src="../../assets/news/userImg.jpg" class="play-avatar" alt="">
-            <span>呜呜呜呜呜</span>
+        <cell title="责任人" is-link @click.native="choosePlays('principal', principalList)">
+          <div v-if="principalList.length" v-for="(item, index) in principalList" :key="index">
+            <img :src="baseurl + item.portrait" class="play-avatar" alt="">
+            <span>{{ item.userId === myInfo.userId ? '我' : item.realName }}</span>
           </div>
         </cell>
-        <cell title="执行者" is-link @click.native="choosePlays('executor')">
-          <div v-show="executorList.length">
-            <img src="../../assets/news/userImg.jpg" v-for="(item, index) in 7" class="play-avatar" alt="">
-            <span>7人</span>
+        <cell title="执行者" is-link @click.native="choosePlays('executor', executorList)">
+          <div v-if="executorList.length">
+            <img :src="baseurl + item.portrait" v-for="(item, index) in executorList" :key="index" class="play-avatar">
+            <span>{{ executorList.length }}人</span>
+          </div>
+          <div v-else>必填</div>
+        </cell>
+        <cell title="审核者" placeholder="必填" is-link @click.native="choosePlays('checker', checkerList)">
+          <div v-if="checkerList.length">
+            <img :src="baseurl + item.portrait" v-for="(item, index) in checkerList" :key="index" class="play-avatar">
+            <span>{{ checkerList.length }}人</span>
           </div>
         </cell>
-        <cell title="审核者" is-link @click.native="choosePlays('checker')">
-          <div v-show="checkerList.length">
-            <img src="../../assets/news/userImg.jpg" v-for="(item, index) in 7" class="play-avatar" alt="">
-            <span>7人</span>
-          </div>
-        </cell>
-        <cell title="参与者" is-link @click.native="choosePlays('participant')">
-          <div v-show="participantList.length">
-            <img src="../../assets/news/userImg.jpg" v-for="(item, index) in 7" class="play-avatar" alt="">
-            <span>7人</span>
+        <cell title="参与者" is-link @click.native="choosePlays('participant', participantList)">
+          <div v-if="participantList.length">
+            <img :src="baseurl + item.portrait" v-for="(item, index) in participantList" :key="index" class="play-avatar" alt="">
+            <span>{{ participantList.length }}人</span>
           </div>
         </cell>
       </group>
@@ -62,6 +61,7 @@
 </template>
 <script>
   import {XHeader, ViewBox, XTextarea, Group, Datetime, Cell} from 'vux'
+  import {mapActions} from 'vuex'
   export default {
     name: 'createTask',
     components: {
@@ -74,13 +74,21 @@
     },
     data () {
       return {
+        content: '',
+        startTime: '',
+        endTime: '',
         playRole: '',
+        baseurl: 'http://192.168.0.12:7000',
         role: '',
+        myInfo: {},
+        hasChoosedList: [],
         beginTime: '2017-01-01',
+        radioType: '',
         principalList: [],  // 责任人
         executorList: [],   // 执行者
         checkerList: [],    // 审核者
         participantList: [],  // 参与者
+        result: [],
         relatedList: [
           {
             title: '责任人',
@@ -142,17 +150,41 @@
       }
     },
     methods: {
+      ...mapActions([
+        'createTaskAction',
+        'GetMyInfo'
+      ]),
       cancel () {
         console.log('cancel')
-        this.$router.go(-1)
-      },
-      create () {
-        console.log('create')
         this.$router.push({
           name: 'taskList'
         })
-        this.principalList = []
-        this.executorList = []
+      },
+      getIdFromList (list) {
+        let idList = list && list.map((item) => {
+          return item.userId
+        })
+        return idList
+      },
+      create () {
+        let paramsData = {
+          content: this.content,
+          startTime: this.startTime,
+          endTime: this.endTime,
+          executor: this.getIdFromList(this.executorList),
+          checker: this.getIdFromList(this.checkerList),
+          participant: this.getIdFromList(this.participantList),
+          principal: this.principalList[0].userId
+        }
+        console.log('paramsData: ', paramsData)
+        this.createTaskAction(paramsData).then(res => {
+          console.log('createTaskAction: ', res)
+        }).catch(err => {
+          console.log(err)
+        })
+//        this.$router.push({
+//          name: 'taskList'
+//        })
       },
       onEvent (event) {
         console.log('on', event)
@@ -165,73 +197,97 @@
       endTimeChange (val) {
         this.endTime = val
       },
-      choosePlays (val) {
-        console.log('11')
+      choosePlays (val, list) {
+        if (val === 'principal') {
+          this.radioType = 'radio'
+        } else {
+          this.radioType = 'mulRadio'
+        }
+        console.log('this.hasChoosedList: ', this.hasChoosedList)
         this.$router.push({
           name: 'addMember',
           query: {
-            typeRadio: 'mulRadio',
-            role: val
+            typeRadio: this.radioType,
+            role: val,
+            hasChoosedList: this.hasChoosedList
           }
         })
       }
     },
     watch: {
       $route () {
+        console.log('1111')
         if (this.$route && this.$route.query) {
           this.role = this.$route.query.role
-          let result = this.$route.query.result
-          if (this.role === 'principal') {
-            this.principalList = result
-            console.log('this.principalList: ', this.principalList)
-          }
-          if (this.role === 'executor') {
-            this.executorList = result
-            console.log('this.executorList: ', this.executorList)
-          }
-          if (this.role === 'checker') {
-            this.checkerList = result
-          }
-          if (this.role === 'participant') {
-            this.principalList = result
+          this.result = this.$route.query.result ? this.$route.query.result : []
+          if (this.$route.path === '/addMemer') {
+            return
+          } else {
+            if (this.role === 'principal') {
+              this.principalList = this.result
+              console.log('this.principalList: ', this.principalList)
+            }
+            if (this.role === 'executor') {
+              this.executorList = this.result
+              console.log('this.executorList: ', this.executorList)
+            }
+            if (this.role === 'checker') {
+              this.checkerList = this.result
+              console.log('this.checkerList: ', this.checkerList)
+            }
+            if (this.role === 'participant') {
+              this.participantList = this.result
+              console.log('this.participantList: ', this.participantList)
+            }
+            this.hasChoosedList.map((item) => {
+              if (item.role === this.role) {
+                item.list = this.result
+              }
+              return item
+            })
           }
         }
       }
     },
-    created () {
+    async created () {
       this.playRole = this.$route.query.role
-      console.log('create: ', this.$route)
-//      let result = this.$route.query.result
-//      if (this.role === 'principal') {
-//        this.principalList = result
-//      }
-//      if (this.role === 'executor') {
-//        this.executorList = result
-//      }
-//      if (this.role === 'checker') {
-//        this.checkerList = result
-//      }
-//      if (this.role === 'participant') {
-//        this.principalList = result
-//      }
+      this.myInfo = await this.GetMyInfo()
+      this.principalList.push(this.myInfo)
+      this.hasChoosedList = [
+        {
+          role: 'principal',
+          list: this.principalList
+        },
+        {
+          role: 'executor',
+          list: this.executorList
+        },
+        {
+          role: 'checker',
+          list: this.checkerList
+        },
+        {
+          role: 'participant',
+          list: this.participantList
+        }
+      ]
+      console.log('this.hasChoosedList: ', this.hasChoosedList)
+    },
+    mounted () {
+      console.log('mounted')
     },
     beforeRouteEnter (to, from, next) {
-      if (from.path === '/taskList/taskItem') {
-        to.meta.keepAlive = false
+      if (from.path === '/addMember') {
+        to.meta.keepAlive = true
       }
-      console.log('to1: ', to)
-      console.log('from1: ', from)
       next()
     },
     beforeRouteLeave (to, from, next) {
-      console.log('from: ', from)
-      console.log('to: ', to)
-//      next()
       if (to.path === '/addMember') {
         from.meta.keepAlive = true
       }
       if (to.path === '/taskList/taskItem' || from.path === '/taskList/taskItem') {
-        to.meta.keepAlive = false
+        from.meta.keepAlive = false
       }
       next()
     }

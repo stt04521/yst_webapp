@@ -1,4 +1,4 @@
-import {createTaskApi, getTaskListApi, taskDetailApi, editTaskApi, changeTaskStatusApi, getAllExcutorApi} from '@/api/task'
+import {createTaskApi, getTaskListApi, taskDetailApi, editTaskApi, changeTaskStatusApi, getAllExcutorApi, getCollegeListApi} from '@/api/task'
 
 const task = {
   state: {
@@ -9,7 +9,8 @@ const task = {
 
   actions: {
     // 创建任务
-    createTaskAction (data) {
+    createTaskAction ({commit}, data) {
+      console.log('actions: ', data)
       return new Promise((resolve, reject) => {
         createTaskApi(data).then((res) => {
           resolve(res)
@@ -21,7 +22,7 @@ const task = {
       })
     },
     // 任务列表
-    getTaskListAction () {
+    getTaskListAction ({commit}) {
       return new Promise((resolve, reject) => {
         getTaskListApi().then((res) => {
           resolve(res)
@@ -33,7 +34,7 @@ const task = {
       })
     },
     // 任务详情
-    taskDetailAction (id) {
+    taskDetailAction ({commit}, id) {
       return new Promise((resolve, reject) => {
         taskDetailApi(id).then((res) => {
           resolve(res)
@@ -45,7 +46,7 @@ const task = {
       })
     },
     // 任务编辑
-    editTaskAction (data) {
+    editTaskAction ({commit}, data) {
       return new Promise((resolve, reject) => {
         editTaskApi(data).then((res) => {
           resolve(res)
@@ -57,7 +58,7 @@ const task = {
       })
     },
     // 改变任务状态
-    changeTaskStatusAction (data) {
+    changeTaskStatusAction ({commit}, data) {
       return new Promise((resolve, reject) => {
         changeTaskStatusApi(data).then((res) => {
           resolve(res)
@@ -69,10 +70,21 @@ const task = {
       })
     },
     // 获取任务所有执行者
-    getAllExcutorAction (id) {
+    getAllExcutorAction ({commit}, id) {
       return new Promise((resolve, reject) => {
         getAllExcutorApi(id).then((res) => {
           resolve(res)
+        }, (err) => {
+          reject(err)
+        }).catch((err) => {
+          console.log(err)
+        })
+      })
+    },
+    getCollegeListAction ({commit}) {
+      return new Promise((resolve, reject) => {
+        getCollegeListApi().then((res) => {
+          resolve(res.data.result)
         }, (err) => {
           reject(err)
         }).catch((err) => {

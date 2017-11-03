@@ -6,19 +6,29 @@ import fetch from '@/utils/fetch'
 *   content: 'content content',
 *   startTime: '2017-1-2 19:30:30',
 *   endTime: '2017-3-4 19:00:00',
-*   excutor: ["1f6170ff-a8a3-45f0-a8c7-8162ecbd7dd4"], // 执行者
+*   executor: ["1f6170ff-a8a3-45f0-a8c7-8162ecbd7dd4"], // 执行者
 *   checker: ["cff39910-49bc-4f46-b42f-b6a3e942dcc7"], // 审核者
 *   participant: ["cff39910-49bc-4f46-b42f-b6a3e942dcc7"], // 参与者
 *   principal: "37d938d3-7a82-4de5-b2d4-567265728345"  // 责任人
+*  }
 * */
 export function createTaskApi (data) {
   return fetch({
     url: 'http://192.168.0.12:8000/restful/task/create',
+    // url: '/restful/task/create',
     method: 'post',
     data
   })
 }
 
+// 员工列表
+export function getCollegeListApi () {
+  return fetch({
+    url: 'http://192.168.0.12:8000/restful/person/personList',
+    // url: '/restful/person/personList',
+    method: 'post'
+  })
+}
 // 任务列表
 export function getTaskListApi () {
   return fetch({

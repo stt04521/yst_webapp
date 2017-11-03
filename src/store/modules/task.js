@@ -2,9 +2,25 @@ import {createTaskApi, getTaskListApi, taskDetailApi, editTaskApi, changeTaskSta
 
 const task = {
   state: {
+    principalList: [],
+    executorList: [],
+    checkerList: [],
+    participantList: []
   },
 
   mutations: {
+    SET_PRINCIPAL_LIST: (state, list) => {
+      state.principalList = list
+    },
+    SET_EXECUTOR_LIST: (state, list) => {
+      state.executorList = list
+    },
+    SET_CHECKER_LIST: (state, list) => {
+      state.checkerList = list
+    },
+    SET_PARTICIPANT_LIST: (state, list) => {
+      state.principalList = list
+    }
   },
 
   actions: {

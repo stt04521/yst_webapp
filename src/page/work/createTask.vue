@@ -30,31 +30,31 @@
         <!--</cell>-->
       <!--</group>-->
       <group :gutter="0" style="margin-top: 10px;">
-        <cell title="责任人" is-link @click.native="choosePlays('principal', principalList)">
-          <div v-if="principalList.length" v-for="(item, index) in principalList" :key="index">
+        <cell title="责任人" is-link @click.native="choosePlays('principal')">
+          <div v-if="$store.state.principalList.length" v-for="(item, index) in $store.state.principalList" :key="index">
             <img :src="baseurl + item.portrait" class="play-avatar" alt="">
             <span>{{ item.userId === myInfo.userId ? '我' : item.realName }}</span>
           </div>
         </cell>
-        <cell title="执行者" is-link @click.native="choosePlays('executor', executorList)">
-          <div v-if="executorList.length">
-            <img :src="baseurl + item.portrait" v-for="(item, index) in executorList" :key="index" class="play-avatar">
-            <span>{{ executorList.length }}人</span>
-          </div>
-          <div v-else>必填</div>
-        </cell>
-        <cell title="审核者" placeholder="必填" is-link @click.native="choosePlays('checker', checkerList)">
-          <div v-if="checkerList.length">
-            <img :src="baseurl + item.portrait" v-for="(item, index) in checkerList" :key="index" class="play-avatar">
-            <span>{{ checkerList.length }}人</span>
-          </div>
-        </cell>
-        <cell title="参与者" is-link @click.native="choosePlays('participant', participantList)">
-          <div v-if="participantList.length">
-            <img :src="baseurl + item.portrait" v-for="(item, index) in participantList" :key="index" class="play-avatar" alt="">
-            <span>{{ participantList.length }}人</span>
-          </div>
-        </cell>
+        <!--<cell title="执行者" is-link @click.native="choosePlays('executor', executorList)">-->
+          <!--<div v-if="executorList.length">-->
+            <!--<img :src="baseurl + item.portrait" v-for="(item, index) in executorList" :key="index" class="play-avatar">-->
+            <!--<span>{{ executorList.length }}人</span>-->
+          <!--</div>-->
+          <!--<div v-else>必填</div>-->
+        <!--</cell>-->
+        <!--<cell title="审核者" placeholder="必填" is-link @click.native="choosePlays('checker', checkerList)">-->
+          <!--<div v-if="checkerList.length">-->
+            <!--<img :src="baseurl + item.portrait" v-for="(item, index) in checkerList" :key="index" class="play-avatar">-->
+            <!--<span>{{ checkerList.length }}人</span>-->
+          <!--</div>-->
+        <!--</cell>-->
+        <!--<cell title="参与者" is-link @click.native="choosePlays('participant', participantList)">-->
+          <!--<div v-if="participantList.length">-->
+            <!--<img :src="baseurl + item.portrait" v-for="(item, index) in participantList" :key="index" class="play-avatar" alt="">-->
+            <!--<span>{{ participantList.length }}人</span>-->
+          <!--</div>-->
+        <!--</cell>-->
       </group>
     </view-box>
   </div>
@@ -84,10 +84,10 @@
         hasChoosedList: [],
         beginTime: '2017-01-01',
         radioType: '',
-        principalList: [],  // 责任人
-        executorList: [],   // 执行者
-        checkerList: [],    // 审核者
-        participantList: [],  // 参与者
+//        principalList: [],  // 责任人
+//        executorList: [],   // 执行者
+//        checkerList: [],    // 审核者
+//        participantList: [],  // 参与者
         result: [],
         relatedList: [
           {
@@ -171,10 +171,10 @@
           content: this.content,
           startTime: this.startTime,
           endTime: this.endTime,
-          executor: this.getIdFromList(this.executorList),
-          checker: this.getIdFromList(this.checkerList),
-          participant: this.getIdFromList(this.participantList),
-          principal: this.principalList[0].userId
+          executor: this.getIdFromList(this.state.executorList),
+          checker: this.getIdFromList(this.state.checkerList),
+          participant: this.getIdFromList(this.state.participantList),
+          principal: this.state.principalList[0].userId
         }
         console.log('paramsData: ', paramsData)
         this.createTaskAction(paramsData).then(res => {
@@ -203,75 +203,75 @@
         } else {
           this.radioType = 'mulRadio'
         }
-        console.log('this.hasChoosedList: ', this.hasChoosedList)
         this.$router.push({
           name: 'addMember',
           query: {
             typeRadio: this.radioType,
-            role: val,
-            hasChoosedList: this.hasChoosedList
+            role: val
           }
         })
       }
     },
-    watch: {
-      $route () {
-        console.log('1111')
-        if (this.$route && this.$route.query) {
-          this.role = this.$route.query.role
-          this.result = this.$route.query.result ? this.$route.query.result : []
-          if (this.$route.path === '/addMemer') {
-            return
-          } else {
-            if (this.role === 'principal') {
-              this.principalList = this.result
-              console.log('this.principalList: ', this.principalList)
-            }
-            if (this.role === 'executor') {
-              this.executorList = this.result
-              console.log('this.executorList: ', this.executorList)
-            }
-            if (this.role === 'checker') {
-              this.checkerList = this.result
-              console.log('this.checkerList: ', this.checkerList)
-            }
-            if (this.role === 'participant') {
-              this.participantList = this.result
-              console.log('this.participantList: ', this.participantList)
-            }
-            this.hasChoosedList.map((item) => {
-              if (item.role === this.role) {
-                item.list = this.result
-              }
-              return item
-            })
-          }
-        }
-      }
-    },
+//    watch: {
+//      $route () {
+//        console.log('1111')
+//        if (this.$route && this.$route.query) {
+//          this.role = this.$route.query.role
+//          this.result = this.$route.query.result ? this.$route.query.result : []
+//          if (this.$route.path === '/addMemer') {
+//            return
+//          } else {
+//            if (this.role === 'principal') {
+//              this.principalList = this.result
+//              console.log('this.principalList: ', this.principalList)
+//            }
+//            if (this.role === 'executor') {
+//              this.executorList = this.result
+//              console.log('this.executorList: ', this.executorList)
+//            }
+//            if (this.role === 'checker') {
+//              this.checkerList = this.result
+//              console.log('this.checkerList: ', this.checkerList)
+//            }
+//            if (this.role === 'participant') {
+//              this.participantList = this.result
+//              console.log('this.participantList: ', this.participantList)
+//            }
+//            this.hasChoosedList.map((item) => {
+//              if (item.role === this.role) {
+//                item.list = this.result
+//              }
+//              return item
+//            })
+//          }
+//        }
+//      }
+//    },
     async created () {
       this.playRole = this.$route.query.role
       this.myInfo = await this.GetMyInfo()
-      this.principalList.push(this.myInfo)
-      this.hasChoosedList = [
-        {
-          role: 'principal',
-          list: this.principalList
-        },
-        {
-          role: 'executor',
-          list: this.executorList
-        },
-        {
-          role: 'checker',
-          list: this.checkerList
-        },
-        {
-          role: 'participant',
-          list: this.participantList
-        }
-      ]
-      console.log('this.hasChoosedList: ', this.hasChoosedList)
+      console.log('this.principalList: ', this.myInfo)
+      this.$store.commit('SET_PRINCIPAL_LIST', this.myInfo)
+//      console.log('created: ', this.$store.state.task)
+//      this.hasChoosedList = [
+//        {
+//          role: 'principal',
+//          list: this.principalList
+//        },
+//        {
+//          role: 'executor',
+//          list: this.executorList
+//        },
+//        {
+//          role: 'checker',
+//          list: this.checkerList
+//        },
+//        {
+//          role: 'participant',
+//          list: this.participantList
+//        }
+//      ]
+//      console.log('this.hasChoosedList: ', this.hasChoosedList)
     },
     mounted () {
       console.log('mounted')

@@ -9,7 +9,7 @@ db.version(1).stores({
   friendGroup: 'index,id',
   group: 'id',
   myInfo: 'id',
-  groupMembers: 'id,groupId',
+  groupMembers: 'id,groupId,userId',
   personInfo: '++id,personInfo.realName,userId',
   userInfo: '++id',
   chatMsg: '++createdAt,speakerId,speakerName,speakerPortrait,audienceId,content,[audienceId+isGroupChat],[speakerId+isGroupChat],updatedAt,[isGroupChat+isRead]'

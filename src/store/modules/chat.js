@@ -3,13 +3,14 @@
  */
 const Pomelo = require('yuan-pomeloclient')
 export const pomelo = new Pomelo()
-import { url, notify } from '@/utils/index'
+import { url, notify, compare } from '@/utils/index'
 import db from '../../db'
 import store from '../index'
 pomelo.on('onChat', function (data) {
   console.log(data)
   if (data.route) {
     store.dispatch('saveMsg', data)
+    notify.emit('upData', {action: 'upData'})
   }
 })
 const queryEntry = (uid, callback) => {
@@ -153,11 +154,31 @@ export const chat = {
     },
     // 消息列表
     async msgList ({dispatch, commit}, data) {
-      // let user = await dispatch('GetSyncUserInfo')
-      // let uid = user.userId
-      db.table('chatMsg').where({isGroupChat: 0, isRead: 0}).sortBy('createdAt').then(res => {
-        console.log(res)
-      })
+      let chatList = []
+      let chat = await db.table('chatMsg').where('speakerId').notEqual(0).filter(item => { return item.isGroupChat === 0 }).uniqueKeys()
+      for (let value of chat) {
+        let chatItem = await db.table('chatMsg').where('[speakerId+isGroupChat]').equals([value, 0]).filter(i => { return i.isRead === 0 })
+        let noRead = await chatItem.count()
+        let msg = await chatItem.last()
+        let item = msg || await db.table('chatMsg').where('[speakerId+isGroupChat]').equals([value, 0]).filter(i => { return i.isRead === 1 }).last()
+        msg ? item.num = noRead : item.num = 0
+        chatList.push(item)
+      }
+      let Groupchat = await db.table('chatMsg').where('audienceId').notEqual(0).filter(item => { return item.isGroupChat === 1 }).uniqueKeys()
+      for (let GroupId of Groupchat) {
+        let chatItem = await db.table('chatMsg').where('[audienceId+isGroupChat]').equals([GroupId, 1]).filter(i => { return i.isRead === 0 })
+        let noRead = await chatItem.count()
+        let msg = await chatItem.last()
+        let groupItem = await db.table('group').where('id').equals(GroupId).first()
+        let item = msg || await db.table('chatMsg').where('[audienceId+isGroupChat]').equals([GroupId, 1]).filter(i => { return i.isRead === 1 }).last()
+        let lastName = await db.table('groupMembers').where('userId').equals(item.speakerId).first()
+        item.lastName = lastName.personInfo.realName
+        item.groupName = groupItem.name
+        msg ? item.num = noRead : item.num = 0
+        chatList.push(item)
+      }
+      chatList.sort(compare('createdAt'))
+      return chatList
     }
   }
 }

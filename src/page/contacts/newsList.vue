@@ -1,17 +1,16 @@
 <template>
   <div class="news-list-wrapper">
-    <x-header title="回话消息"></x-header>
+    <x-header title="会话消息"></x-header>
     <div class="news-list-container">
       <div class="item-container vux-1px-b vux-1px-l" v-for="(item, index) in newsList" :key="index" @click="tonewsPage(item)">
-        <img class="avatar" :src="item.avatar">
-        <Badge class="badge" v-if="item.num === 0"></Badge>
-        <Badge class="badge" v-else :text="item.num > 99 ? '...' : item.num"></Badge>
+        <img class="avatar" :src="item.avatar" :onerror="errorImg">
+        <Badge class="badge" v-if="item.num !== 0"  :text="item.num > 99 ? '...' : item.num"></Badge>
         <div class="detail-container">
-          <span class="title">{{ item.userName }}</span>
-          <span class="detail" v-if="item.noDisturb">【{{item.num}}条】<span v-show="item.isGroup">{{item.lastName}}：</span>{{ item.detail }}</span>
-          <span class="detail" v-else>{{ item.detail }}</span>
+          <span class="title">{{ item.isGroupChat == 0? item.speakerName : item.groupName}}</span>
+          <span class="detail" v-if="item.isGroupChat == 1"><span>{{item.lastName}}：</span>{{ item.content }}</span>
+          <span class="detail" v-else>{{ item.content }}</span>
         </div>
-        <span class="show-time"><span v-show="item.isGroup">{{item.lastName}}：</span>{{ item.time }}</span>
+        <span class="show-time"><span v-show="item.isGroup">{{item.lastName}}：</span>{{ new Date(item.createdAt).toLocaleString() }}</span>
         <!-- <img v-show="item.noDisturb" src="../../assets/no_disturb.png" class="no-disturb"> -->
       </div>
     </div>
@@ -20,6 +19,7 @@
 <script>
   import {XHeader, Badge} from 'vux'
   import { mapActions } from 'vuex'
+  import { notify } from '@/utils'
   export default {
     name: 'newsList',
     components: {
@@ -28,59 +28,36 @@
     },
     data () {
       return {
-        newsList: [
-          {
-            avatar: require('../../assets/news/userImg.jpg'),
-            num: 0,
-            userName: '陈州',
-            isGroup: false,
-            detail: '记得今天吧文件发送给我',
-            noDisturb: false,
-            time: '2017-12-22'
-          },
-          {
-            avatar: require('../../assets/news/userImg.jpg'),
-            num: 55,
-            userName: '陈州',
-            isGroup: false,
-            detail: '记得今天吧文件发送给我',
-            noDisturb: false,
-            time: '2017-12-22'
-          },
-          {
-            avatar: require('../../assets/news/userImg.jpg'),
-            num: 999,
-            userName: 'etag讨论组etag讨论组etag讨论组',
-            isGroup: true,
-            lastName: '张三',
-            detail: '记得今天吧文件发送给我记得今天吧文件发送给我记得今天吧文件发送给我',
-            noDisturb: true,
-            time: '15:20'
-          },
-          {
-            avatar: require('../../assets/news/userImg.jpg'),
-            num: 999,
-            userName: '陈州记得今天吧文件发送给我讨论组',
-            isGroup: false,
-            detail: '记得今天吧文件发送给我记得今天吧文件发送给我记得今天吧文件发送给我',
-            noDisturb: false,
-            time: '2017-12-22'
-          }
-        ]
+        newsList: [],
+        errorImg: 'this.src="' + require('@/assets/DefaultAvatar.svg') + '"'
       }
     },
     created () {
-      this.msgList()
+      this.getMsgList()
+      notify.on('upData', this.getMsgList)
+    },
+    beforeDestroy () {
+      notify.removeListener('upData', this.getMsgList)
     },
     methods: {
       ...mapActions([
         'msgList'
       ]),
-      tonewsPage (val) {
+      getMsgList () {
+        let self = this
+        self.msgList().then(res => {
+          self.newsList = res
+        })
+      },
+      tonewsPage (item) {
         this.$router.push({
           name: 'newsPage',
           params: {
-            username: val.userName
+            username: item.isGroupChat === 0 ? item.speakerName : item.groupName
+          },
+          query: {
+            id: item.isGroupChat === 0 ? item.speakerId : item.audienceId,
+            type: item.isGroupChat === 0 ? 0 : 1
           }
         })
       }

@@ -9,7 +9,6 @@
     <div class="button_group">
       <x-button class="blue_bg" @click.native="onSure">确认</x-button>
     </div>
-
   </div>
 </template>
 

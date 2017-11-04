@@ -23,7 +23,6 @@
     methods: {
       dealItemClick (item) {
         this.$emit('deal-item-click', item)
-        console.log('111')
       },
       showAllTask () {
         this.$emit('show-all-task')

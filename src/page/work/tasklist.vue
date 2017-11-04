@@ -82,6 +82,10 @@
     },
     mounted () {
       this.height = document.body.offsetHeight - 86
+    },
+    beforeRouteLeave (to, from, next) {
+      to.meta.keepAlive = false
+      next()
     }
   }
 </script>

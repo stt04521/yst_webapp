@@ -19,7 +19,7 @@ const task = {
       state.checkerList = list
     },
     SET_PARTICIPANT_LIST: (state, list) => {
-      state.principalList = list
+      state.participantList = list
     }
   },
 

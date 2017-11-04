@@ -7,16 +7,10 @@
     <group :gutter="0">
       <cell title="已选成员：">
         <div class="choosed-container">
-          <img src="../../assets/news/userImg.jpg" class="choosed-avatar" alt="">
-          <img src="../../assets/news/userImg.jpg" class="choosed-avatar" alt="">
-          <img src="../../assets/news/userImg.jpg" class="choosed-avatar" alt="">
-          <img src="../../assets/news/userImg.jpg" class="choosed-avatar" alt="">
-          <img src="../../assets/news/userImg.jpg" class="choosed-avatar" alt="">
-          <img src="../../assets/news/userImg.jpg" class="choosed-avatar" alt="">
-          <img src="../../assets/news/userImg.jpg" class="choosed-avatar" alt="">
-          <img src="../../assets/news/userImg.jpg" class="choosed-avatar" alt="">
-          <img src="../../assets/news/userImg.jpg" class="choosed-avatar" alt="">
-          <img src="../../assets/news/userImg.jpg" class="choosed-avatar" alt="">
+          <div class="item-container" v-if="hasChoosedList.length" v-for="(item, index) in hasChoosedList" @click="deleteChoose(item)">
+            <img :src="baseurl + item.portrait" class="choosed-avatar">
+            <icon type="cancel" class="cancel-icon"></icon>
+          </div>
         </div>
       </cell>
     </group>
@@ -37,14 +31,14 @@
           <span class="triangle" :class="showContent ? 'triangle-bottom' : 'triangle-left'"></span>
           <span>1111</span>
         </div>
-        <radio-component :hasChoosedList="hasChoosedList" v-show="showContent" :radioType="radioType" :result.sync="result" :dataList="canChoosedList"></radio-component>
+        <radio-component v-show="showContent" :radioType="radioType" :result.sync="result" :dataList="canChoosedList"></radio-component>
       </div>
     </div>
   </div>
 </template>
 <script>
   import radioComponent from '@/components/radioComponent'
-  import {XHeader, Group, Cell, Search} from 'vux'
+  import {XHeader, Group, Cell, Search, Icon} from 'vux'
   import {mapActions} from 'vuex'
   export default {
     name: 'addMember',
@@ -53,18 +47,21 @@
       Group,
       Cell,
       Search,
-      radioComponent
+      radioComponent,
+      Icon
     },
     data () {
       return {
+        baseurl: 'http://192.168.0.12:7000',
         showContent: false,
-        canChoosedList: [],
+//        canChoosedList: [],
+        role: '',
         height: 0,
         searchValue: '',
         radioType: 'mulRadio',
-        hasChoosedList: [],
         results: [],
         resultList: [],
+        colleageList: [],
         result: {
           choosedList: []
         },
@@ -162,19 +159,70 @@
       cancel () {
         this.$router.go(-1)
       },
+//      setList (role, list) {
+//        this.$store.commit(role, list)
+//      },
       sure () {
-        console.log('this.result.choosedList: ', this.result.choosedList)
-        let role = this.$route.query.role
+//        this.setList(this.role, this.hasChoosedList)
+        if (this.role === 'PRINCIPAL') {
+          this.$store.commit('SET_PRINCIPAL_LIST', this.hasChoosedList)
+        }
+        if (this.role === 'EXECUTOR') {
+//          this.resultList = this.result.choosedList.concat(this.$store.state.task.executorList)
+          this.$store.commit('SET_EXECUTOR_LIST', this.hasChoosedList)
+        }
+        if (this.role === 'CHECKER') {
+          this.$store.commit('SET_CHECKER_LIST', this.hasChoosedList)
+        }
+        if (this.role === 'PARTICIPANT') {
+          this.$store.commit('SET_PARTICIPANT_LIST', this.hasChoosedList)
+        }
         this.$router.push({
-          name: 'createTask',
-          query: {
-            role: role,
-            result: this.result.choosedList
-          }
+          name: 'createTask'
         })
       },
       toggleContentShow () {
         this.showContent = !this.showContent
+      },
+      deleteChoose (val) {
+        this.result.choosedList = this._.remove(this.result.choosedList, (item) => {
+          return val.userId !== item.userId
+        })
+//        console.log(this.result.choosedList)
+//        this.hasChoosedList = this.hasChoosedList.map((item) => {
+//          return item.userId !== val.userId
+//        })
+      }
+    },
+    computed: {
+      hasChoosedList () {
+        if (this.role === 'PRINCIPAL') {
+          return this.$store.state.task.principalList
+        }
+        if (this.role === 'EXECUTOR') {
+          this.result.choosedList = this.result.choosedList.concat(this.$store.state.task.executorList)
+          return this.result.choosedList
+        }
+        if (this.role === 'CHECKER') {
+          this.result.choosedList = this.result.choosedList.concat(this.$store.state.task.checkerList)
+          return this.result.choosedList
+        }
+        if (this.role === 'PARTICIPANT') {
+          this.result.choosedList = this.result.choosedList.concat(this.$store.state.task.participantList)
+          return this.result.choosedList
+        }
+      },
+      canChoosedList () {
+        let choosedList = []
+        let list = this.colleageList
+        choosedList = choosedList.concat(this.$store.state.task.principalList).concat(this.$store.state.task.executorList).concat(this.$store.state.task.checkerList).concat(this.$store.state.task.participantList)
+        choosedList.map((item) => {
+          list = this._.remove(list, (ite) => {
+            return ite.userId !== item.userId
+          })
+        })
+        console.log(list)
+        return list
       }
     },
     mounted () {
@@ -182,31 +230,35 @@
     },
     async created () {
       let queryParams = this.$route.query
+      this.role = queryParams.role
       if (queryParams && queryParams.typeRadio) {
         this.radioType = queryParams.typeRadio
       }
-      if (queryParams && queryParams.dataList) {
-        this.result.choosedList = queryParams.dataList
-      }
-      let choosedList = []
-      queryParams.hasChoosedList.map((item) => {
-        choosedList = choosedList.concat(item.list)
-        return choosedList
-      })
-      let res = await this.getCollegeListAction()
-      this.canChoosedList = res
-      console.log('choosedList: ', choosedList)
-      console.log('friendGroup: ', this.canChoosedList)
+//      if (queryParams.role === 'PRINCIPAL') {
+//        this.hasChoosedList = this.$store.state.task.principalList
+//      }
+//      if (queryParams.role === 'EXECUTOR') {
+//        this.hasChoosedList = this.result.choosedList.concat(this.$store.state.task.executorList)
+//      }
+//      if (queryParams.role === 'CHECKER') {
+//        this.hasChoosedList = this.$store.state.task.checkerList
+//      }
+//      if (queryParams.role === 'PARTICIPANT') {
+//        this.hasChoosedList = this.$store.state.task.participantList
+//      }
+//      let res = await this.getCollegeListAction() // 获取同事列表
+      this.colleageList = await this.getCollegeListAction()
+//      this.canChoosedList = res
 //      this.canChoosedList = this._.difference(friendGroup, choosedList)
 //      console.log('this.friendGroup: ', this.canChoosedList)
-      // 暂时为接入真实数据，使用friendGroup中删除有已选人id的项
-      choosedList.map((item) => {
-        console.log(item.userId)
-        this.canChoosedList = this._.remove(this.canChoosedList, (ite) => {
-          return ite.userId !== item.userId
-        })
-      })
-      console.log('this.canChoosedList: ', this.canChoosedList)
+      // 暂时为接入真实数据，使用friendGroup中删除有已选人
+//      let choosedList = []
+//      choosedList = choosedList.concat(this.$store.state.task.principalList).concat(this.$store.state.task.executorList).concat(this.$store.state.task.checkerList).concat(this.$store.state.task.participantList)
+//      choosedList.map((item) => {
+//        this.canChoosedList = this._.remove(this.canChoosedList, (ite) => {
+//          return ite.userId !== item.userId
+//        })
+//      })
     }
   }
 </script>
@@ -223,11 +275,22 @@
       height: 30px;
       width: 252px;
       white-space: nowrap;
-      .choosed-avatar{
-        width: 30px;
-        height: 30px;
-        border-radius: 50%;
+      .item-container {
+        display: inline-block;
+        position: relative;
+        margin-right: 10px;
+        .choosed-avatar{
+          width: 30px;
+          height: 30px;
+          border-radius: 50%;
+        }
+        .cancel-icon{
+          position: absolute;
+          top: -5px;
+          right: -15px;
+        }
       }
+
     }
     .add-member-container{
       overflow-y: auto;

@@ -30,31 +30,31 @@
         <!--</cell>-->
       <!--</group>-->
       <group :gutter="0" style="margin-top: 10px;">
-        <cell title="责任人" is-link @click.native="choosePlays('principal')">
-          <div v-if="$store.state.principalList.length" v-for="(item, index) in $store.state.principalList" :key="index">
-            <img :src="baseurl + item.portrait" class="play-avatar" alt="">
+        <cell title="责任人" is-link @click.native="choosePlays('PRINCIPAL')">
+          <div v-if="$store.state.task.principalList.length" v-for="(item, index) in $store.state.task.principalList" :key="index">
+            <img :src="baseurl + item.portrait" class="play-avatar">
             <span>{{ item.userId === myInfo.userId ? '我' : item.realName }}</span>
           </div>
         </cell>
-        <!--<cell title="执行者" is-link @click.native="choosePlays('executor', executorList)">-->
-          <!--<div v-if="executorList.length">-->
-            <!--<img :src="baseurl + item.portrait" v-for="(item, index) in executorList" :key="index" class="play-avatar">-->
-            <!--<span>{{ executorList.length }}人</span>-->
-          <!--</div>-->
-          <!--<div v-else>必填</div>-->
-        <!--</cell>-->
-        <!--<cell title="审核者" placeholder="必填" is-link @click.native="choosePlays('checker', checkerList)">-->
-          <!--<div v-if="checkerList.length">-->
-            <!--<img :src="baseurl + item.portrait" v-for="(item, index) in checkerList" :key="index" class="play-avatar">-->
-            <!--<span>{{ checkerList.length }}人</span>-->
-          <!--</div>-->
-        <!--</cell>-->
-        <!--<cell title="参与者" is-link @click.native="choosePlays('participant', participantList)">-->
-          <!--<div v-if="participantList.length">-->
-            <!--<img :src="baseurl + item.portrait" v-for="(item, index) in participantList" :key="index" class="play-avatar" alt="">-->
-            <!--<span>{{ participantList.length }}人</span>-->
-          <!--</div>-->
-        <!--</cell>-->
+        <cell title="执行者" is-link @click.native="choosePlays('EXECUTOR')">
+          <div v-if="$store.state.task.executorList.length">
+            <img :src="baseurl + item.portrait" v-for="(item, index) in $store.state.task.executorList" :key="index" class="play-avatar">
+            <span>{{ $store.state.task.executorList.length }}人</span>
+          </div>
+          <div v-else>必填</div>
+        </cell>
+        <cell title="审核者" placeholder="必填" is-link @click.native="choosePlays('CHECKER')">
+          <div v-if="$store.state.task.checkerList.length">
+            <img :src="baseurl + item.portrait" v-for="(item, index) in $store.state.task.checkerList" :key="index" class="play-avatar">
+            <span>{{ $store.state.task.checkerList.length }}人</span>
+          </div>
+        </cell>
+        <cell title="参与者" is-link @click.native="choosePlays('PARTICIPANT')">
+          <div v-if="$store.state.task.participantList.length">
+            <img :src="baseurl + item.portrait" v-for="(item, index) in $store.state.task.participantList" :key="index" class="play-avatar" alt="">
+            <span>{{ $store.state.task.participantList.length }}人</span>
+          </div>
+        </cell>
       </group>
     </view-box>
   </div>
@@ -80,7 +80,7 @@
         playRole: '',
         baseurl: 'http://192.168.0.12:7000',
         role: '',
-        myInfo: {},
+        myInfo: [],
         hasChoosedList: [],
         beginTime: '2017-01-01',
         radioType: '',
@@ -171,7 +171,7 @@
           content: this.content,
           startTime: this.startTime,
           endTime: this.endTime,
-          executor: this.getIdFromList(this.state.executorList),
+          executor: this.getIdFromList(this.$store.state.task.executorList),
           checker: this.getIdFromList(this.state.checkerList),
           participant: this.getIdFromList(this.state.participantList),
           principal: this.state.principalList[0].userId
@@ -197,8 +197,8 @@
       endTimeChange (val) {
         this.endTime = val
       },
-      choosePlays (val, list) {
-        if (val === 'principal') {
+      choosePlays (val) {
+        if (val === 'PRINCIPAL') {
           this.radioType = 'radio'
         } else {
           this.radioType = 'mulRadio'
@@ -249,10 +249,11 @@
 //    },
     async created () {
       this.playRole = this.$route.query.role
-      this.myInfo = await this.GetMyInfo()
+      let res = await this.GetMyInfo()
+      this.myInfo[0] = res
       console.log('this.principalList: ', this.myInfo)
       this.$store.commit('SET_PRINCIPAL_LIST', this.myInfo)
-//      console.log('created: ', this.$store.state.task)
+      console.log('created: ', this.$store.state.task.principalList)
 //      this.hasChoosedList = [
 //        {
 //          role: 'principal',
@@ -272,9 +273,6 @@
 //        }
 //      ]
 //      console.log('this.hasChoosedList: ', this.hasChoosedList)
-    },
-    mounted () {
-      console.log('mounted')
     },
     beforeRouteEnter (to, from, next) {
       if (from.path === '/addMember') {

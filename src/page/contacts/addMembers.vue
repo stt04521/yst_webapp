@@ -3,7 +3,7 @@
     <x-header
       title="添加成员"
     >
-      <span slot="right" style="font-size: 17px; color: #fff">
+      <span slot="right" style="font-size: 17px; color: #fff" @click="addMember">
         确认
       </span>
     </x-header>
@@ -18,20 +18,12 @@
 
       </div>
       <search
-        @result-click="resultClick"
-        @on-change="getResult"
-        :results="results"
         :autoFixed="false"
-        :placeholder="placeholder"
         v-model="value"
-        @on-focus="onFocus"
-        @on-cancel="onCancel"
-        @on-submit="onSubmit"
-        ref="search"
         class="search"
       >
       </search>
-      <contact-list type="Friends" select="true" :list="FriendGroup"></contact-list>
+      <contact-list type="Friends" select="true" :list="FriendGroup" :userId="$route.query.userId" ref="Friends"></contact-list>
     </div>
   </div>
 </template>
@@ -55,20 +47,34 @@
     data () {
       return {
         FriendGroup: [],
-        msg: 'Welcome to Your Vue.js App'
+        msg: 'Welcome to Your Vue.js App',
+        value: ''
       }
     },
     created () {
       this.getAllGroup()
+      console.log(this.$route.query)
     },
     methods: {
       ...mapActions([
-        'GetFriendGroup'
+        'GetFriendGroup',
+        'AddGroupMembers'
       ]),
       getAllGroup () {
         let self = this
         self.GetFriendGroup().then(res => {
           self.FriendGroup = res
+        })
+      },
+      addMember () {
+        let self = this
+        let userId = self.$refs.Friends.result.choosedList.map(item => { return item.userId })
+        let request = {
+          groupId: self.$route.query.id,
+          userId: userId
+        }
+        self.AddGroupMembers(request).then((res) => {
+          self.$router.push('/contacts')
         })
       }
     }

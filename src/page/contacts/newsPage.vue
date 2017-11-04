@@ -55,7 +55,6 @@
       ]),
       initMsgBox  (id, isGroup) {
         let self = this
-        console.log('111')
         self.msgBox({id: self.$route.query.id, isGroupChat: self.$route.query.type}).then(data => {
           self.newsList = data
         })

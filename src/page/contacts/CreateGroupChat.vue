@@ -10,7 +10,7 @@
       </div>
       <div slot="right">
         <span v-if="step == 1 || step == 2" @click="changeStep(step+1)">下一步</span>
-        <span v-if="step == 3">创建</span>
+        <span v-if="step == 3" @click="createdGroup">创建</span>
       </div>
     </x-header>
     <flexbox>
@@ -32,7 +32,7 @@
         <!--<option>武汉新华科技有…</option>-->
       <!--</select>-->
     </div>
-    <div class="step_two" v-if="step == 2">
+    <div class="step_two" v-show="step == 2">
       <div class="group_list">
         <span>选择群成员:</span>
         <div class="fr" >
@@ -41,11 +41,11 @@
           </div>
         </div>
       </div>
-      <contact-list type="Friends" select="true" :list="FriendGroup"></contact-list>
+      <contact-list type="Friends" select="true" :list="FriendGroup" ref="Friends"></contact-list>
     </div>
-    <div class="step_three" v-if="step == 3">
+    <div class="step_three" v-show="step == 3">
       <label for="groupName">群名称：</label>
-      <input type="text" id="groupName" placeholder="请输入群名称">
+      <input type="text" id="groupName" placeholder="请输入群名称" v-model="groupName">
     </div>
   </div>
 </template>
@@ -63,6 +63,7 @@
           {name: '第二步', value: '选择群成员'},
           {name: '第三步', value: '编辑群名称'}
         ],
+        groupName: '',
         FriendGroup: [],
         step: 1,
         list: [{key: 'gd', value: '好友'}, {key: 'gx', value: '同事'}],
@@ -92,7 +93,8 @@
     },
     methods: {
       ...mapActions([
-        'GetFriendGroup'
+        'GetFriendGroup',
+        'GroupCreate'
       ]),
       changeStep (num) {
         this.step = num
@@ -102,9 +104,20 @@
         self.GetFriendGroup().then(res => {
           self.FriendGroup = res
         })
+      },
+      createdGroup () {
+        let self = this
+        let userId = self.$refs.Friends.result.choosedList.map(item => { return item.userId })
+        let request = {
+          userId: userId,
+          description: '',
+          name: self.groupName
+        }
+        this.GroupCreate(request)
       }
     }
   }
+
 </script>
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->

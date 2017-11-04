@@ -4,7 +4,7 @@
     <x-header
       title="群聊资料"
     >
-      <span slot="right" style="font-size: 17px; color: #fff">
+      <span slot="right" style="font-size: 17px; color: #fff" @click="onJutmp({path:'/addMembers', query:{id: $route.query.id, userId: userId}})">
         添加人员
       </span>
     </x-header>
@@ -69,6 +69,7 @@
         GroupList: [],
         show3: false,
         request: {},
+        userId: [],
         menus3: {
           title: '<span style="color:#999999;font-size: 14px">您将在群聊中删除该好友</span>',
           delete: '<span style="color:red">确定删除</span>'
@@ -90,6 +91,9 @@
         let self = this
         self.GetGroupInfo(id).then(res => {
           self.GroupList = res
+          self.userId = res.map(item => {
+            return item.userId
+          })
         })
       },
       onlongpress () {

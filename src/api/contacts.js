@@ -118,3 +118,4 @@ export function myInfo () {
     method: 'get'
   })
 }
+

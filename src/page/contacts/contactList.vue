@@ -39,14 +39,13 @@
                   </div>
                 </Popover>
               </div>
-              <img slot="icon" class="icon" :src="item1.personInfo.portrait" :data-id="index1" >
+              <img slot="icon" class="icon" :src="item1.personInfo.portrait" :data-id="index1" :onerror="errorImg">
             </cell>
             <!--没有好友-->
             <cell v-if="!item1.personInfo" title="此分组为空"></cell>
           </template>
           <!--选择联系人-->
-          <checklist  label-position="left" required :options="radio003" v-model="checklist001" v-if="select == 'true'&& !Array.isArray(item.friend[0])" @on-change="checkChange">
-          </checklist>
+          <radio-component :radioType="'mulRadio'" :result.sync="result" :dataList="item.friend, userId| structure" v-if="select == 'true'&& !Array.isArray(item.friend[0])"></radio-component>
         </template>
       </template>
     </group>
@@ -135,6 +134,7 @@
   import { Cell, CellBox, CellFormPreview, Group, Badge, Actionsheet, Checklist, TransferDom } from 'vux'
   import Popover from '@/components/popover.vue'
   import { longtap } from '@/directives/vue-touch'
+  import radioComponent from '@/components/radioComponent'
   import { mapActions } from 'vuex'
   export default {
     name: 'applyShow',
@@ -146,12 +146,14 @@
       Badge,
       Popover,
       Actionsheet,
-      Checklist
+      Checklist,
+      radioComponent
     },
     props: {
       type: String,
       select: String,
-      list: Array
+      list: Array,
+      userId: Array
     },
     directives: {
       longtap,
@@ -184,9 +186,6 @@
       click (key) {
         console.log(key)
       },
-      checkChange (val) {
-        console.log(val)
-      },
       // 删除好友
       onDelete () {
         let self = this
@@ -215,6 +214,16 @@
         }
       }
     },
+    filters: {
+      structure (data, userId) {
+        if (userId) {
+          let arr = data.filter(item => { return userId.indexOf(item.personInfo.userId) === -1 })
+          return arr.map(item => { return item.personInfo })
+        } else {
+          return data.map(item => { return item.personInfo })
+        }
+      }
+    },
     data () {
       return {
         delid: '',
@@ -222,19 +231,15 @@
         showContent002: false,
         showContent003: false,
         showContent004: false,
-        checklist001: [],
         show3: false,
         menus3: {},
+        result: {
+          choosedList: []
+        },
+        errorImg: 'this.src="' + require('@/assets/DefaultAvatar.svg') + '"',
+        checkList: [
+        ],
         height: 0,
-        radio003: [{
-          icon: 'http://dn-placeholder.qbox.me/110x110/FF2D55/000',
-          key: '001',
-          value: 'radio001'
-        }, {
-          icon: 'http://dn-placeholder.qbox.me/110x110/FF2D55/000',
-          key: '002',
-          value: 'radio002'
-        }],
         commonList: [ 'China', 'Japan', 'America' ]
       }
     }

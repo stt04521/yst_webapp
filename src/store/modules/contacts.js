@@ -63,7 +63,7 @@ const contacts = {
     },
     // 模糊查询
     FuzzySearch ({commit}, value) {
-      return db.table('personInfo').where('personInfo.realName').toArray()
+      return db.table('personInfo').where('realName').equals(value).toArray()
     },
     // 获取默认分组
     GetDefaultGroup ({commit}) {

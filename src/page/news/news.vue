@@ -49,7 +49,7 @@
           </FlexboxItem>
           <FlexboxItem :span="8">
             <h4>会话消息</h4>
-            <p class="f_14">{{last.content}}</p>
+            <p class="f_14">{{last}}</p>
           </FlexboxItem>
           <FlexboxItem :span="2">
             <p class="f_12">7/31</p>
@@ -114,11 +114,11 @@
     data () {
       return {
         total: 0,
-        last: {},
+        last: '',
         newList: [
-          {count: 0, lastMsg: '', type: 'taskMsg'},
-          {count: 0, lastMsg: '', type: 'noticeMsg'},
-          {count: 0, lastMsg: '', type: 'sysMsg'}
+          {count: 0, lastMsg: {}, type: 'taskMsg'},
+          {count: 0, lastMsg: {}, type: 'noticeMsg'},
+          {count: 0, lastMsg: {}, type: 'sysMsg'}
         ]
       }
     },
@@ -137,7 +137,7 @@
         let self = this
         self.msgList().then(res => {
           self.total = res.reduce(self.add, 0)
-          self.last = res.pop()
+          self.last = res.pop() && res.pop().content
         })
       },
       add (sumSoFar, item) {

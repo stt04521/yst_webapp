@@ -34,4 +34,19 @@ export function delGroupMembers (data) {
     data
   })
 }
-
+// 创建群聊
+export function groupCreate (data) {
+  return fetch({
+    url: '/restful/friendGroup/group/create',
+    method: 'post',
+    data
+  })
+}
+// 添加群成员
+export function addGroupMembers (data) {
+  return fetch({
+    url: '/restful/friendGroup/group/addGroupMembers',
+    method: 'post',
+    data
+  })
+}

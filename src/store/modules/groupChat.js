@@ -1,7 +1,7 @@
 /**
  * Created by shishitengteng on 2017/10/25.
  */
-import { groupMyGroup, groupGroupInfo, multiGroupMembers, delGroupMembers } from '@/api/groupChat'
+import { addGroupMembers, groupCreate, groupMyGroup, groupGroupInfo, multiGroupMembers, delGroupMembers } from '@/api/groupChat'
 import db from '../../db'
 const groupChat = {
   state: {
@@ -48,6 +48,16 @@ const groupChat = {
     async DelMembers ({dispatch, commit}, data) {
       await delGroupMembers(data)
       await db.table('groupMembers').where('id').equals(data.userId).delete()
+      await dispatch('dataSyncGroup')
+    },
+    // 创建群聊
+    async GroupCreate ({dispatch, commit}, data) {
+      await groupCreate(data)
+      await dispatch('dataSyncGroup')
+    },
+    // 获取好友添加成员列表
+    async AddGroupMembers ({dispatch, commit}, data) {
+      await addGroupMembers(data)
       await dispatch('dataSyncGroup')
     }
   }

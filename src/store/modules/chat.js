@@ -43,7 +43,7 @@ export const chat = {
   actions: {
     // 登陆
     async LoginIm ({dispatch, commit}) {
-      let user = await dispatch('GetMyInfo')
+      let user = await dispatch('getMyInfoAction')
       console.log(user)
       let uid = user.userId
       await queryEntry(uid, function (host, port) {

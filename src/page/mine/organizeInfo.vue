@@ -103,7 +103,7 @@
     },
     methods: {
       ...mapActions([
-        'GetMyInfo'
+        'getMyInfoAction'
       ]),
       showBase () {
         this.anthenticationInfo = false
@@ -126,12 +126,12 @@
     },
     async created () {
       let organizeId = this.$route.params.id
-//      this.GetMyInfo().then(res => {
+//      this.getMyInfoAction().then(res => {
 //        self.organizeDetail = res.organizeId.filter((item) => {
 //          return item.id === organizeId
 //        })
 //      })
-      let res = await this.GetMyInfo()
+      let res = await this.getMyInfoAction()
       this.organizeDetail = res.organizeId.filter((item) => {
         return item.id === organizeId
       })

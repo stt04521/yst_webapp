@@ -72,24 +72,20 @@
     },
     methods: {
       ...mapActions([
-        'identityVerification',
-        'organizeVerification'
+        'identityVerificationAction',
+        'organizeVerificationAction'
       ]),
       upLoadImg () {
-        console.log('upLoadImg')
         this.showUploadChoose = true
       },
       submitCertificate () {
-        console.log(this.creditCode)
-        console.log(this.enterpriseName)
-        console.log(this.imgList)
         if (this.$route.params.type === 'etag') {
           let paramsData = {
             organizeName: this.enterpriseName,
             creditCode: this.creditCode,
             organizeLicense: ''
           }
-          this.organizeVerification(paramsData).then((res) => {
+          this.organizeVerificationAction(paramsData).then((res) => {
             console.log(res)
           }).catch(err => console.log(err))
         } else if (this.$route.params.type === 'personnel') {
@@ -99,7 +95,7 @@
             IdentityCardImg: ''
           }
           console.log('paramsData: ', paramsData)
-          this.identityVerification(paramsData).then((res) => {
+          this.identityVerificationAction(paramsData).then((res) => {
             console.log(res)
           }).catch((err) => {
             console.log(err)

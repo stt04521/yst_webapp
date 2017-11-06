@@ -66,7 +66,7 @@
     },
     methods: {
       ...mapActions([
-        'createOrganize'
+        'createOrganizeAction'
       ]),
       verificate () {
         console.log(this.organizeName.length)
@@ -90,7 +90,7 @@
             organizeName: this.organizeName,
             address: value2name(this.area, ChinaAddressV4Data)
           }
-          this.createOrganize(paramsData).then((res) => {
+          this.createOrganizeAction(paramsData).then((res) => {
             this.$router.push({
               name: 'myOrganize'
             })

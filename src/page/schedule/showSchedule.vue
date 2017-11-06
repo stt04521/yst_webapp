@@ -11,9 +11,9 @@
         <div class="right" @click="toDetail(item)">
           <div class="title">{{ item.content }}</div>
           <div class="address" v-if="isShowAddress">{{ item.address }}</div>
-          <div class="create-time" :style="{marginTop: isShowAddress ? '2px' : '27px'}">{{ item.startTime }}</div>
+          <div class="create-time" :style="{marginTop: isShowAddress ? '2px' : '27px'}">{{ $moment(item.startTime).format('YYYY-MM-DD HH:mm:ss') }}</div>
           <img class="s-delete" src="../../assets/delete.png" @click.stop="deleteItem(item)"/>
-          <span class="modify-time">{{ item.updatedAt }}</span>
+          <span class="modify-time">{{ $moment(item.updatedAt).format('YYYY-MM-DD HH:mm:ss') }}</span>
         </div>
       </li>
     </ul>

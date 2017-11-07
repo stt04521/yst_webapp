@@ -18,7 +18,8 @@
         <cell title="提醒" is-link :value="remindValue" @click.native="showActionSheet"></cell>
       </group>
       <group>
-        <cell title="地点" ></cell>
+        <!--<x-input title="地点" v-model="address"></x-input>-->
+        <x-address title="地点" v-model="address" :list="addressData" placeholder="必填"></x-address>
       </group>
       <group>
         <cell title="参与者" is-link link="/chooseParticipator">
@@ -34,12 +35,14 @@
   </div>
 </template>
 <script>
-  import { XTextarea, Group, DatetimeRange, Datetime, Cell, Actionsheet, XSwitch, PopupHeader, Radio, XHeader, ViewBox } from 'vux'
+  import { XTextarea, Group, DatetimeRange, Datetime, Cell, Actionsheet, XSwitch, PopupHeader, Radio, XHeader, ViewBox, XAddress, ChinaAddressV4Data, Value2nameFilter as value2name } from 'vux'
   import { mapActions } from 'vuex'
   export default {
     name: 'createSchedule',
     data () {
       return {
+        addressData: ChinaAddressV4Data,
+        address: [],
         isEdit: false,
         content: '',
         show1: false,
@@ -79,7 +82,8 @@
       PopupHeader,
       Radio,
       XHeader,
-      ViewBox
+      ViewBox,
+      XAddress
     },
     methods: {
       ...mapActions([
@@ -118,7 +122,7 @@
             content: this.content,
             startTime: this.startTime,
             endTime: this.endTime,
-            address: 'wuhan',
+            address: value2name(this.address, ChinaAddressV4Data),
             remind: this.remind,
             partner: [],
             scheduleId: this.id
@@ -138,7 +142,7 @@
             content: this.content,
             startTime: this.startTime,
             endTime: this.endTime,
-            address: 'wuhan',
+            address: value2name(this.address, ChinaAddressV4Data),
             remind: this.remind,
             partner: []
           }
@@ -155,23 +159,25 @@
       }
     },
     created () {
-      let info = this.$route.params.info
-      if (info.remind === 3600000) {
-        this.remindValue = '一小时'
-      }
-      if (info.remind === 86400000) {
-        this.remindValue = '一天前'
-      }
-      if (info.remind === -1) {
-        this.remindValue = '不提醒'
-      }
-      if (info) {
-        this.isEdit = true
-        this.infoList = info
-        this.content = info.content
-        this.startTime = this.$moment(info.startTime).format('YYYY-MM-DD HH:mm:ss')
-        this.endTime = this.$moment(info.endTime).format('YYYY-MM-DD HH:mm:ss')
-        this.id = info.id
+      if (this.$route.query && this.$route.query.info) {
+        let info = this.$route.query.info
+        if (info.remind === 3600000) {
+          this.remindValue = '一小时'
+        }
+        if (info.remind === 86400000) {
+          this.remindValue = '一天前'
+        }
+        if (info.remind === -1) {
+          this.remindValue = '不提醒'
+        }
+        if (info) {
+          this.isEdit = true
+          this.infoList = info
+          this.content = info.content
+          this.startTime = this.$moment(info.startTime).format('YYYY-MM-DD HH:mm:ss')
+          this.endTime = this.$moment(info.endTime).format('YYYY-MM-DD HH:mm:ss')
+          this.id = info.id
+        }
       }
     }
   }

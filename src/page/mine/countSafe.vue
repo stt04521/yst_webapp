@@ -79,7 +79,6 @@
       }
     },
     created () {
-      console.log('created')
       this.GetSyncUserInfo().then((res) => {
         this.accountInfo = res
         console.log(res)

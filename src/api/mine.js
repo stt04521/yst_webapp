@@ -1,7 +1,7 @@
 import fetch from '@/utils/fetch'
 
 // 获取个人信息
-export function getMyInfo () {
+export function getMyInfoApi () {
   return fetch({
     url: '/restful/person/info/myInfo',
     method: 'get'
@@ -9,7 +9,7 @@ export function getMyInfo () {
 }
 
 // 通过id查找信息
-export function findPersonInfoByUserId (id) {
+export function findPersonInfoByUserIdApi (id) {
   return fetch({
     url: '/restful/person/info/findPersonInfoByUserId/' + id,
     method: 'get'
@@ -22,7 +22,7 @@ export function findPersonInfoByUserId (id) {
 *   nickName: '111111'
 * }
 * */
-export function editInfo (data) {
+export function editInfoApi (data) {
   return fetch({
     url: '/restful/person/info/edit',
     method: 'post',
@@ -38,7 +38,7 @@ export function editInfo (data) {
 *   IdentityCardImg: 'img'
 * }
 * */
-export function identityVerification (data) {
+export function identityVerificationApi (data) {
   return fetch({
     url: '/restful/person/cert/create',
     method: 'post',
@@ -55,7 +55,7 @@ export function identityVerification (data) {
 *   organizeBasicInfoId: "d499fd70-b588-4b20-8779-291b67230bfb"
 * }
 * */
-export function organizeVerification (data) {
+export function organizeVerificationApi (data) {
   return fetch({
     url: '/restful/organize/createAuth',
     method: 'post',
@@ -71,7 +71,7 @@ export function organizeVerification (data) {
 *   address: '55555'
 *  }
 * */
-export function createOrganize (data) {
+export function createOrganizeApi (data) {
   return fetch({
     url: '/restful/organize/create',
     method: 'post',
@@ -85,7 +85,7 @@ export function createOrganize (data) {
 *   email/ phone: '11111'
 *  }
 * */
-export function editEmailOrPhone (data) {
+export function editEmailOrPhoneApi (data) {
   return fetch({
     url: `/restful/oauth/editUser/${data.type}`,
     method: 'post',
@@ -99,7 +99,7 @@ export function editEmailOrPhone (data) {
 *   newPassword: '523648'
 *  }
 * */
-export function changePassword (data) {
+export function changePasswordApi (data) {
   return fetch({
     url: '/restful/oauth/changePassword',
     method: 'post',

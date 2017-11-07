@@ -94,7 +94,7 @@
     },
     methods: {
       ...mapActions([
-        'GetMyInfo'
+        'getMyInfoAction'
       ]),
       showUserInfo () {
         this.$router.push({
@@ -165,7 +165,7 @@
     },
     created () {
       let self = this
-      self.GetMyInfo().then(res => {
+      self.getMyInfoAction().then(res => {
         this.myInfo = res
         if (this.myInfo.portrait) {
           this.userAvatar = this.myInfo.portrait

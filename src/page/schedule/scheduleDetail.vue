@@ -5,13 +5,13 @@
     <div class="content-container">
       <div class="detail-container">
         <div class="detail-title">{{ info.content }}</div>
-        <div class="detail-ite">开始时间：{{ info.startTime }}</div>
-        <div class="detail-ite">截止时间：{{ info.endTime }}</div>
+        <div class="detail-ite">开始时间：{{ $moment(info.startTime).format('YYYY-MM-DD HH:mm:ss') }}</div>
+        <div class="detail-ite">截止时间：{{ $moment(info.endTime).format('YYYY-MM-DD HH:mm:ss') }}</div>
         <div class="detail-ite">地点：{{ info.address }}</div>
         <div class="creator-detail">
           <img class="creator-img" src="../../assets/news/userImg.jpg"/>
-          <span class="creator">{{ info.creator }}发出的</span>
-          <span class="created-time">{{ info.createdAt }}</span>
+          <span class="creator">{{ creator }}&nbsp;发出的</span>
+          <span class="created-time">{{ $moment(info.createdAt).format('YYYY-MM-DD HH:mm:ss') }}</span>
         </div>
       </div>
       <div class="participator">
@@ -41,13 +41,16 @@
     },
     data () {
       return {
-        info: {}
+        info: {},
+        creator: ''
       }
     },
     methods: {
       ...mapActions([
         'getScheduleDetail',
-        'deleteSchedule'
+        'deleteSchedule',
+        'getMyInfoAction',
+        'findPersonInfoByUserIdAction'
       ]),
       back () {
         console.log('back')
@@ -57,14 +60,13 @@
         let data = this.info
         this.$router.push({
           name: 'createSchedule',
-          params: {
+          query: {
             info: data
           }
         })
       },
       cancleSchedule () {
         // 取消日程，删除该条日程记录
-        console.log(this.info.id)
         this.deleteSchedule(this.info.id).then((res) => {
           this.$router.go(-1)
         }, (err) => {
@@ -74,15 +76,20 @@
         })
       }
     },
-    created () {
+    async created () {
       let id = this.$route.params.id
       this.getScheduleDetail(id).then((res) => {
         this.info = res
-      }, (err) => {
-        console.log(err)
       }).catch((err) => {
         console.log(err)
       })
+      let res = this.getMyInfoAction()
+      if (this.info.creator === res.userId) {
+        this.creator = '我'
+      } else {
+        let response = await this.findPersonInfoByUserIdAction(this.info.creator)
+        this.creator = response.realName
+      }
     }
   }
 </script>

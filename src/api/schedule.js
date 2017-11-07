@@ -16,7 +16,6 @@ export function createSchedule (data) {
     url: '/restful/schedule/create',
     method: 'post',
     data
-    // params: {data}
   })
 }
 

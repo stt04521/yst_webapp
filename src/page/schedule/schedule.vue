@@ -3,24 +3,21 @@
     <flexbox class="tab-wrapper" :gutter="0">
       <flexbox-item :span="10">
         <tab :line-width="1" custom-bar-width="60px" active-color="#108ee9" class="s-tab-container">
-          <tab-item selected class="tab-item">
+          <tab-item selected class="tab-item-container">
             <router-link to="/schedule/showSchedule" @click="changeIndex" style="display: block">日程</router-link>
           </tab-item>
-          <tab-item class="tab-item">
+          <tab-item class="tab-item-container">
             <router-link to="/schedule/showNote" @click="changeIndex" style="display: block">记事本</router-link>
           </tab-item>
         </tab>
       </flexbox-item>
       <flexbox-item class="s-img-bg vux-1px-tb">
-        <router-link to="/showCalender">
-          <img class="calender-img" src="../../assets/schedule.png"/>
-        </router-link>
+        <img @click="toCalender" class="calender-img" src="../../assets/schedule.png"/>
       </flexbox-item>
     </flexbox>
     <div class="content" :style="{height: height + 'px'}">
-      <show-schedule @refresh-schedule-list="getscheduleList" v-show="isShowSchedule" :scheduleList = 'list' :isShowAddress="true"></show-schedule>
-      <show-schedule @refresh-note-list="getnoteList" v-show="isShowNote" :scheduleList = 'list' :isShowAddress="false"></show-schedule>
-      <showCalender v-show="isShowCalender"></showCalender>
+      <show-schedule @refresh-schedule-list="getscheduleList" v-show="isShowSchedule" :scheduleList='list' :isShowAddress="true"></show-schedule>
+      <show-schedule @refresh-note-list="getnoteList" v-show="isShowNote" :scheduleList='list' :isShowAddress="false"></show-schedule>
     </div>
   </div>
 </template>
@@ -28,7 +25,6 @@
 <script>
   import {Flexbox, FlexboxItem, Tab, TabItem, InlineCalendar} from 'vux'
   import showSchedule from './showSchedule.vue'
-  import showCalender from './showCalender.vue'
   import {mapActions} from 'vuex'
   export default {
     name: 'schedule',
@@ -38,7 +34,6 @@
       Tab,
       TabItem,
       showSchedule,
-      showCalender,
       InlineCalendar
     },
     data () {
@@ -47,7 +42,6 @@
         pageIndex: 1,
         isShowAddress: true,
         isShowSchedule: true,
-        isShowCalender: false,
         isShowNote: false,
         list: [],
         scheduleList: [],
@@ -56,18 +50,16 @@
     },
     methods: {
       ...mapActions([
-        'getScheduleList',
-        'getNoteList'
+        'getScheduleListAction',
+        'getNoteListAction'
       ]),
       changeIndex () {
         this.pageIndex = this.pageIndex === 1 ? 2 : 1
       },
       getscheduleList () {
         let that = this
-        this.getScheduleList().then((res) => {
+        this.getScheduleListAction().then((res) => {
           that.list = res
-        }, (err) => {
-          console.log('err', err)
         }).catch(err => {
           console.log('err', err)
         })
@@ -75,35 +67,30 @@
       },
       getnoteList () {
         let that = this
-        this.getNoteList().then((res) => {
+        this.getNoteListAction().then((res) => {
           that.list = res
-          console.log('noteList', res)
-        }, (err) => {
-          console.log('err', err)
         }).catch(err => {
           console.log('err', err)
         })
         return this.noteList
+      },
+      toCalender () {
+        this.$router.push({
+          name: 'showCalender'
+        })
       }
     },
     watch: {
       $route (to, from) {
         if (to.path === '/schedule/showSchedule' || to.path === '/schedule') {
           this.isShowSchedule = true
-          this.isShowCalender = false
           this.isShowNote = false
           this.getscheduleList()
         }
         if (to.path === '/schedule/showNote') {
           this.isShowSchedule = false
-          this.isShowCalender = false
           this.isShowNote = true
           this.getnoteList()
-        }
-        if (to.path === '/schedule/showCalender') {
-          this.isShowSchedule = false
-          this.isShowCalender = true
-          this.isShowNote = false
         }
       }
     },
@@ -112,7 +99,6 @@
     },
     created () {
       let path = this.$route.path
-      console.log('path:', path)
       if (path.indexOf('showSchedule') > -1) {
         this.getscheduleList()
       }
@@ -151,7 +137,7 @@
       height: 37px;
       line-height: 37px;
       text-align: center;
-      .tab-item{
+      .tab-item-conttainer{
         padding: 0px;
         height: 37px;
         line-height: 37px;

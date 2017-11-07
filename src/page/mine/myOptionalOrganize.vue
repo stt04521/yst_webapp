@@ -13,6 +13,7 @@
 <script>
   import {XHeader} from 'vux'
   import {eventBus} from '../../utils/eventBus'
+  import {mapActions} from 'vuex'
   export default {
     name: 'myOptionalOrganize',
     components: {
@@ -29,11 +30,15 @@
     mounted () {
       this.height = document.body.offsetHeight - 46
     },
-    created () {
+    async created () {
+      let res = await this.getMyInfoAction()
       this.choosedId = this.$route.params.id
-      this.organizeId = this.$store.getters.myInfo.organizeId
+      this.organizeId = res.organizeId
     },
     methods: {
+      ...mapActions([
+        'getMyInfoAction'
+      ]),
       chooseOrganize (item) {
         console.log('myOptionalOrganize: ', item.id)
         eventBus.$emit('choosed-organize', item.id)

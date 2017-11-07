@@ -1,10 +1,11 @@
 <template>
   <div class="my-organize-wrapper">
-    <x-header :left-options="{showBack: true}" @on-click-back="goBack" title="我的组织" slot="overwrite-left" class="header">
+    <x-header title="我的组织" class="header">
+      <span slot="overwrite-left" @click="goBack">＜返回</span>
     </x-header>
     <div class="my-organize-container">
       <ul>
-        <li @click="showOrganizeDetail(item)" class="organize-item vux-1px-b" v-for="(item, index) in organizeList" :key="index">
+        <li @click="showOrganizeDetail(item)" class="organize-item vux-1px-b" v-for="(item, index) in $store.state.mine.organizeId" :key="index">
           <img :src="item.logo ? item.logo : defaultLogo" class="logo" alt="">
           <span class="title">{{item.organizeName}}</span>
           <button class="btn vux-1px" @click="invitate">邀请成员</button>
@@ -16,6 +17,7 @@
 </template>
 <script>
   import {XHeader} from 'vux'
+  import {mapActions} from 'vuex'
   export default {
     name: 'myOrganize',
     components: {
@@ -23,11 +25,13 @@
     },
     data () {
       return {
-        organizeList: [],
         defaultLogo: require('../../assets/default_organize_logo.png')
       }
     },
     methods: {
+      ...mapActions([
+        'getMyInfoAction'
+      ]),
       invitate (e) {
         e.cancelBubble = true
         console.log('邀请成员')
@@ -37,9 +41,6 @@
           name: 'createOrganize'
         })
       },
-      goBack () {
-        console.log('2222')
-      },
       showOrganizeDetail (item) {
         this.$router.push({
           name: 'organizeInfo',
@@ -47,12 +48,17 @@
             id: item.id
           }
         })
+      },
+      goBack () {
+        this.$router.push({
+          path: '/news'
+        })
       }
     },
-    created () {
-      this.organizeList = this.$store.getters.organizeId
-      console.log('this.organize: ', this.organizeList)
-      console.log('this.$store.getters: ', this.$store.getters)
+    async created () {
+//      let res = await this.getMyInfoAction()
+//      this.organizeList = this.$store.state.mine.organizeId
+      console.log('myOrganize: ', this.$store.state.mine.organizeId)
     }
   }
 </script>
@@ -73,6 +79,7 @@
         font-size: 14px;
         position: relative;
         text-align: left;
+        border-bottom: 1px solid #eee;
         .logo{
           width: 40px;
           height: 40px;
@@ -91,6 +98,7 @@
           position: absolute;
           top: 20px;
           right: 15px;
+          border: 1px solid #0099ff;
           &::before{
             border-color: #0099ff;
             border-radius: 4px;

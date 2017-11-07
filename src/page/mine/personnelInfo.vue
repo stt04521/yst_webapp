@@ -6,7 +6,7 @@
       <group class="user-info" :gutter="0">
         <cell value="编辑头像" is-link>
           <div slot="title">
-            <img :src="infoList.portrait ? infoList.portrait : defaultAvatar" class="avatar" alt="">
+            <img :src="infoList.portrait ? baseurl + infoList.portrait : defaultAvatar" class="avatar" alt="">
             <span class="name">{{ infoList.realName }}</span>
             <img src="../../assets/erwei_code.png" class="code" alt="">
           </div>
@@ -17,7 +17,7 @@
         <cell title="手机号" :value="accountInfo.phone"></cell>
         <cell title="Email" :value="accountInfo.email"></cell>
       </group>
-      <group v-show="organizeList">
+      <group v-show="organizeList.length > 0">
         <group-title slot="title">组织信息<span style="float:right; color: #0099ff" @click="showMoreOrganize">更多组织>></span></group-title>
         <cell title="组织" :value="name"></cell>
         <cell title="工号" value="暂无数据"></cell>
@@ -55,6 +55,7 @@
         orId: '',
         organizeList: [],
         choosedId: '',
+        baseurl: 'http://192.168.0.12:7000',
         defaultAvatar: require('../../assets/default_organize_logo.png'),
         personnelAuthenticationInfo: {
           type: 'personnel',
@@ -71,7 +72,7 @@
     methods: {
       ...mapActions([
         'GetSyncUserInfo',
-        'GetMyInfo'
+        'getMyInfoAction'
       ]),
       gotoAuthentication () {
         console.log('personnelInfo')
@@ -101,28 +102,31 @@
         console.log('change organize')
       }
     },
-    created () {
-      this.infoList = this.$store.getters.myInfo
-      this.organizeList = this.infoList.organizeId
+    async created () {
+//      this.organizeList = this.infoList.organizeId
       // 其他地方获取不到数据
-//      let res = await this.GetMyInfo()
-//      this.infoList = res
-//      this.organizeList = res.organizeId
-      this.GetSyncUserInfo().then((res) => {
-        this.accountInfo = res
-      }).catch((err) => {
-        console.log(err)
-      })
+      let res = await this.getMyInfoAction()
+      this.infoList = res
+      this.organizeList = res.organizeId
+      let userRes = await this.GetSyncUserInfo()
+      this.accountInfo = userRes
+//      this.GetSyncUserInfo().then((res) => {
+//        this.accountInfo = res
+//      }).catch((err) => {
+//        console.log(err)
+//      })
     },
     computed: {
       name () {
         if (this.$route.query.id) {
-          let result = this.infoList.organizeId.filter(res => {
+          let result = this.infoList.organizeId && this.infoList.organizeId.filter(res => {
             return res.id === this.$route.query.id
           })
           return result[0].organizeName
         } else {
-          return this.infoList.organizeId[0].organizeName
+          if (this.infoList.organizeId) {
+            return this.infoList.organizeId.length > 0 ? this.infoList.organizeId[0].organizeName : ''
+          }
         }
       }
     }

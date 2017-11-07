@@ -205,12 +205,15 @@
         return false
       },
       leftOptions () {
-        if (this.route.path === '/showCalender') {
-          return {showBack: true}
-        } else {
-          return {
-            showBack: false
-          }
+//        if (this.route.path === '/showCalender') {
+//          return {showBack: true}
+//        } else {
+//          return {
+//            showBack: false
+//          }
+//        }
+        return {
+          showBack: this.route.path !== '/'
         }
       },
       rightOptions () {
@@ -234,7 +237,7 @@
       },
       title () {
         if (this.route.path === '/news') return '个人信息'
-        if (this.route.path === '/schedule' || this.route.path === '/schedule/showSchedule' || this.route.path === '/showCalender') return '日程'
+        if (this.route.path === '/schedule' || this.route.path === '/schedule/showSchedule') return '日程'
         if (this.route.path === '/schedule/showNote') return '记事本'
         if (this.route.path === '/work' || this.route.path === '/work/todoList' || this.route.path === '/work/finishedList') {
           return this.workPageTitle

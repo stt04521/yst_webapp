@@ -249,7 +249,7 @@
 //    },
     async created () {
       this.playRole = this.$route.query.role
-      let res = await this.GetMyInfo()
+      let res = await this.getMyInfoAction()
       this.myInfo[0] = res
       console.log('this.principalList: ', this.myInfo)
       this.$store.commit('SET_PRINCIPAL_LIST', this.myInfo)

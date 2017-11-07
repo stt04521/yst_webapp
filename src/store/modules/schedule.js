@@ -18,7 +18,6 @@ const schedule = {
     createSchedule ({commit}, data) {
       return new Promise((resolve, reject) => {
         createSchedule(data).then((res) => {
-          console.log(res)
           resolve()
         }).catch((err) => {
           reject(err)
@@ -28,9 +27,7 @@ const schedule = {
     // 创建笔记
     createNote ({commit}, data) {
       return new Promise((resolve, reject) => {
-        console.log('////00', data)
         createNote(data).then((res) => {
-          console.log(res)
           resolve()
         }).catch((err) => {
           reject(err)
@@ -38,10 +35,9 @@ const schedule = {
       })
     },
     // 获取日程列表
-    getScheduleList ({commit, state}) {
+    getScheduleListAction ({commit, state}) {
       return new Promise((resolve, reject) => {
         getList(state.token).then((res) => {
-          console.log(res)
           let data = res.data.result
           commit('SET_SCHEDULE_LIST', res.data)
           resolve(data)
@@ -51,10 +47,9 @@ const schedule = {
       })
     },
     // 获取笔记列表
-    getNoteList ({commit}) {
+    getNoteListAction ({commit}) {
       return new Promise((resolve, reject) => {
         getNoteList().then((res) => {
-          console.log(res)
           let data = res.data.result
           resolve(data)
         }).catch((err) => {
@@ -66,7 +61,6 @@ const schedule = {
     getNoteDetail ({commit}, id) {
       return new Promise((resolve, reject) => {
         getNoteInfo(id).then((res) => {
-          console.log('getNoteDetail: ', res)
           resolve(res.data.result)
         }).catch((err) => {
           console.log(err)
@@ -87,7 +81,6 @@ const schedule = {
     editSchedule ({commit}, data) {
       return new Promise((resolve, reject) => {
         updateSchedule(data).then((res) => {
-          console.log('actions edite schedule')
           resolve(res.data.result)
         }).catch((err) => {
           console.log(err)

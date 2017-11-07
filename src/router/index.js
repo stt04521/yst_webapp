@@ -68,13 +68,8 @@ export default new Router({
           }
         }
         ]
-      },
-      {
-        path: 'showCalender',
-        component: (resolve) => {
-          require(['@/page/schedule/showCalender'], resolve)
-        }
-      }]
+      }
+      ]
     },
     // news
     {
@@ -151,8 +146,16 @@ export default new Router({
         require(['@/page/contacts/MobilePacket'], resolve)
       }
     },
+    // 日程
     {
-      path: '/createSchedule/:info', // 创建日程
+      path: '/showCalender',     // 日历
+      name: 'showCalender',
+      component: (resolve) => {
+        require(['@/page/schedule/showCalender'], resolve)
+      }
+    },
+    {
+      path: '/createSchedule', // 创建日程
       name: 'createSchedule',
       component: (resolve) => {
         require(['@/page/schedule/createSchedule'], resolve)

@@ -60,20 +60,17 @@
     },
     methods: {
       ...mapActions([
-        'editEmailOrPhone',
-        'ForgetPassword',
-        'changePassword'
+        'editEmailOrPhoneAction',
+        'changePasswordAction'
       ]),
       ensureInfo () {
         // 根据setType值的不同，处理不同的提交事件
-//        console.log(this.tel)
-//        console.log(this.testCode)
         if (this.setType === 'SET_TEL') {
           let paramsData = {
             type: 'phone',
             phone: this.tel
           }
-          this.editEmailOrPhone(paramsData).then((res) => {
+          this.editEmailOrPhoneAction(paramsData).then((res) => {
             this.$router.push({
               name: 'countSafe'
             })
@@ -86,7 +83,7 @@
             type: 'email',
             email: this.tel
           }
-          this.editEmailOrPhone(paramsData).then((res) => {
+          this.editEmailOrPhoneAction(paramsData).then((res) => {
             this.$router.push({
               name: 'countSafe'
             })
@@ -99,9 +96,7 @@
             password: this.tel,
             newPassword: this.newPassword
           }
-          console.log('input info password: ', paramsData)
-          this.changePassword(paramsData).then((res) => {
-            console.log('input info : ', res)
+          this.changePasswordAction(paramsData).then((res) => {
           }, (err) => {
             console.log(err)
           })

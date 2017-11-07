@@ -172,10 +172,10 @@ export const chat = {
         let groupItem = await db.table('group').where('id').equals(GroupId).first()
         let item = msg || await db.table('chatMsg').where('[audienceId+isGroupChat]').equals([GroupId, 1]).filter(i => { return i.isRead === 1 }).last()
         let lastName = await db.table('groupMembers').where('userId').equals(item.speakerId).first()
-        item.lastName = lastName.personInfo.realName
-        item.groupName = groupItem.name
+        lastName ? item.lastName = lastName.personInfo.realName : ''
+        groupItem ? item.groupName = groupItem.name : ''
         msg ? item.num = noRead : item.num = 0
-        chatList.push(item)
+        await chatList.push(item)
       }
       chatList.sort(compare('createdAt'))
       return chatList

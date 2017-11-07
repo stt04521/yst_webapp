@@ -137,7 +137,7 @@
         let self = this
         self.msgList().then(res => {
           self.total = res.reduce(self.add, 0)
-          self.last = res.pop() && res.pop().content
+          res.length > 0 ? self.last = res[0]['content'] : ''
         })
       },
       add (sumSoFar, item) {

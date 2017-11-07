@@ -10,7 +10,7 @@
     </x-header>
     <div class="member">
       <h2>本组织成员</h2>
-      <Flexbox wrap="wrap" :gutter="0" >
+      <Flexbox wrap="wrap" :gutter="0"  v-click-outside="onClickedOutside">
         <FlexboxItem :span="2" v-for="i in GroupList" :key="i.id" class="relative">
           <img :src="require('@/assets/close.svg')"  class="close" v-show="isClose" @click="delMembers(i.userId)">
           <img :src="require('@/assets/DefaultAvatar.svg') || i.personInfo.portrait"  class="img" v-longtap="{fn:onlongpress,name:'长按'}">
@@ -48,6 +48,7 @@
   import { XHeader, Flexbox, FlexboxItem, Cell, Group, XSwitch, XButton, Actionsheet } from 'vux'
   import { mapActions } from 'vuex'
   import { longtap } from '@/directives/vue-touch'
+  import ClickOutside from '@/directives/click-outside'
   export default {
     name: 'hello',
     components: {
@@ -61,7 +62,8 @@
       Actionsheet
     },
     directives: {
-      longtap
+      longtap,
+      ClickOutside
     },
     data () {
       return {
@@ -86,6 +88,9 @@
       ]),
       onJutmp (url) {
         this.$router.push(url)
+      },
+      onClickedOutside () {
+        this.isClose = false
       },
       getGroupList (id) {
         let self = this

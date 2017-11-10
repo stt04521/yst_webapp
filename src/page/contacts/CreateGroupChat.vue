@@ -106,6 +106,7 @@
         })
       },
       createdGroup () {
+        console.log('create group chat')
         let self = this
         let userId = self.$refs.Friends.result.choosedList.map(item => { return item.userId })
         let request = {
@@ -113,7 +114,11 @@
           description: '',
           name: self.groupName
         }
-        this.GroupCreate(request)
+        this.GroupCreate(request).then((res) => {
+          this.$router.push({
+            name: 'contacts'
+          })
+        })
       }
     }
   }

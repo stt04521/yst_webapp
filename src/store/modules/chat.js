@@ -154,12 +154,12 @@ export const chat = {
     // 消息列表
     async msgList ({dispatch, commit}, data) {
       let chatList = []
-      let chat = await db.table('chatMsg').where('speakerId').notEqual(0).filter(item => { return item.isGroupChat === 0 }).uniqueKeys()
+      let chat = await db.table('chatMsg').where('audienceId').notEqual(0).filter(item => { return item.isGroupChat === 0 }).uniqueKeys()
       for (let value of chat) {
-        let chatItem = await db.table('chatMsg').where('[speakerId+isGroupChat]').equals([value, 0]).filter(i => { return i.isRead === 0 })
+        let chatItem = await db.table('chatMsg').where('[audienceId+isGroupChat]').equals([value, 0]).filter(i => { return i.isRead === 0 })
         let noRead = await chatItem.count()
         let msg = await chatItem.last()
-        let item = msg || await db.table('chatMsg').where('[speakerId+isGroupChat]').equals([value, 0]).filter(i => { return i.isRead === 1 }).last()
+        let item = msg || await db.table('chatMsg').where('[audienceId+isGroupChat]').equals([value, 0]).filter(i => { return i.isRead === 1 }).last()
         let lastName = await db.table('groupMembers').where('userId').equals(item.audienceId).first()
         lastName ? item.lastName = lastName.personInfo.realName : ''
         lastName ? item.speakerPortrait = lastName.personInfo.portrait : ''

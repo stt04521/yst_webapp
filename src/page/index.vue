@@ -147,7 +147,6 @@
     async created () {
       let res = await this.getMyInfoAction()
       this.selectionList = res.organizeId
-      console.log(this.selectionList)
     },
     methods: {
       ...mapActions([

@@ -3,7 +3,7 @@
     <x-header title="会话消息"></x-header>
     <div class="news-list-container">
       <div class="item-container vux-1px-b vux-1px-l" v-for="(item, index) in newsList" :key="index" @click="tonewsPage(item)">
-        <img class="avatar" :src="item.avatar" :onerror="errorImg">
+        <img class="avatar" :src="baseurl + item.speakerPortrait" :onerror="errorImg">
         <Badge class="badge" v-if="item.num !== 0"  :text="item.num > 99 ? '...' : item.num"></Badge>
         <div class="detail-container">
           <span class="title">{{ item.isGroupChat == 0? item.speakerName : item.groupName}}</span>
@@ -28,6 +28,7 @@
     },
     data () {
       return {
+        baseurl: 'http://192.168.0.12:7000',
         newsList: [],
         errorImg: 'this.src="' + require('@/assets/DefaultAvatar.svg') + '"'
       }

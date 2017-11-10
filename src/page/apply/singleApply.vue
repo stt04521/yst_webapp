@@ -1,12 +1,6 @@
 <template>
   <div class="single-apply-wrapper">
-    <x-header :title="pageTitle">
-      <div slot="right" class="right-toggle" @click="toggleOrganize">
-        <span class="title" @click="toggleModelShow">切换</span>
-        <span class="arrow" :class="isShowOrganizeList ? 'top' : 'bottom'"></span>
-        <selection-list :top="45" :dataList="selectionList" @toggle-model-show="toggleModelShow" @change-item="changeOrganize" :showModel="showModel"></selection-list>
-      </div>
-    </x-header>
+    <x-header :title="pageTitle"></x-header>
     <tab class="tab-container" :line-width="1" custom-bar-width="60px" active-color="#108ee9">
       <tab-item selected>
         <router-link to="/singleApply/applyAdministration">应用管理</router-link>
@@ -29,7 +23,6 @@
 <script>
   import {XHeader, Tab, TabItem} from 'vux'
   import blockItem from '@/components/blockItem'
-  import selectionList from '@/components/selectionList'
   import applyUpdate from './applyUpdate.vue'
 //  import {eventBus} from '../../eventBus'
   export default {
@@ -39,7 +32,6 @@
       Tab,
       TabItem,
       blockItem,
-      selectionList,
       applyUpdate
     },
     data () {
@@ -48,23 +40,11 @@
         isShowAs: false,
         isShowAu: false,
         pageTitle: '个人应用',
-        height: 0,
-        showModel: false,
-        selectionList: [{key: '0', value: '组织01'}, {key: '1', value: '组织02'}, {key: '2', value: '组织03'}, {key: '3', value: '个人应用'}]
-
+        height: 0
       }
     },
     methods: {
-      toggleModelShow () {
-        this.showModel = !this.showModel
-      },
-      changeOrganize (item) {
-        this.pageTitle = item.value
-        this.toggleModelShow()
-        // 点击选择组织和个人之后，获取数据，刷新页面
-      },
       showDetail (val) {
-        console.log('111', val)
         this.$router.push({
           name: 'applyDetail'
         })
@@ -75,7 +55,6 @@
     },
     mounted () {
       this.height = document.body.offsetHeight - 83
-      console.log(this.isDelete)
     },
     watch: {
       $route (to, from) {

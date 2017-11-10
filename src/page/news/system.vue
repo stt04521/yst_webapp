@@ -1,40 +1,53 @@
 <template>
-  <div style="height: 100%">
-    <x-header>系统消息</x-header>
-    <view-box ref="viewBox" class="content">
-      <group  v-for="item in newList" :key="item.id">
-        <cell  class="blue_bg f_w">
+  <div class="system-wrapper">
+    <x-header :title="headerTitle"></x-header>
+    <view-box ref="viewBox" class="content" :style="{height: height + 'px'}">
+      <group :gutter="0" class="system-container">
+        <cell class="blue_bg f_w reset-padding">
           <span slot="title">新消息</span>
-            <span slot="value" class="f_w">  <router-link to="/messageDetails" class="f_w">查看更多 》</router-link></span>
+          <span slot="value" class="f_w">查看更多》</span>
         </cell>
-        <cell title="开启智能移动办公的变革" value="13:00"></cell>
-        <cell-box class="f_14">
-          {{item.content}}
-        </cell-box>
-      </group>
-      <!--<group v-if="$route.params.type == 'sysMsg'">-->
-        <!--<cell  class="blue_bg f_w">-->
-          <!--<span slot="title">支付成功</span>-->
-          <!--<span slot="value" class="f_w">查看更多 》</span>-->
-        <!--</cell>-->
-        <!--<cell title="任务v1.1" value="13:00" ></cell>-->
-        <!--<cell-box class="f_14">-->
-          <!--使用支付宝购买成功…-->
-        <!--</cell-box>-->
-      <!--</group>-->
 
-      <group v-if="$route.params.type == 'taskMsg'">
-        <cell  class="blue_bg f_w">
-          <span slot="title">新消息</span>
-          <span slot="value" class="f_w">查看更多 》</span>
-        </cell>
-        <cell inline-desc="刚刚">
-        <span slot="title">General</span>
-        <img slot="icon" width="40" style="display:block;margin-right:25px;" src="../../assets/news/userImg.jpg">
-        <span slot="value">13:00</span>
-        </cell>
-        <cell title="有什么具体要求吗"></cell>
-        <cell title="来自任务 财务报表"></cell>
+        <div class="content-container" v-show="showTaskNotice">
+          <div class="title">
+            <img src="../../assets/news/userImg.jpg" class="avatar">
+            <span>李明友</span>
+            <span class="time">13: 00</span>
+          </div>
+          <div class="detail text-overflow-3">
+            有什么具体要求吗？有什么具体要求吗？有什么具体要求吗？有什么具体要求吗？有什么具体要求吗？有什么具体要求吗？有什么具体要求吗？有什么具体要求吗？有什么具体要求吗？有什么具体要求吗？有什么具体要求吗？有什么具体要求吗？有什么具体要求吗？有什么具体要求吗？有什么具体要求吗？
+          </div>
+        </div>
+
+        <div class="content-container" v-show="showSysMsg">
+        <div class="title">
+          <span style="font-size: 18px">开启只能移动办公变革</span>
+          <span class="time">13: 00</span>
+        </div>
+        <div class="detail text-overflow-3">
+          有什么具体要求吗？有什么具体要求吗？有什么具体要求吗？有什么具体要求吗？有什么具体要求吗？有什么具体要求吗？有什么具体要求吗？有什么具体要求吗？有什么具体要求吗？有什么具体要求吗？有什么具体要求吗？有什么具体要求吗？有什么具体要求吗？有什么具体要求吗？有什么具体要求吗？
+        </div>
+      </div>
+
+        <div class="content-container" v-show="showVerlidationMsg">
+          <div class="detail text-overflow-3">
+            有什么具体要求吗？有什么具体要求吗？有什么具体要求吗？有什么具体要求吗？有什么具体要求吗？有什么具体要求吗？有什么具体要求吗？有什么具体要求吗？有什么具体要求吗？有什么具体要求吗？有什么具体要求吗？有什么具体要求吗？有什么具体要求吗？有什么具体要求吗？有什么具体要求吗？
+          </div>
+          <div class="title">
+            <img src="../../assets/news/userImg.jpg" class="avatar">
+            <span>李明友</span>
+            <span class="time">13: 00</span>
+          </div>
+        </div>
+
+        <div class="content-container" v-show="showScheduleNotice">
+          <div class="detail text-overflow-3">
+            有什么具体要求吗？有什么具体要求吗？有什么具体要求吗？有什么具体要求吗？有什么具体要求吗？有什么具体要求吗？有什么具体要求吗？有什么具体要求吗？有什么具体要求吗？有什么具体要求吗？有什么具体要求吗？有什么具体要求吗？有什么具体要求吗？有什么具体要求吗？有什么具体要求吗？
+          </div>
+          <div class="title">
+            <span>开始时间： 08月1日 16：00</span>
+          </div>
+        </div>
       </group>
     </view-box>
   </div>
@@ -56,8 +69,13 @@
     },
     data () {
       return {
-        msg: 'Welcome to Your Vue.js App',
-        newList: []
+        height: 0,
+        headerTitle: '',
+        newList: [],
+        showVerlidationMsg: false,
+        showTaskNotice: false,
+        showSysMsg: false,
+        showScheduleNotice: false
       }
     },
     methods: {
@@ -70,17 +88,74 @@
           self.newList = res
         })
       }
+
     },
     created () {
       this.getAllNew()
+      let messageType = this.$route.params.type
+      if (messageType === 'validationMessage') {
+        this.headerTitle = '验证消息'
+        this.showVerlidationMsg = true
+      }
+      if (messageType === 'taskNotice') {
+        this.headerTitle = '任务通知'
+        this.showTaskNotice = true
+      }
+      if (messageType === 'sysMsg') {
+        this.headerTitle = '系统消息'
+        this.showSysMsg = true
+      }
+      if (messageType === 'scheduleNotice') {
+        this.headerTitle = '日程提醒'
+        this.showScheduleNotice = true
+      }
+    },
+    mounted () {
+      this.height = document.body.offsetHeight - 46
     }
   }
 </script>
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped lang="less">
-
   .weui-cell:before{
     border-top: none;
   }
+  .system-wrapper{
+    height: 100%;
+    overflow: hidden;
+    .content {
+      overflow-y: auto;
+    }
+    .system-container{
+      .content-container{
+        .title{
+          font-size: 14px;
+          position: relative;
+          height: 40px;
+          line-height: 40px;
+          padding: 10px;
+          .avatar{
+            width: 40px;
+            height: 40px;
+            margin-right: 15px;
+            vertical-align: middle;
+          }
+          .time{
+            position: absolute;
+            top: 10px;
+            right: 20px;
+          }
+        }
+        .detail {
+          margin-top: 15px;
+          margin-bottom: 15px;
+          padding-left: 10px;
+          padding-right: 10px;
+          font-size: 14px;
+        }
+      }
+    }
+  }
+
 </style>

@@ -4,12 +4,12 @@
     <div class="news-page-container">
       <div class="news-page-item" v-for="(item, index) in newsList" :key="index" :class="item.speakerId !=$route.query.id ? 'stay-right' : ''">
         <div v-show="item.createdAt" class="time">{{ new Date(item.createdAt).toLocaleString() }}</div>
-        <img :src="item.speakerPortrait" v-if="item.speakerId == $route.query.id" class="avatar" :onerror="errorImg">
+        <img :src="baseurl + item.speakerPortrait" v-if="item.speakerId == $route.query.id" class="avatar" :onerror="errorImg">
         <div class="news-container">
           <span class="triangle"></span>
           <span class="news-detail">{{ item.content }}</span>
         </div>
-        <img v-if="item.speakerId !=$route.query.id " :src="item.speakerPortrait" class="avatar" :onerror="errorImg">
+        <img v-if="item.speakerId !=$route.query.id " :src="baseurl + item.speakerPortrait" class="avatar" :onerror="errorImg">
       </div>
     </div>
     <div class="send-msg-container">
@@ -32,6 +32,7 @@
     },
     data () {
       return {
+        baseurl: 'http://192.168.0.12:7000',
         title: '',
         msg: '',
         errorImg: 'this.src="' + require('@/assets/DefaultAvatar.svg') + '"',
@@ -63,6 +64,7 @@
         let self = this
         let send = self.$route.query.type === 0 ? self.sendIm : self.sendGroupIm
         send({id: self.$route.query.id, msg: self.msg})
+        self.msg = ''
       }
     },
     watch: {

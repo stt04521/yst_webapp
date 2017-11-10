@@ -288,19 +288,15 @@
         this.isShowDelete = true
       },
       deleteApply (item) {
-        console.log(item)
         this.isShowConfirm = true
       },
       onSure () {
-        console.log('onSure')
         this.showToast = true
       },
       showDetail (item) {
-        console.log('item: ', item)
         this.$emit('show-detail', item)
       },
       addApply () {
-        console.log('add apply ')
         this.$emit('add-apply')
       }
     },

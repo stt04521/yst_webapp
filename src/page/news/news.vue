@@ -19,7 +19,7 @@
         </Flexbox>
       </cell-box>
       <cell-box>
-        <router-link to="/system/noticeMsg" class="w100">
+        <router-link to="/system/taskNotice" class="w100">
           <Flexbox>
             <FlexboxItem :span="2">
               <div class="news_img task-notify">
@@ -33,6 +33,25 @@
             <FlexboxItem :span="2">
               <p class="f_12">7/31</p>
               <badge v-if="newList[1].count!=0" :text="newList[1].count"></badge>
+            </FlexboxItem>
+          </Flexbox>
+        </router-link>
+      </cell-box>
+      <cell-box>
+        <router-link to="/system/scheduleNotice" class="w100">
+          <Flexbox>
+            <FlexboxItem :span="2">
+              <div class="news_img task-notify">
+                <i class="iconfont icon-calendar icon-position"></i>
+              </div>
+            </FlexboxItem>
+            <FlexboxItem :span="8">
+              <h4>日程提醒</h4>
+              <p class="f_14">今日日程</p>
+            </FlexboxItem>
+            <FlexboxItem :span="2">
+              <p class="f_12">7/31</p>
+              <badge text="8"></badge>
             </FlexboxItem>
           </Flexbox>
         </router-link>
@@ -73,19 +92,21 @@
       </cell-box>
 
       <cell-box @click.native="toVerification">
-        <Flexbox>
-          <FlexboxItem :span="2">
-            <div class="news_img verify">
-              <i class="iconfont icon-yanzheng icon-position"></i>
-            </div>
-          </FlexboxItem>
-          <FlexboxItem :span="8">
-            <h4>验证消息</h4>
-            <p class="f_14">您已加入***组织</p>
-          </FlexboxItem>
-          <FlexboxItem :span="2">
-          </FlexboxItem>
-        </Flexbox>
+        <router-link to="/system/validationMessage" class="w100">
+          <Flexbox>
+            <FlexboxItem :span="2">
+              <div class="news_img verify">
+                <i class="iconfont icon-yanzheng icon-position"></i>
+              </div>
+            </FlexboxItem>
+            <FlexboxItem :span="8">
+              <h4>验证消息</h4>
+              <p class="f_14">您已加入***组织</p>
+            </FlexboxItem>
+            <FlexboxItem :span="2">
+            </FlexboxItem>
+          </Flexbox>
+        </router-link>
       </cell-box>
 
       <cell-box>

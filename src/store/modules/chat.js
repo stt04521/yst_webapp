@@ -80,7 +80,6 @@ export const chat = {
         from: user.id,
         target: data.id
       }, function (result) {
-        console.log(result)
         if (result.error) {
           console.log(result.error)
           return false

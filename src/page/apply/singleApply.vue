@@ -1,7 +1,11 @@
 <template>
   <div class="single-apply-wrapper">
     <x-header :title="pageTitle">
-      <span slot="right" @click="toggleModelShow">切换</span>
+      <div slot="right" class="right-toggle" @click="toggleOrganize">
+        <span class="title" @click="toggleModelShow">切换</span>
+        <span class="arrow" :class="isShowOrganizeList ? 'top' : 'bottom'"></span>
+        <selection-list :top="45" :dataList="selectionList" @toggle-model-show="toggleModelShow" @change-item="changeOrganize" :showModel="showModel"></selection-list>
+      </div>
     </x-header>
     <tab class="tab-container" :line-width="1" custom-bar-width="60px" active-color="#108ee9">
       <tab-item selected>
@@ -20,7 +24,6 @@
       <block-item :isDelete="false" v-show="isShowAs" :isShowAddApply="false"></block-item>
       <apply-update v-show="isShowAu"></apply-update>
     </div>
-    <selection-list :top="45" :dataList="selectionList" @toggle-model-show="toggleModelShow" @change-item="changeOrganize" :showModel="showModel"></selection-list>
   </div>
 </template>
 <script>

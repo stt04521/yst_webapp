@@ -5,7 +5,7 @@
     </x-header>
     <div class="my-organize-container">
       <ul>
-        <li @click="showOrganizeDetail(item)" class="organize-item vux-1px-b" v-for="(item, index) in $store.state.mine.organizeId" :key="index">
+        <li @click="showOrganizeDetail(item)" class="organize-item vux-1px-b" v-for="(item, index) in organizeList" :key="index">
           <img :src="item.logo ? item.logo : defaultLogo" class="logo" alt="">
           <span class="title">{{item.organizeName}}</span>
           <button class="btn vux-1px" @click="invitate">邀请成员</button>
@@ -25,6 +25,7 @@
     },
     data () {
       return {
+        organizeList: [],
         defaultLogo: require('../../assets/default_organize_logo.png')
       }
     },
@@ -56,9 +57,8 @@
       }
     },
     async created () {
-//      let res = await this.getMyInfoAction()
-//      this.organizeList = this.$store.state.mine.organizeId
-      console.log('myOrganize: ', this.$store.state.mine.organizeId)
+      let res = await this.getMyInfoAction()
+      this.organizeList = res.organizeId.push({organizeName: '个人'})
     }
   }
 </script>

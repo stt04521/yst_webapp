@@ -39,7 +39,7 @@
                   </div>
                 </Popover>
               </div>
-              <img slot="icon" class="icon" :src="item1.personInfo.portrait" :data-id="index1" :onerror="errorImg">
+              <img slot="icon" class="icon" :src="baseurl + item1.personInfo.portrait" :data-id="index1" :onerror="errorImg">
             </cell>
             <!--没有好友-->
             <cell v-if="!item1.personInfo" title="此分组为空"></cell>
@@ -226,6 +226,7 @@
     },
     data () {
       return {
+        baseurl: 'http://192.168.0.12:7000',
         delid: '',
         showContent001: false,
         showContent002: false,

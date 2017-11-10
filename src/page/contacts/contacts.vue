@@ -46,6 +46,10 @@
     },
     created () {
       this.getAllGroup()
+      let index = this.$route.query.index
+      if (index) {
+        this.index = Number(index)
+      }
     },
     watch: {
       index (value) {

@@ -75,26 +75,24 @@ const mine = {
       })
     },
     // 创建组织
-    createOrganizeAction ({dispatch, commit}, data) {
-      return new Promise((resolve, reject) => {
-        createOrganizeApi(data).then((res) => {
-          dispatch('MyInfo')
-          resolve(res)
-        }).catch((err) => {
-          reject(err)
-        })
-      })
+    async createOrganizeAction ({dispatch, commit}, data) {
+      await createOrganizeApi(data)
+      await dispatch('MyInfo')
     },
     // 修改手机号或者邮箱
-    editEmailOrPhoneAction ({commit, dispatch}, data) {
-      return new Promise((resolve, reject) => {
-        editEmailOrPhoneApi(data).then((res) => {
-          dispatch('dataSyncUserInfo')
-          resolve(res)
-        }).catch((err) => {
-          reject(err)
-        })
-      })
+    async editEmailOrPhoneAction ({commit, dispatch}, data) {
+      let res = await editEmailOrPhoneApi(data)
+      if (res.data.result[0] === 1) {
+        await dispatch('dataSyncUserInfo')
+      }
+      // return new Promise((resolve, reject) => {
+      //   // editEmailOrPhoneApi(data).then((res) => {
+      //   //   dispatch('dataSyncUserInfo')
+      //   //   resolve(res)
+      //   // }).catch((err) => {
+      //   //   reject(err)
+      //   // })
+      // })
     },
     // 修改密码
     changePasswordAction ({commit}, data) {

@@ -30,22 +30,34 @@
           <span  slot="overwrite-left" @click="drawerVisibility = !drawerVisibility">
             <x-icon type="navicon" size="35" style="fill:#fff;position:relative;top:-8px;left:-3px;"></x-icon>
           </span>
-          <div v-if="route.path === '/contacts'" slot="right" style="font-size: 24px; color: #fff; position: relative" @click="showPopover" id="top">+
+          <div v-if="route.path === '/contacts'" slot="right" style="font-size: 24px; color: #fff; position: relative" @click="showPopover" id="top">
+            <i class="icon-jia-b iconfont" style="font-size: 18px"></i>
             <Popover ref="group1">
               <div slot="content" class="">
-                <p @click="onJutmp('/SearchBuddy/addFriends')"><img :src="require('@/assets/contacts/addF.jpeg')">添加好友</p>
+                <p @click="onJutmp('/SearchBuddy/addFriends')"><i class="iconfont icon-yaoqing pop-icon"></i>添加好友</p>
                 <hr>
-                <p @click="onJutmp('/CreateGroupChat')"><img :src="require('@/assets/contacts/groupChat.jpeg')"  >创建群聊</p>
+                <p @click="onJutmp('/CreateGroupChat')"><i class="iconfont icon-liaotian pop-icon"></i>创建群聊</p>
                 <hr>
-                <p><img :src="require('@/assets/contacts/Scan.jpeg')">扫一扫</p>
+                <p><i class="iconfont icon-scan pop-icon"></i>扫一扫</p>
               </div>
             </Popover>
           </div>
+          <div v-if="route.path === '/news'" slot="right" class="right-toggle" @click="toggleOrganize">
+            <span class="title">切换</span>
+            <span class="arrow" :class="isShowOrganizeList ? 'top' : 'bottom'"></span>
+            <selection-list :top="45" :dataList="selectionList" @toggle-model-show="toggleOrganizeBg" @change-item="toggleOrganizeItem" :showModel="isShowOrganizeList"></selection-list>
+          </div>
+          <!--<selection-list :top="45" :dataList="selectionList" @toggle-model-show="toggleOrganize" @change-item="toggleOrganizeItem" :showModel="isShowOrganizeList"></selection-list>-->
           <span v-if="route.path === '/schedule/showSchedule'" slot="right" style="font-size: 17px; color: #fff" @click="addSchedule">添加日程</span>
           <span v-if="route.path === '/schedule/showNote'" slot="right" style="font-size: 17px; color: #fff" @click="addNote">添加记事</span>
-          <span v-if="route.path === '/work' || route.path === '/work/todoList' || route.path === '/work/finishedList'" slot="right" style="font-size: 17px; color: #fff" @click="toggleModelShow">切换
+          <!--<span v-if="route.path === '/work' || route.path === '/work/todoList' || route.path === '/work/finishedList'" slot="right" style="font-size: 17px; color: #fff" @click="toggleModelShow">切换-->
+            <!--<selection-list :top="45" :dataList="selectionList" @toggle-model-show="changeModelShow" @change-item="changeOrganize" :showModel="showModel"></selection-list>-->
+          <!--</span>-->
+          <div v-if="route.path === '/work'" slot="right" class="right-toggle" @click="toggleModelShow">
+            <span class="title">切换</span>
+            <span class="arrow" :class="isShowOrganizeList ? 'top' : 'bottom'"></span>
             <selection-list :top="45" :dataList="selectionList" @toggle-model-show="changeModelShow" @change-item="changeOrganize" :showModel="showModel"></selection-list>
-          </span>
+          </div>
         </x-header>
         <transition
           @after-enter="$vux.bus && $vux.bus.$emit('vux:after-view-enter')"
@@ -56,23 +68,23 @@
         <tabbar class="vux-demo-tabbar" id="vux-demo-tabbar" icon-class="vux-center" slot="bottom">
           <tabbar-item :link="{path:'/news'}" :selected="route.path === '/news'" badge="99+">
             <!--<span class="demo-icon-22 vux-demo-tabbar-icon-home" slot="icon" style="position:relative;top: -2px;">&#xe637;</span>-->
-            <img class="tab-image" slot="icon" src="../assets/news_ns.png">
-            <img class="tab-image" slot="icon-active" src="../assets/news.png">
+            <i class="iconfont icon-xiaoxi1" slot="icon"></i>
+            <i class="iconfont icon-xiaoxi1" slot="icon-active"></i>
             <span slot="label">消息</span>
           </tabbar-item>
-          <tabbar-item :link="{path:'/work'}" :selected="route.path === '/work'" >
-            <img class="tab-image" slot="icon" src="../assets/work_ns.png">
-            <img class="tab-image" slot="icon-active" src="../assets/work.png">
+          <tabbar-item :link="{path:'/work'}" :selected="route.path.indexOf('work') > -1" >
+            <i class="iconfont icon-jishiben" slot="icon"></i>
+            <i class="iconfont icon-jishiben" slot="icon-active"></i>
             <span slot="label"><span v-if="componentName" class="vux-demo-tabbar-component">{{componentName}}</span><span v-else>工作</span></span>
           </tabbar-item>
           <tabbar-item :link="{path:'/contacts'}" :selected="route.path === '/contacts'" show-dot badge="New">
-            <img class="tab-image" slot="icon" src="../assets/contacts_ns.png">
-            <img class="tab-image" slot="icon-active" src="../assets/contacts.png">
+            <i class="iconfont icon-lianxiren" slot="icon"></i>
+            <i class="iconfont icon-lianxiren" slot="icon-active"></i>
           <span slot="label">联系人</span>
           </tabbar-item>
-          <tabbar-item :link="{path:'/schedule'}" :selected="route.path === '/schedule'" show-dot>
-            <img class="tab-image" slot="icon" src="../assets/schedule_ns.png">
-            <img class="tab-image" slot="icon-active" src="../assets/schedule.png">
+          <tabbar-item :link="{path:'/schedule'}" :selected="route.path.indexOf('schedule') > -1" show-dot>
+            <i class="iconfont icon-calendar" slot="icon"></i>
+            <i class="iconfont icon-calendar" slot="icon-active"></i>
             <span slot="label">日程</span>
           </tabbar-item>
         </tabbar>
@@ -112,6 +124,8 @@
     },
     data () {
       return {
+        isShowOrganizeList: false,
+        messageTitle: '个人消息',
         showMenu: false,
         showModel: false,
         workPageTitle: '个人应用',
@@ -126,16 +140,20 @@
         showPlacement: 'left',
         showPlacementValue: 'left',
         msg: 'Hello World!',
-        selectionList: [{key: '0', value: '组织01'}, {key: '1', value: '组织02'}, {key: '2', value: '组织03'}, {key: '3', value: '个人'}]
+        selectionList: []
+//        selectionList: [{key: '0', value: '组织01'}, {key: '1', value: '组织02'}, {key: '2', value: '组织03'}, {key: '3', value: '个人'}]
       }
     },
-    created () {
-
+    async created () {
+      let res = await this.getMyInfoAction()
+      this.selectionList = res.organizeId
+      console.log(this.selectionList)
     },
     methods: {
       ...mapActions([
         'updateDemoPosition',
-        'FriendGetGroup'
+        'FriendGetGroup',
+        'getMyInfoAction'
       ]),
       onShowModeChange (val) {
         /** hide drawer before changing showMode **/
@@ -183,10 +201,21 @@
       },
       changeOrganize (item) {
         eventBus.$emit('organize-changed', item)
-        this.workPageTitle = item.value
+        this.workPageTitle = item.organizeName
       },
       onJutmp (url) {
         this.$router.push(url)
+      },
+      toggleOrganize () {
+        this.isShowOrganizeList = !this.isShowOrganizeList
+      },
+      toggleOrganizeBg () {
+        this.isShowOrganizeList = true
+      },
+      toggleOrganizeItem (item) {
+        // 切换组织，通知当前页面和其他页面更新
+        console.log(item)
+        this.messageTitle = item.value
       }
     },
     computed: {
@@ -218,7 +247,7 @@
       },
       rightOptions () {
         // if (this.route.path === '/createSchedule') return { showMore: false }
-        if (this.route.path === '/' || this.route.path === '/news') return { showMore: true }
+        if (this.route.path === '/') return { showMore: true }
       },
       headerTransition () {
         return this.direction === 'forward' ? 'vux-header-fade-in-right' : 'vux-header-fade-in-left'
@@ -236,7 +265,7 @@
         return /tabbar/.test(this.route.path)
       },
       title () {
-        if (this.route.path === '/news') return '个人信息'
+        if (this.route.path === '/news') return this.messageTitle
         if (this.route.path === '/schedule' || this.route.path === '/schedule/showSchedule') return '日程'
         if (this.route.path === '/schedule/showNote') return '记事本'
         if (this.route.path === '/work' || this.route.path === '/work/todoList' || this.route.path === '/work/finishedList') {
@@ -387,4 +416,15 @@
       }
     }
   }
+  // 联系人头部弹出框样式
+  .pop-icon {
+    display: inline-block;
+    margin-right: 5px;
+  }
+  // 头部自定义返回样式
+  .header-left-title {
+    color: #fff;
+    font-size: 15px;
+  }
+
 </style>

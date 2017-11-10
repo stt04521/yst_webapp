@@ -21,25 +21,13 @@ export default new Router({
       },
       {
         path: 'work', // 工作
-        redirect: 'work/todoList',
         component: (resolve) => {
           require(['@/page/work/work'], resolve)
-        },
-        children: [{
-          path: 'todoList',
-          component: (resolve) => {
-            require(['@/page/work/todoList'], resolve)
-          }
-        },
-        {
-          path: 'finishedList',
-          component: (resolve) => {
-            require(['@/page/work/todoList'], resolve)
-          }
-        }]
+        }
       },
       {
         path: 'contacts', // 联系人
+        name: 'contacts',
         component: (resolve) => {
           require(['@/page/contacts/contacts'], resolve)
         }
@@ -86,8 +74,16 @@ export default new Router({
     },
     {
       path: '/invitingFriends', // 邀请好友
+      name: 'invitingFriends',
       component: (resolve) => {
         require(['@/page/news/invitingFriends'], resolve)
+      }
+    },
+    {
+      path: '/undealTask', // 邀请好友
+      name: 'undealTask',
+      component: (resolve) => {
+        require(['@/page/news/undealTask'], resolve)
       }
     },
     // contacts
@@ -99,6 +95,7 @@ export default new Router({
     },
     {
       path: '/CreateGroupChat', // 创建群聊
+      name: 'CreateGroupChat',
       component: (resolve) => {
         require(['@/page/contacts/CreateGroupChat'], resolve)
       }

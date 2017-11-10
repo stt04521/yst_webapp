@@ -26,7 +26,6 @@ const task = {
   actions: {
     // 创建任务
     createTaskAction ({commit}, data) {
-      console.log('actions: ', data)
       return new Promise((resolve, reject) => {
         createTaskApi(data).then((res) => {
           resolve(res)

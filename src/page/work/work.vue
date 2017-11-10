@@ -3,15 +3,16 @@
     <apply-show @deal-item-click="showTaskDetail" @show-all-task="toShowAll" :dataList="applyList" :showAll = "true"></apply-show>
     <div class="task-container">
       <tab :line-width="1" custom-bar-width="60px" active-color="#10b4f7" class="s-tab-container" defaultColor="#aaa">
-        <tab-item selected>
-          <router-link to="/work/todoList">待办任务</router-link>
+        <tab-item selected @click.native="toUnFinished">
+          待办任务
         </tab-item>
-        <tab-item>
-          <router-link to="/work/finishedList">已完成</router-link>
+        <tab-item @click.native="toFinished">
+          已完成
         </tab-item>
       </tab>
       <div class="list-container">
-        <router-view :dataList = 'dataList' @to-detail="toDetail"></router-view>
+        <!--<router-view :dataList = 'dataList' @to-detail="toDetail"></router-view>-->
+        <todo-list :dataList="dataList" @to-detail="toDetail"></todo-list>
       </div>
     </div>
   </div>
@@ -21,13 +22,15 @@
   import { Tab, TabItem } from 'vux'
   import applyShow from './applyShow.vue'
   import {eventBus} from '../../utils/eventBus'
+  import todoList from '@/components/todoList'
 //  import selectionList from '../../components/selectionList.vue'
   export default {
     name: 'work',
     components: {
       Tab,
       TabItem,
-      applyShow
+      applyShow,
+      todoList
     },
     data () {
       return {
@@ -67,7 +70,8 @@
             title: '任务'
           }
         ],
-        dataList: [
+        dataList: [],
+        dataList1: [
           {
             image: require('../../assets/feiji.png'),
             creator: '蔡俊明',
@@ -87,6 +91,32 @@
           {
             image: require('../../assets/money.png'),
             creator: '蔡俊明',
+            content: '完成今天的完成今天的完成今天的完成今天的完成今天的完成今天的完成今天的完成今天的完成今天的完成今天的完成今天的完成今天的完成今天的完成今天的',
+            start: '2017-7-26 18: 00',
+            modify: '13:00',
+            title: 'others'
+          }
+        ],
+        dataList2: [
+          {
+            image: require('../../assets/feiji.png'),
+            creator: '1111',
+            content: '完成今天的完成今天的完成今天的完成今天的完成今天的完成今天的完成今天的完成今天的完成今天的完成今天的完成今天的完成今天的完成今天的完成今天的',
+            start: '2017-7-26 18: 00',
+            modify: '13:00',
+            title: '任务'
+          },
+          {
+            image: require('../../assets/qianbi.png'),
+            creator: '2222',
+            content: '完成今天的完成今天的完成今天的完成今天的完成今天的完成今天的完成今天的完成今天的完成今天的完成今天的完成今天的完成今天的完成今天的完成今天的',
+            start: '2017-7-26 18: 00',
+            modify: '13:00',
+            title: '计划'
+          },
+          {
+            image: require('../../assets/money.png'),
+            creator: '3333',
             content: '完成今天的完成今天的完成今天的完成今天的完成今天的完成今天的完成今天的完成今天的完成今天的完成今天的完成今天的完成今天的完成今天的完成今天的',
             start: '2017-7-26 18: 00',
             modify: '13:00',
@@ -134,6 +164,12 @@
             name: 'personalApply'
           })
         }
+      },
+      toUnFinished () {
+        this.dataList = this.dataList1
+      },
+      toFinished () {
+        this.dataList = this.dataList2
       }
     },
     mounted () {
@@ -149,7 +185,8 @@
           this.isOrganize = true
         }
       })
-      this.height = document.body.offsetHeight - 99
+      this.height = document.body.offsetHeight - 100
+      this.dataList = this.dataList1
     }
   }
 </script>
@@ -157,10 +194,16 @@
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped lang="less">
   .work-wrapper{
-    overflow-y: auto;
+    height: 100%;
+    overflow: hidden;
     .task-container {
+      overflow: hidden;
       margin-top: 40px;
       .s-tab-container{
+      }
+      .list-container {
+        height: 230px;
+        overflow-y: auto;
       }
     }
   }

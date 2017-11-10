@@ -7,6 +7,7 @@
       <span slot="right" style="font-size: 17px; color: #fff" @click="onJutmp({path:'/addMembers', query:{id: $route.query.id, userId: userId}})">
         添加人员
       </span>
+      <span slot="overwrite-left" @click="goBack" class="header-left-title">＜返回</span>
     </x-header>
     <div class="member">
       <h2>本组织成员</h2>
@@ -113,6 +114,14 @@
           groupId: self.$route.query.id,
           userId: id
         }
+      },
+      goBack () {
+        this.$router.push({
+          name: 'contacts',
+          query: {
+            index: 2
+          }
+        })
       }
     }
   }

@@ -3,33 +3,24 @@
     <span class="title">元数通</span>
     <div class="mine-container">
       <div class="header-container">
-        <img :src="defaultLogo" class="avatar" alt="" @click="showUserInfo">
+        <img :src="myInfo.portrait ? baseurl + myInfo.portrait : defaultLogo" class="avatar" @click="showUserInfo">
         <span class="name">{{ myInfo.realName }}</span>
-        <div class="organize" @click="selectOrganize">
-          <span class="organize-name">{{ orTitle }}</span>
-          <span class="triangle" :class="changeOrganize ? 'triangle-top' : 'triangle-bottom'"></span>
-          <Popover ref="popGroup">
-            <div slot="content" class="content">
-              <span :style="{color: index ===5 ? '#0099ff' : ''}" class="pop-item" v-for="(item, index) in chooseList" :key="index" @click="hidePop($event, item)">{{ item.organizeName }}</span>
-            </div>
-          </Popover>
-        </div>
-
-        <!--<selection-list :top="165" :dataList="selectionList" @toggle-model-show="selectOrganize" @change-item="changeorganize" :showModel="changeOrganize"></selection-list>-->
+        <span class="organize-name">{{ orTitle }}</span>
       </div>
       <ul class="operate-container">
         <li class="operate-item" v-for="(item, index) in operateList" :key="index" @click="dealClick(item)">
-          <img :src="item.icon" class="operate-icon" alt="">
+          <!--<img :src="item.icon" class="operate-icon" alt="">-->
+          <i :class="item.class" class="iconfont operate-icon"></i>
           <span class="item-title">{{ item.title }}</span>
         </li>
       </ul>
       <div class="footer-container">
         <div class="footer-item" @click="setUp">
-          <img class="footer-icon" src="../../assets/set_up.png" alt="">
+          <i class="iconfont icon-iconshezhi01 footer-icon"></i>
           <span class="footer-title">设置</span>
         </div>
         <div class="footer-item" @click="help">
-          <img class="footer-icon" src="../../assets/help.png" alt="">
+          <i class="iconfont icon-bangzhu footer-icon"></i>
           <span class="footer-title">帮助与反馈</span>
         </div>
       </div>
@@ -38,59 +29,53 @@
 </template>
 <script>
   import {mapActions} from 'vuex'
-//  import selectionList from '../../components/selectionList'
-  import Popover from '@/components/popover.vue'
   export default {
     name: 'mine',
     data () {
       return {
         myInfo: {},
+        baseurl: 'http://192.168.0.12:7000',
         userAvatar: '',
         defaultLogo: require('../../assets/default_organize_logo.png'),
         orTitle: '个人',
         operateList: [
           {
-            icon: require('../../assets/help.png'),
+            class: 'icon-jia-b',
             title: '邀请好友',
             key: 'INVITE_FRIEND'
           },
           {
-            icon: require('../../assets/help.png'),
+            class: 'icon-qiye',
             title: '加入组织',
             key: 'JOIN_ORGANIZE'
           },
           {
-            icon: require('../../assets/help.png'),
+            class: 'icon-liaotian',
             title: '创建群聊',
             key: 'CREATE_GROUP_CHAT'
           },
           {
-            icon: require('../../assets/help.png'),
+            class: 'icon-yingyong',
             title: '我的应用',
             key: 'MY_APPLY'
           },
           {
-            icon: require('../../assets/help.png'),
+            class: 'icon-dingdan',
             title: '我的订单',
             key: 'MY_ORDER_LIST'
           },
           {
-            icon: require('../../assets/help.png'),
+            class: 'icon-zuzhi',
             title: '我的组织',
             key: 'MY_ORGANIZE'
           },
           {
-            icon: require('../../assets/help.png'),
+            class: 'icon-gouwuche',
             title: '购物车',
             key: 'MY_PURCHASE_CART'
           }
-        ],
-        changeOrganize: false,
-        chooseList: [{organizeType: 'SINGLER', organizeName: '个人'}]
+        ]
       }
-    },
-    components: {
-      Popover
     },
     methods: {
       ...mapActions([
@@ -102,32 +87,44 @@
         })
       },
       dealClick (item) {
-        if (item.key === 'INVITE_FRIEND') {
-          console.log('邀请好友')
-        }
-        if (item.key === 'JOIN_ORGANIZE') {
-          console.log('加入组织')
-        }
-        if (item.key === 'CREATE_GROUP_CHAT') {
-          console.log('创建群聊')
-        }
-        if (item.key === 'MY_APPLY') {
-          console.log('我的应用')
-        }
-        if (item.key === 'MY_ORDER_LIST') {
-          this.$router.push({
-            name: 'orderList'
-          })
-        }
-        if (item.key === 'MY_ORGANIZE') {
-          this.$router.push({
-            name: 'myOrganize'
-          })
-        }
-        if (item.key === 'MY_PURCHASE_CART') {
-          this.$router.push({
-            name: 'shoppingCart'
-          })
+        switch (item.key) {
+          case 'INVITE_FRIEND':
+            this.$router.push({
+              name: 'invitingFriends'
+            })
+            break
+          case 'JOIN_ORGANIZE':
+            this.$router.push({
+              path: 'SearchBuddy/joinOrganize'
+            })
+            break
+          case 'CREATE_GROUP_CHAT':
+            this.$router.push({
+              name: 'CreateGroupChat'
+            })
+            break
+          case 'MY_APPLY':
+            this.$router.push({
+              name: 'singleApply'
+            })
+            break
+          case 'MY_ORDER_LIST':
+            this.$router.push({
+              name: 'orderList'
+            })
+            break
+          case 'MY_ORGANIZE':
+            this.$router.push({
+              name: 'myOrganize'
+            })
+            break
+          case 'MY_PURCHASE_CART':
+            this.$router.push({
+              name: 'shoppingCart'
+            })
+            break
+          default:
+            console.log('出错啦')
         }
       },
       setUp () {
@@ -140,27 +137,6 @@
         this.$router.push({
           name: 'feedback'
         })
-        console.log('help')
-      },
-      selectOrganize () {
-        this.changeOrganize = true
-        this.$refs['popGroup'].onShow()
-      },
-      hidePop (e, item) {
-        e.cancelBubble = true
-        this.changeOrganize = false
-        this.$refs['popGroup'].onHide()
-        this.orTitle = item.organizeName
-        // 点击更多跳转到组织选择页面，选择组织之后，返回到new页面
-//        if (item.organizeType === 'SHOW_MORE') {
-//          this.$router.push({
-//            name: 'myOptionalOrganize'
-//          })
-//        } else {
-//          this.changeOrganize = false
-//          this.$refs['popGroup'].onHide()
-//          this.orTitle = item.organizeName
-//        }
       }
     },
     created () {
@@ -172,17 +148,6 @@
         } else {
           this.userAvatar = require('../../assets/news/qq.png')
         }
-        this.chooseList = this.chooseList.concat(res.organizeId)
-        //  超过五个显示更多
-//        if (res.organizeId.length > 5) {
-//          this.chooseList = this.chooseList.concat(res.organizeId.slice(0, 4))
-//          this.chooseList[5] = {
-//            organizeName: '更多>>',
-//            organizeType: 'SHOW_MORE'
-//          }
-//        } else {
-//          this.chooseList = this.chooseList.concat(res.organizeId)
-//        }
       })
     }
   }
@@ -215,27 +180,6 @@
         .name{
           display: block;
           margin-top: 5px;
-        }
-        .organize {
-          .vux-popover{
-            background-color: #fff;
-            color: #000;
-            top: 165px;
-            .vux-popover-arrow-up{
-              border-bottom-color: #fff;
-            }
-            .content{
-              padding: 0px;
-              padding-top: 2px;
-              padding-bottom: 2px;
-              text-align: center;
-              .pop-item{
-                display: block;
-                overflow: hidden;
-                white-space: nowrap;
-              }
-            }
-          }
         }
         .organize-name{
           font-size: 13px;
@@ -272,6 +216,7 @@
           .operate-icon{
             vertical-align: middle;
             margin-right: 30px;
+            font-size: 24px;
           }
           .operate-title{}
         }
@@ -285,9 +230,11 @@
         left: 0px;
         .footer-item{
           display: inline-block;
-          margin-left: 30px;
+          margin-left: 25px;
           .footer-icon{
             vertical-align: middle;
+            font-size: 24px;
+            margin-right: 5px;
           }
           .title{}
         }

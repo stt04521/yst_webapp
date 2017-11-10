@@ -60,12 +60,6 @@
           name: 'showSchedule'
         })
       }
-    },
-    beforeDestroy () {
-      console.log('1111')
-    },
-    destroyed () {
-      console.log('222')
     }
   }
 </script>

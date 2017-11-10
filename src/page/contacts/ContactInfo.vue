@@ -3,11 +3,12 @@
     <x-header
       title="好友资料"
     >
+      <span slot="overwrite-left" @click="goBack" class="header-left-title">＜返回</span>
     </x-header>
     <group>
       <cell>
         <span slot="title">{{contactInfo.realName || '未填写'}}</span>
-        <img slot="icon" width="40" style="display:block;margin-right:25px;" :src="contactInfo.portrait">
+        <img slot="icon" width="40" style="display:block;margin-right:25px;" :src="baseurl + contactInfo.portrait">
       </cell>
     </group>
     <group title="基本信息">
@@ -86,10 +87,26 @@
       },
       onJutmp (url) {
         this.$router.push(url)
+      },
+      goBack () {
+        let idx
+        if (this.$route.path.indexOf('Friends') > -1) {
+          idx = 0
+        }
+        if (this.$route.path.indexOf('Colleague') > -1) {
+          idx = 1
+        }
+        this.$router.push({
+          name: 'contacts',
+          query: {
+            index: idx
+          }
+        })
       }
     },
     data () {
       return {
+        baseurl: 'http://192.168.0.12:7000',
         contactInfo: {}
       }
     }

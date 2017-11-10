@@ -11,8 +11,9 @@
           </tab-item>
         </tab>
       </flexbox-item>
-      <flexbox-item class="s-img-bg vux-1px-tb">
-        <img @click="toCalender" class="calender-img" src="../../assets/schedule.png"/>
+      <flexbox-item class="s-img-bg vux-1px-b">
+        <!--<img @click="toCalender" class="calender-img" src="../../assets/schedule.png"/>-->
+        <i class="iconfont icon-calendar calender-img" @click="toCalender"></i>
       </flexbox-item>
     </flexbox>
     <div class="content" :style="{height: height + 'px'}">
@@ -149,9 +150,8 @@
       .s-img-bg{
         background-color: #fff;
         .calender-img{
-          width: 26px;
-          height: 26px;
-          vertical-align: middle;
+          font-size: 24px;
+          color: #0099ff;
         }
       }
     }

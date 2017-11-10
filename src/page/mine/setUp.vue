@@ -1,6 +1,8 @@
 <template>
   <div class="set-up-wrapper">
-    <x-header title="设置"></x-header>
+    <x-header title="设置">
+      <span slot="overwrite-left" class="left" @click="goBack">＜返回</span>
+    </x-header>
     <group :gutter="0" class="item-container">
       <cell title="帐号安全" is-link @click.native="showCountSafe"></cell>
     </group>
@@ -46,12 +48,21 @@
         this.$router.push({
           name: 'countSafe'
         })
+      },
+      goBack () {
+        this.$router.push({
+          path: '/news'
+        })
       }
     }
   }
 </script>
 <style scoped lang="less">
   .set-up-wrapper{
+    .left{
+      font-size: 15px;
+      color: #fff;
+    }
     .item-container{
       margin-top: 10px;
     }

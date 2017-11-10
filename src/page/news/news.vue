@@ -1,12 +1,11 @@
 <template>
   <div class="hello">
     <group class="news">
-      <cell-box>
-        <router-link to="/system/taskMsg" class="w100">
+      <cell-box @click.native="toundealTask">
         <Flexbox>
           <FlexboxItem :span="2">
             <div class="news_img">
-              <img src="" alt="">
+              <i class="iconfont icon-renwu icon-position"></i>
             </div>
           </FlexboxItem>
           <FlexboxItem :span="8">
@@ -18,14 +17,13 @@
             <badge v-if="newList[0].count!=0" :text="newList[0].count"></badge>
           </FlexboxItem>
         </Flexbox>
-        </router-link>
       </cell-box>
       <cell-box>
         <router-link to="/system/noticeMsg" class="w100">
           <Flexbox>
             <FlexboxItem :span="2">
-              <div class="news_img">
-                <img src="" alt="">
+              <div class="news_img task-notify">
+                <i class="iconfont icon-naozhong icon-position"></i>
               </div>
             </FlexboxItem>
             <FlexboxItem :span="8">
@@ -43,8 +41,8 @@
         <router-link to="/newsList" class="w100">
         <Flexbox >
           <FlexboxItem :span="2">
-            <div class="news_img">
-              <img src="" alt="">
+            <div class="news_img chat-message">
+              <i class="iconfont icon-qunzu icon-position"></i>
             </div>
           </FlexboxItem>
           <FlexboxItem :span="8">
@@ -53,16 +51,16 @@
           </FlexboxItem>
           <FlexboxItem :span="2">
             <p class="f_12">7/31</p>
-            <badge :text="total"></badge>
+            <badge v-show="total > 0" :text="total > 99 ? '...' : total"></badge>
           </FlexboxItem>
         </Flexbox>
         </router-link>
       </cell-box>
-      <cell-box>
+      <cell-box @click.native="toHelp">
         <Flexbox>
           <FlexboxItem :span="2">
-            <div class="news_img">
-              <img src="" alt="">
+            <div class="news_img help-feed">
+              <i class="iconfont icon-zhinan icon-position"></i>
             </div>
           </FlexboxItem>
           <FlexboxItem :span="8">
@@ -74,12 +72,28 @@
         </Flexbox>
       </cell-box>
 
+      <cell-box @click.native="toVerification">
+        <Flexbox>
+          <FlexboxItem :span="2">
+            <div class="news_img verify">
+              <i class="iconfont icon-yanzheng icon-position"></i>
+            </div>
+          </FlexboxItem>
+          <FlexboxItem :span="8">
+            <h4>验证消息</h4>
+            <p class="f_14">您已加入***组织</p>
+          </FlexboxItem>
+          <FlexboxItem :span="2">
+          </FlexboxItem>
+        </Flexbox>
+      </cell-box>
+
       <cell-box>
         <router-link to="/system/sysMsg" class="w100">
           <Flexbox>
             <FlexboxItem :span="2">
-              <div class="news_img">
-                <img src="" alt="">
+              <div class="news_img system-message">
+                <i class="iconfont icon-iconshezhi01 icon-position"></i>
               </div>
             </FlexboxItem>
             <FlexboxItem :span="8">
@@ -143,6 +157,19 @@
       add (sumSoFar, item) {
         sumSoFar = sumSoFar + item.num
         return sumSoFar
+      },
+      toHelp () {
+        this.$router.push({
+          name: 'feedback'
+        })
+      },
+      toVerification () {
+        console.log('验证消息')
+      },
+      toundealTask () {
+        this.$router.push({
+          name: 'undealTask'
+        })
       }
     },
     beforeDestroy () {
@@ -167,6 +194,29 @@
       width: 50px;
       border-radius: 50%;
       background: #03BD80;
+      text-align: center;
+      vertical-align: middle;
+      display: table-cell;
+      .icon-position{
+        color: #fff;
+        font-size: 22px;
+        vertical-align: middle;
+      }
+      &.task-notify {
+        background-color: #3db8c1;
+      }
+      &.chat-message{
+        background-color: #7265e6;
+      }
+      &.help-feed {
+        background-color: #ffce3d;
+      }
+      &.verify {
+        background-color: #f5317f;
+      }
+      &.system-message {
+        background-color: #f78e3d;
+      }
     }
 
   }

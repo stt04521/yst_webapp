@@ -1,7 +1,7 @@
 <template>
   <div class="list-wrapper">
     <div v-show="showModel" class="choose-organize" :style="{top: top + 'px'}">
-      <div class="status-item" @click="changeItem(item)" v-for="(item, index) in dataList" :key="index">{{item.value}}</div>
+      <div class="status-item" @click="changeItem(item)" v-for="(item, index) in dataList" :key="index">{{item.organizeName}}</div>
     </div>
     <div class="bg-color" v-if="showModel" @click="toggleModelShow" :style="{top: top + 'px'}"></div>
   </div>
@@ -27,7 +27,6 @@
       },
       toggleModelShow () {
         this.$emit('toggle-model-show')
-        console.log('222')
       }
     }
   }
@@ -44,6 +43,8 @@
       text-align: center;
       font-size: 16px;
       width: 100%;
+      height: 200px;
+      overflow-y: auto;
       .status-item{
         height: 45px;
         line-height: 45px;

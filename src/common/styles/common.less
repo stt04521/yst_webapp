@@ -1,0 +1,41 @@
+// header部分右边的切换按钮
+.right-toggle{
+  width:50px;
+  height: 24px;
+  line-height: 24px;
+  color: #0099ff;
+  background: #fff;
+  text-align: center;
+  border-radius: 10px;
+  font-size: 12px;
+  display: table-cell;
+  vertical-align: middle;
+  position: relative;
+  .title{
+    display: inline-block;
+    margin-right: 10px;
+  }
+  .arrow{
+    vertical-align: middle;
+    display: inline-block;
+    width: 6px;
+    height: 6px;
+    line-height: 6px;
+    border-top:1px solid #656565;
+    border-right: 1px solid #656565;
+    &.bottom{
+      transform: rotate(135deg);
+      -webkit-transform: rotate(135deg);
+      position: absolute;
+      top: 8px;
+      right: 8px;
+    }
+    &.top{
+      transform: rotate(-45deg);
+      -webkit-transform: rotate(-45deg);
+      position: absolute;
+      top: 10px;
+      right: 8px;
+    }
+  }
+}

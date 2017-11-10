@@ -1,6 +1,8 @@
 <template>
   <div class="count-safe-wrapper">
-    <x-header title="帐号安全"></x-header>
+    <x-header title="帐号安全">
+      <span slot="overwrite-left" class="left" @click="goBack">＜返回</span>
+    </x-header>
     <group :gutter="0">
       <cell title="用户名" :value="accountInfo.user" class="cell-item"></cell>
       <cell title="手机号" :value="accountInfo.phone" class="cell-item" @click.native="changeInfo('tele')"></cell>
@@ -56,7 +58,6 @@
         'GetSyncUserInfo'
       ]),
       changeInfo (val) {
-        console.log(val)
         if (val === 'tele') {
           this.dataList = this.setTel
           this.setType = 'SET_TEL'
@@ -76,12 +77,16 @@
             setInfo: this.dataList
           }
         })
+      },
+      goBack () {
+        this.$router.push({
+          name: 'setUp'
+        })
       }
     },
     created () {
       this.GetSyncUserInfo().then((res) => {
         this.accountInfo = res
-        console.log(res)
       }, (err) => {
         console.log(err)
       })
@@ -92,6 +97,10 @@
   .count-safe-wrapper{
     height: 100%;
     overflow: auto;
+    .left{
+      color: #fff;
+      font-size: 15px;
+    }
     .cell-item{
       font-size: 15px;
     }

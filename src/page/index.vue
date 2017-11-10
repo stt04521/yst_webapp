@@ -267,7 +267,7 @@
         if (this.route.path === '/news') return this.messageTitle
         if (this.route.path === '/schedule' || this.route.path === '/schedule/showSchedule') return '日程'
         if (this.route.path === '/schedule/showNote') return '记事本'
-        if (this.route.path === '/work' || this.route.path === '/work/todoList' || this.route.path === '/work/finishedList') {
+        if (this.route.path === '/work') {
           return this.workPageTitle
         }
         if (this.route.path === '/demo') return 'Demo list'

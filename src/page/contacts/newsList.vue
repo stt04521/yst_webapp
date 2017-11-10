@@ -6,7 +6,7 @@
         <img class="avatar" :src="baseurl + item.speakerPortrait" :onerror="errorImg">
         <Badge class="badge" v-if="item.num !== 0"  :text="item.num > 99 ? '...' : item.num"></Badge>
         <div class="detail-container">
-          <span class="title">{{ item.isGroupChat == 0? item.speakerName : item.groupName}}</span>
+          <span class="title">{{ item.isGroupChat == 0? item.lastName : item.groupName}}</span>
           <span class="detail" v-if="item.isGroupChat == 1"><span>{{item.lastName}}：</span>{{ item.content }}</span>
           <span class="detail" v-else>{{ item.content }}</span>
         </div>
@@ -47,6 +47,7 @@
       getMsgList () {
         let self = this
         self.msgList().then(res => {
+          console.log(res)
           self.newsList = res
         })
       },
@@ -54,10 +55,10 @@
         this.$router.push({
           name: 'newsPage',
           params: {
-            username: item.isGroupChat === 0 ? item.speakerName : item.groupName
+            username: item.isGroupChat === 0 ? item.lastName : item.groupName
           },
           query: {
-            id: item.isGroupChat === 0 ? item.speakerId : item.audienceId,
+            id: item.isGroupChat === 0 ? item.audienceId : item.audienceId,
             type: item.isGroupChat === 0 ? 0 : 1
           }
         })

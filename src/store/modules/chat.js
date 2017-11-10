@@ -160,6 +160,9 @@ export const chat = {
         let noRead = await chatItem.count()
         let msg = await chatItem.last()
         let item = msg || await db.table('chatMsg').where('[speakerId+isGroupChat]').equals([value, 0]).filter(i => { return i.isRead === 1 }).last()
+        let lastName = await db.table('groupMembers').where('userId').equals(item.audienceId).first()
+        lastName ? item.lastName = lastName.personInfo.realName : ''
+        lastName ? item.speakerPortrait = lastName.personInfo.portrait : ''
         msg ? item.num = noRead : item.num = 0
         chatList.push(item)
       }

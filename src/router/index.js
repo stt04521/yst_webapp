@@ -187,32 +187,10 @@ export default new Router({
       }
     },
     {
-      path: '/orgnizeApply',  // 组织应用
-      name: 'orgnizeApply',
-      redirect: '/orgnizeApply/organizeUse',
+      path: '/showAllApply',  // 应用
+      name: 'showAllApply',
       component: (resolve) => {
-        require(['@/page/work/orgnizeApply'], resolve)
-      },
-      children: [
-        {
-          path: 'organizeUse',
-          component: (resolve) => {
-            require(['@/page/work/useApply'], resolve)
-          }
-        },
-        {
-          path: 'personalUse',
-          component: (resolve) => {
-            require(['@/page/work/useApply'], resolve)
-          }
-        }
-      ]
-    },
-    {
-      path: '/personalApply',  // 个人应用
-      name: 'personalApply',
-      component: (resolve) => {
-        require(['@/page/work/personalApply'], resolve)
+        require(['@/page/work/showAllApply'], resolve)
       }
     },
     //  任务与计划
@@ -467,37 +445,12 @@ export default new Router({
         require(['@/page/mine/concatUs'], resolve)
       }
     },
-    // 应用
     {
-      path: '/singleApply',   // 个人应用
-      name: 'singleApply',
-      redirect: '/singleApply/applyAdministration',
+      path: '/applyStore',   // 应用商店
+      name: 'applyStore',
       component: (resolve) => {
-        require(['@/page/apply/singleApply'], resolve)
-      },
-      children: [
-        {
-          path: 'applyAdministration',   // 应用管理
-          name: 'applyAdministration',
-          component: (resolve) => {
-            require(['@/components/blockItem'], resolve)
-          }
-        },
-        {
-          path: 'applyStore',   // 应用商店
-          name: 'applyStore',
-          component: (resolve) => {
-            require(['@/components/blockItem'], resolve)
-          }
-        },
-        {
-          path: 'applyUpdate',   // 应用升级
-          name: 'applyUpdate',
-          component: (resolve) => {
-            require(['@/page/apply/applyUpdate'], resolve)
-          }
-        }
-      ]
+        require(['@/page/apply/applyStore'], resolve)
+      }
     },
     {
       path: '/payedApply',   // 已购应用

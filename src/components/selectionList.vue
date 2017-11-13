@@ -43,7 +43,7 @@
       text-align: center;
       font-size: 16px;
       width: 100%;
-      height: 200px;
+      max-height: 200px;
       overflow-y: auto;
       .status-item{
         height: 45px;

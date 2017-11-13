@@ -56,8 +56,13 @@
           },
           {
             class: 'icon-yingyong',
-            title: '我的应用',
-            key: 'MY_APPLY'
+            title: '应用商店',
+            key: 'PURCHASE_APPLY'
+          },
+          {
+            class: 'icon-yingyong1',
+            title: '个人应用',
+            key: 'SINGLE_APPLY'
           },
           {
             class: 'icon-dingdan',
@@ -103,9 +108,20 @@
               name: 'CreateGroupChat'
             })
             break
-          case 'MY_APPLY':
+          case 'PURCHASE_APPLY':
             this.$router.push({
-              name: 'singleApply'
+              name: 'applyStore'
+            })
+            break
+          case 'SINGLE_APPLY':
+            this.$router.push({
+              name: 'showAllApply',
+              query: {
+                paramData: {
+                  id: this.myInfo.userId,
+                  title: '个人应用'
+                }
+              }
             })
             break
           case 'MY_ORDER_LIST':
@@ -206,13 +222,16 @@
         }
       }
       .operate-container{
-        /*height: 396px;*/
+        height: 429px;
+        display: flex;
+        flex-direction: column;
         .operate-item{
-          height: 62px;
-          line-height: 63px;
+          flex: 1;
           padding-left: 30px;
           font-size: 16px;
           font-weight: 100;
+          display: flex;
+          align-items: center;
           .operate-icon{
             vertical-align: middle;
             margin-right: 30px;

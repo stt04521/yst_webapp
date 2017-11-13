@@ -42,18 +42,12 @@
               </div>
             </Popover>
           </div>
-          <div v-if="route.path === '/news'" slot="right" class="right-toggle" @click="toggleOrganize">
-            <span class="title">切换</span>
-            <span class="arrow" :class="isShowOrganizeList ? 'top' : 'bottom'"></span>
-            <selection-list :top="45" :dataList="selectionList" @toggle-model-show="toggleOrganizeBg" @change-item="toggleOrganizeItem" :showModel="isShowOrganizeList"></selection-list>
-          </div>
-          <!--<selection-list :top="45" :dataList="selectionList" @toggle-model-show="toggleOrganize" @change-item="toggleOrganizeItem" :showModel="isShowOrganizeList"></selection-list>-->
-          <span v-if="route.path === '/schedule/showSchedule'" slot="right" style="font-size: 17px; color: #fff" @click="addSchedule">添加日程</span>
-          <span v-if="route.path === '/schedule/showNote'" slot="right" style="font-size: 17px; color: #fff" @click="addNote">添加记事</span>
-          <!--<span v-if="route.path === '/work' || route.path === '/work/todoList' || route.path === '/work/finishedList'" slot="right" style="font-size: 17px; color: #fff" @click="toggleModelShow">切换-->
-            <!--<selection-list :top="45" :dataList="selectionList" @toggle-model-show="changeModelShow" @change-item="changeOrganize" :showModel="showModel"></selection-list>-->
-          <!--</span>-->
-          <div v-if="route.path === '/work'" slot="right" class="right-toggle" @click="toggleModelShow">
+          <!--<div v-if="route.path === '/news'" slot="right" class="right-toggle" @click="toggleOrganize">-->
+            <!--<span class="title">切换</span>-->
+            <!--<span class="arrow" :class="isShowOrganizeList ? 'top' : 'bottom'"></span>-->
+            <!--<selection-list :top="45"  @toggle-model-show="toggleOrganizeBg" @change-item="toggleOrganizeItem" :showModel="isShowOrganizeList"></selection-list>-->
+          <!--</div>-->
+          <div v-show="route.path !== '/contacts' && route.path !== '/schedule/showNote'" slot="right" class="right-toggle" @click="toggleModelShow">
             <span class="title">切换</span>
             <span class="arrow" :class="isShowOrganizeList ? 'top' : 'bottom'"></span>
             <selection-list :top="45" :dataList="selectionList" @toggle-model-show="changeModelShow" @change-item="changeOrganize" :showModel="showModel"></selection-list>
@@ -69,21 +63,21 @@
           <tabbar-item :link="{path:'/news'}" :selected="route.path === '/news'" badge="99+">
             <!--<span class="demo-icon-22 vux-demo-tabbar-icon-home" slot="icon" style="position:relative;top: -2px;">&#xe637;</span>-->
             <i class="iconfont icon-xiaoxi1" slot="icon"></i>
-            <i class="iconfont icon-xiaoxi1" slot="icon-active"></i>
+            <i class="iconfont icon-xiaoxi" slot="icon-active"></i>
             <span slot="label">消息</span>
           </tabbar-item>
           <tabbar-item :link="{path:'/work'}" :selected="route.path.indexOf('work') > -1" >
             <i class="iconfont icon-jishiben" slot="icon"></i>
-            <i class="iconfont icon-jishiben" slot="icon-active"></i>
+            <i class="iconfont icon-work-copy" slot="icon-active"></i>
             <span slot="label"><span v-if="componentName" class="vux-demo-tabbar-component">{{componentName}}</span><span v-else>工作</span></span>
           </tabbar-item>
           <tabbar-item :link="{path:'/contacts'}" :selected="route.path === '/contacts'" show-dot badge="New">
             <i class="iconfont icon-lianxiren" slot="icon"></i>
-            <i class="iconfont icon-lianxiren" slot="icon-active"></i>
+            <i class="iconfont icon-geren" slot="icon-active"></i>
           <span slot="label">联系人</span>
           </tabbar-item>
           <tabbar-item :link="{path:'/schedule'}" :selected="route.path.indexOf('schedule') > -1" show-dot>
-            <i class="iconfont icon-calendar" slot="icon"></i>
+            <i class="iconfont icon-calendar1" slot="icon"></i>
             <i class="iconfont icon-calendar" slot="icon-active"></i>
             <span slot="label">日程</span>
           </tabbar-item>
@@ -98,7 +92,6 @@
   import mine from './mine/mine'
   import { mapState, mapActions } from 'vuex'
   import Popover from '@/components/popover.vue'
-  import {eventBus} from '../utils/eventBus'
   import selectionList from '../components/selectionList'
   export default {
     directives: {
@@ -125,10 +118,8 @@
     data () {
       return {
         isShowOrganizeList: false,
-        messageTitle: '个人消息',
         showMenu: false,
         showModel: false,
-        workPageTitle: '个人应用',
         menus: {
           'language.noop': '<span class="menu-title">Language</span>',
           'zh-CN': '中文',
@@ -141,12 +132,11 @@
         showPlacementValue: 'left',
         msg: 'Hello World!',
         selectionList: []
-//        selectionList: [{key: '0', value: '组织01'}, {key: '1', value: '组织02'}, {key: '2', value: '组织03'}, {key: '3', value: '个人'}]
       }
     },
     async created () {
       let res = await this.getMyInfoAction()
-      this.selectionList = res.organizeId
+      this.selectionList = res.organizeId.concat({organizeName: '全部', key: 'all'})
     },
     methods: {
       ...mapActions([
@@ -199,8 +189,7 @@
         this.showModel = true
       },
       changeOrganize (item) {
-        eventBus.$emit('organize-changed', item)
-        this.workPageTitle = item.organizeName
+        this.$store.commit('SET_OVER_ALL_TITLE', item)
       },
       onJutmp (url) {
         this.$router.push(url)
@@ -264,11 +253,11 @@
         return /tabbar/.test(this.route.path)
       },
       title () {
-        if (this.route.path === '/news') return this.messageTitle
-        if (this.route.path === '/schedule' || this.route.path === '/schedule/showSchedule') return '日程'
+        if (this.route.path === '/news') return this.$store.state.user.overAllStatus.organizeName + '消息'
+        if (this.route.path === '/schedule/showSchedule') return this.$store.state.user.overAllStatus.organizeName + '日程'
         if (this.route.path === '/schedule/showNote') return '记事本'
         if (this.route.path === '/work') {
-          return this.workPageTitle
+          return this.$store.state.user.overAllStatus.organizeName + '应用'
         }
         if (this.route.path === '/demo') return 'Demo list'
         return this.componentName ? `Demo/${this.componentName}` : '联系人'

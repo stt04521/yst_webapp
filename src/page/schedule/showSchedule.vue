@@ -1,6 +1,6 @@
 <template>
-  <div class="content-wrapper" :height="height">
-    <ul>
+  <div :style="{height: height + 'px'}">
+    <ul class="content-wrapper">
       <li class="item-container" v-for="(item, index) in scheduleList" :key="index">
         <div class="left">
           <div class="circle"></div>
@@ -17,7 +17,9 @@
         </div>
       </li>
     </ul>
-
+    <div class="create-schedule" @click="addSchedule">
+      <i class="iconfont icon-gongxiang- create-schedule-icon"></i>
+    </div>
   </div>
 </template>
 <script>
@@ -41,7 +43,7 @@ export default {
       type: Boolean
     },
     height: {
-      type: String
+      type: Number
     }
   },
   methods: {
@@ -86,6 +88,18 @@ export default {
           console.log(err)
         })
       }
+    },
+    addSchedule () {
+      // 点击添加日程跳转到添加日程页面
+      if (this.isShowAddress) {
+        this.$router.push({
+          name: 'createSchedule'
+        })
+      } else {
+        this.$router.push({
+          name: 'createNote'
+        })
+      }
     }
   },
   created () {
@@ -94,6 +108,28 @@ export default {
 }
 </script>
 <style scoped lang="less">
+  .create-schedule{
+    width: 45px;
+    height: 45px;
+    border-radius: 50%;
+    background-color: #0099ff;
+    position: fixed;
+    bottom: 80px;
+    right: 40px;
+    text-align: center;
+    display: table-cell;
+    vertical-align: middle;
+    .create-schedule-icon{
+      font-size: 28px;
+      color: #fff;
+    }
+  }
+
+  .content-wrapper{
+    &:first-child{
+      padding-top: 20px;
+    }
+  }
   .item-container{
     width: 375px;
     height: 100px;
@@ -153,5 +189,6 @@ export default {
         right: 10px;
       }
     }
+
   }
 </style>

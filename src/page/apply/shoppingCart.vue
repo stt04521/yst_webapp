@@ -1,16 +1,17 @@
 <template>
   <div class="shopping-cart-wrapper">
     <x-header title="购物车">
-      <img src="../../assets/delete.png" slot="right">
     </x-header>
     <div class="shopping-cart-container">
       <div class="item-container" @click="chooseGoods(item)" v-for="(item, index) in goodsList" :key="index">
-        <icon :type="item.isChoose ? 'success' : 'circle'" class="check-icon"></icon>
-        <img :src="item.icon" class="item-icon">
-        <div class="right">
-          <div class="title">{{ item.title }}<span class="name">版本{{ item.version }}</span></div>
-          <div class="price">￥{{ item.price }}</div>
-        </div>
+        <left-slider :index="index" @deleteItem="deleteItem">
+          <icon :type="item.isChoose ? 'success' : 'circle'" class="check-icon"></icon>
+          <img :src="item.icon" class="item-icon">
+          <div class="right">
+            <div class="title">{{ item.title }}<span class="name">版本{{ item.version }}</span></div>
+            <div class="price">￥{{ item.price }}</div>
+          </div>
+        </left-slider>
       </div>
       <div class="footer">
         <span class="total">合计：￥{{ totalPrice }}</span>
@@ -21,11 +22,13 @@
 </template>
 <script>
   import {XHeader, Icon} from 'vux'
+  import leftSlider from '@/components/leftSlider'
   export default {
     name: 'shoppingCart',
     components: {
       XHeader,
-      Icon
+      Icon,
+      leftSlider
     },
     data () {
       return {
@@ -83,12 +86,14 @@
           this.chooseList = this._.filter(this.chooseList, (ite) => {
             return ite.id !== item.id
           })
-          console.log(this.chooseList)
         } else {
           item.isChoose = true
           this.totalPrice += item.price
           this.chooseList.push(item)
         }
+      },
+      deleteItem (item) {
+        console.log(item)
       }
     }
   }

@@ -50,10 +50,10 @@
         </group>
       </flexbox-item>
     </flexbox>
-    <selection-list :top="78" :dataList="organizeList" @toggle-model-show="toggleorganizeType" @change-item="changeOrganize" :showModel="organizeType"></selection-list>
+    <selection-list :top="98" :dataList="organizeList" @toggle-model-show="toggleorganizeType" @change-item="changeOrganize" :showModel="organizeType"></selection-list>
     <!--<selection-list :top="78" :dataList="industryList" @toggle-model-show="toggleIndustry" @change-item="changeIndustry" :showModel="industryStatus"></selection-list>-->
-    <mul-selection :top="78" :showModel="industryStatus" @change-industry="changeIndustry"></mul-selection>
-    <selection-list :top="78" :dataList="functionList" @toggle-model-show="toggleFunction" @change-item="changeFunction" :showModel="functionStatus"></selection-list>
+    <mul-selection :top="98" :showModel="industryStatus" @change-industry="changeIndustry"></mul-selection>
+    <selection-list :top="98" :dataList="functionList" @toggle-model-show="toggleFunction" @change-item="changeFunction" :showModel="functionStatus"></selection-list>
     <div class="apply-screen-container" :style="{height: height + 'px'}" v-if="resultList.length">
       <div class="item-container" v-for="(item, index) in resultList" :key="index">
         <img :src="item.icon" class="item-icon">
@@ -97,9 +97,9 @@
         choosedStatus: '组织类型',
         choosedIndustry: '行业',
         choosedFunction: '功能分类',
-        organizeList: [{key: '0', value: '企业'}, {key: '1', value: '自由团体'}, {key: '2', value: '家庭'}, {key: '3', value: '政府'}],
-        industryList: [{key: '0', value: '企业1'}, {key: '1', value: '自由团体1'}, {key: '2', value: '家庭1'}, {key: '3', value: '政府1'}],
-        functionList: [{key: '0', value: '功能1'}, {key: '1', value: '功能2'}, {key: '2', value: '功能3'}, {key: '3', value: '功能4'}],
+        organizeList: [{key: '0', organizeName: '企业'}, {key: '1', organizeName: '自由团体'}, {key: '2', organizeName: '家庭'}, {key: '3', organizeName: '政府'}],
+        industryList: [{key: '0', organizeName: '企业1'}, {key: '1', organizeName: '自由团体1'}, {key: '2', organizeName: '家庭1'}, {key: '3', organizeName: '政府1'}],
+        functionList: [{key: '0', organizeName: '功能1'}, {key: '1', organizeName: '功能2'}, {key: '2', organizeName: '功能3'}, {key: '3', organizeName: '功能4'}],
         resultList: [
           {
             icon: require('../../assets/news/userImg.jpg'),
@@ -209,6 +209,7 @@
     height: 100%;
     overflow: hidden;
     .flex{
+      padding-top: 20px;
       background-color: #EFEFF4;
       .img{
         padding: 8px 10px;

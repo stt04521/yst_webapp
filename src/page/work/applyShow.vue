@@ -34,7 +34,7 @@
   .apply-container {
     width: 336px;
     height: 222px;
-    margin: 10px auto 30px auto;
+    margin: 10px auto 10px auto;
     background-color: #fff;
     padding: 20px 20px 0px 0px;
     position: relative;

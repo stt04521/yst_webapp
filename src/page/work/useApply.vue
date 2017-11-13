@@ -1,11 +1,15 @@
 <template>
   <div class="use-apply-wrapper">
     <div class="content-wrapper">
+      <div class='apply-title' >
+        <span class='column-icon'></span>
+        <span class='title'>常用</span>
+      </div>
       <apply-show :dataList="alwaysUseList" :showAll="false" @deal-item-click="dealClick"></apply-show>
     </div>
     <div class='use-apply-container' v-for='(item, index) in allApplyList' :key='index'>
       <div class='apply-title' >
-        <span class='line'></span>
+        <span class='column-icon'></span>
         <span class='title'>{{item.title}}</span>
       </div>
       <div class="content-wrapper">
@@ -48,13 +52,8 @@
   .use-apply-wrapper{
     .apply-title{
       margin-left: 10px;
-      .line {
-        width: 2px;
-        height: 13px;
-        display: inline-block;
-        background-color: #09f;
-        margin-right: 10px;
-      }
+      height: 30px;
+      line-height: 30px;
       .title {
         color: #aaa;
         font-size: 14px;

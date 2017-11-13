@@ -13,6 +13,10 @@ const login = {
     roles: [],
     setting: {
       articlePlatform: []
+    },
+    overAllStatus: {
+      organizeName: '全部',
+      key: 'all'
     }
   },
 
@@ -40,6 +44,9 @@ const login = {
     },
     SET_ROLES: (state, roles) => {
       state.roles = roles
+    },
+    SET_OVER_ALL_TITLE: (state, item) => {
+      state.overAllStatus = item
     }
   },
 

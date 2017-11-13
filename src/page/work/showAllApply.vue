@@ -1,6 +1,6 @@
 <template>
   <div class="personal-apply-wrapper">
-    <x-header title="个人应用" class="header">
+    <x-header :title="headerTitle" class="header">
     </x-header>
     <use-apply :alwaysUseList='alwaysUseList' :allApplyList='personalList' @deal-click="dealClick"></use-apply>
   </div>
@@ -10,7 +10,7 @@
   import applyShow from './applyShow.vue'
   import useApply from './useApply.vue'
   export default{
-    name: 'personalApply',
+    name: 'showAllApply',
     components: {
       XHeader,
       applyShow,
@@ -19,6 +19,7 @@
     data () {
       return {
         showModel: false,
+        headerTitle: '个人应用',
         alwaysUseList: [
           {
             image: require('../../assets/news/userImg.jpg'),
@@ -96,7 +97,6 @@
     },
     methods: {
       dealClick (item) {
-        console.log(item)
         if (item.title.indexOf('计划') > -1) {
           this.$router.push({
             name: 'planList'
@@ -108,6 +108,10 @@
           })
         }
       }
+    },
+    created () {
+      let queryData = this.$route.query.paramData
+      this.headerTitle = queryData.title
     }
   }
 </script>

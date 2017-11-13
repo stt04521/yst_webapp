@@ -3,22 +3,22 @@
     <flexbox class="tab-wrapper" :gutter="0">
       <flexbox-item :span="10">
         <tab :line-width="1" custom-bar-width="60px" active-color="#108ee9" class="s-tab-container">
-          <tab-item selected class="tab-item-container">
+          <tab-item :selected="$route.path === '/schedule/showSchedule'" class="tab-item-container">
             <router-link to="/schedule/showSchedule" @click="changeIndex" style="display: block">日程</router-link>
           </tab-item>
-          <tab-item class="tab-item-container">
+          <tab-item class="tab-item-container" :selected="$route.path === '/schedule/showNote'">
             <router-link to="/schedule/showNote" @click="changeIndex" style="display: block">记事本</router-link>
           </tab-item>
         </tab>
       </flexbox-item>
       <flexbox-item class="s-img-bg vux-1px-b">
         <!--<img @click="toCalender" class="calender-img" src="../../assets/schedule.png"/>-->
-        <i class="iconfont icon-calendar calender-img" @click="toCalender"></i>
+        <i class="iconfont icon-rili calender-img" @click="toCalender"></i>
       </flexbox-item>
     </flexbox>
-    <div class="content" :style="{height: height + 'px'}">
-      <show-schedule @refresh-schedule-list="getscheduleList" v-show="isShowSchedule" :scheduleList='list' :isShowAddress="true"></show-schedule>
-      <show-schedule @refresh-note-list="getnoteList" v-show="isShowNote" :scheduleList='list' :isShowAddress="false"></show-schedule>
+    <div class="content-container" :style="{height: height + 'px'}">
+      <show-schedule @refresh-schedule-list="getscheduleList" v-show="isShowSchedule" :scheduleList='list' :isShowAddress="true" :height="height"></show-schedule>
+      <show-schedule @refresh-note-list="getnoteList" v-show="isShowNote" :scheduleList='list' :isShowAddress="false" :height="height"></show-schedule>
     </div>
   </div>
 </template>
@@ -96,7 +96,7 @@
       }
     },
     mounted () {
-      this.height = document.body.offsetHeight - 136
+      this.height = document.body.offsetHeight - 137
     },
     created () {
       let path = this.$route.path
@@ -149,15 +149,17 @@
       }
       .s-img-bg{
         background-color: #fff;
+        height: 37px;
+        line-height: 37px;
         .calender-img{
           font-size: 24px;
           color: #0099ff;
         }
       }
     }
-    .content{
+    .content-container{
       /*height: 531px;*/
-      padding-top: 20px;
+      /*padding-top: 20px;*/
       overflow-y: auto;
       overflow-x: hidden;
       padding-left: 0px;

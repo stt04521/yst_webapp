@@ -1,6 +1,6 @@
 <template>
   <div class="task-list-wrapper">
-    <x-header title="工作" slot="overwrite-left" class="header">
+    <x-header title="任务" slot="overwrite-left" class="header">
       <!--<span slot="overwrite-left" @click="cancleCreateSchedule">取消</span>-->
       <span tag="span" slot="right" @click="createTask">创建</span>
     </x-header>

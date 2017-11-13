@@ -1,40 +1,40 @@
 <template>
   <div class="work-wrapper" :height="height + 'px'">
-    <apply-show @deal-item-click="showTaskDetail" @show-all-task="toShowAll" :dataList="applyList" :showAll = "true"></apply-show>
-    <div class="task-container">
-      <tab :line-width="1" custom-bar-width="60px" active-color="#10b4f7" class="s-tab-container" defaultColor="#aaa">
-        <tab-item selected @click.native="toUnFinished">
-          待办任务
-        </tab-item>
-        <tab-item @click.native="toFinished">
-          已完成
-        </tab-item>
-      </tab>
-      <div class="list-container">
-        <!--<router-view :dataList = 'dataList' @to-detail="toDetail"></router-view>-->
-        <todo-list :dataList="dataList" @to-detail="toDetail"></todo-list>
+    <div class="work-container" v-for="(item, index) in organizeList" :key="index" v-show="isShowAll">
+      <div class="title-container">
+        <span class="column-icon"></span>
+        <span class="title">{{ item.organizeName }}</span>
+        <span class="show-more" @click="showMore(item)">更多》</span>
       </div>
+      <apply-show @deal-item-click="showTaskDetail" :dataList="applyList"></apply-show>
+    </div>
+    <div class="work-container" v-show="!isShowAll">
+      <use-apply :alwaysUseList='alwaysUseList' :allApplyList='personalList' @deal-click="dealClick"></use-apply>
     </div>
   </div>
 </template>
 
 <script>
-  import { Tab, TabItem } from 'vux'
+  import { Tab, TabItem, Group, Cell } from 'vux'
   import applyShow from './applyShow.vue'
   import {eventBus} from '../../utils/eventBus'
-  import todoList from '@/components/todoList'
-//  import selectionList from '../../components/selectionList.vue'
+  import useApply from './useApply.vue'
+
+  import {mapActions} from 'vuex'
   export default {
     name: 'work',
     components: {
       Tab,
       TabItem,
       applyShow,
-      todoList
+      Group,
+      Cell,
+      useApply
     },
     data () {
       return {
         height: 0,
+        organizeList: [],
         isOrganize: false,
         applyList: [
           {
@@ -122,10 +122,95 @@
             modify: '13:00',
             title: 'others'
           }
+        ],
+        alwaysUseList: [
+          {
+            image: require('../../assets/news/userImg.jpg'),
+            title: '计划'
+          },
+          {
+            image: require('../../assets/news/userImg.jpg'),
+            title: '任务'
+          },
+          {
+            image: require('../../assets/news/userImg.jpg'),
+            title: '计划'
+          },
+          {
+            image: require('../../assets/news/userImg.jpg'),
+            title: '任务'
+          },
+          {
+            image: require('../../assets/news/userImg.jpg'),
+            title: '计划'
+          },
+          {
+            image: require('../../assets/news/userImg.jpg'),
+            title: '组织应用'
+          },
+          {
+            image: require('../../assets/news/userImg.jpg'),
+            title: '组织应用'
+          },
+          {
+            image: require('../../assets/news/userImg.jpg'),
+            title: '组织应用'
+          }
+        ],
+        personalList: [
+          {
+            title: '财务管理',
+            applyList: [
+              {
+                image: require('../../assets/news/userImg.jpg'),
+                title: '任务'
+              },
+              {
+                image: require('../../assets/news/userImg.jpg'),
+                title: '任务'
+              },
+              {
+                image: require('../../assets/news/userImg.jpg'),
+                title: '任务'
+              },
+              {
+                image: require('../../assets/news/userImg.jpg'),
+                title: '任务'
+              },
+              {
+                image: require('../../assets/news/userImg.jpg'),
+                title: '任务'
+              },
+              {
+                image: require('../../assets/news/userImg.jpg'),
+                title: '任务'
+              },
+              {
+                image: require('../../assets/news/userImg.jpg'),
+                title: '任务'
+              },
+              {
+                image: require('../../assets/news/userImg.jpg'),
+                title: '任务'
+              }
+            ]
+          }
         ]
       }
     },
+    computed: {
+      isShowAll () {
+        if (this.$store.state.user.overAllStatus.key === 'all') {
+          return true
+        } else {
+          return false
+        }
+      }
+    },
     methods: {
+      ...mapActions([
+        'getMyInfoAction'
+      ]),
       showTaskDetail (item) {
         console.log(item)
         if (item.title === '任务') {
@@ -154,22 +239,34 @@
           console.log('其他任务')
         }
       },
-      toShowAll () {
-        if (this.isOrganize) {
-          this.$router.push({
-            name: 'orgnizeApply'
-          })
-        } else {
-          this.$router.push({
-            name: 'personalApply'
-          })
-        }
-      },
       toUnFinished () {
         this.dataList = this.dataList1
       },
       toFinished () {
         this.dataList = this.dataList2
+      },
+      showMore (item) {
+        let paramData
+        if (item.key === 'single') {
+          paramData = {
+            id: item.id,
+            title: '个人应用'
+          }
+        } else {
+          paramData = {
+            id: item.id,
+            title: item.organizeName
+          }
+        }
+        this.$router.push({
+          name: 'showAllApply',
+          query: {
+            paramData: paramData
+          }
+        })
+      },
+      dealClick (item) {
+        console.log(item)
       }
     },
     mounted () {
@@ -187,6 +284,10 @@
       })
       this.height = document.body.offsetHeight - 100
       this.dataList = this.dataList1
+    },
+    async created () {
+      let res = await this.getMyInfoAction()
+      this.organizeList = [{organizeName: '个人应用', key: 'single', id: res.userId}].concat(res.organizeId)
     }
   }
 </script>
@@ -195,7 +296,26 @@
 <style scoped lang="less">
   .work-wrapper{
     height: 100%;
-    overflow: hidden;
+    overflow-y: auto;
+    .work-container{
+      .title-container{
+        height: 40px;
+        line-height: 40px;
+        padding-left: 10px;
+        position: relative;
+        font-size: 16px;
+        color: #aaa;
+        .title{
+          display: inline-block;
+          margin-left: 10px;
+        }
+        .show-more{
+          position: absolute;
+          top: 0px;
+          right: 10px;
+        }
+      }
+    }
     .task-container {
       overflow: hidden;
       margin-top: 40px;

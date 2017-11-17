@@ -12,7 +12,6 @@
         </tab>
       </flexbox-item>
       <flexbox-item class="s-img-bg vux-1px-b">
-        <!--<img @click="toCalender" class="calender-img" src="../../assets/schedule.png"/>-->
         <i class="iconfont icon-rili calender-img" @click="toCalender"></i>
       </flexbox-item>
     </flexbox>

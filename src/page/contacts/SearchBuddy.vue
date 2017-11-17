@@ -17,12 +17,13 @@
         </search>
       </flexbox-item>
     </flexbox>
-    <contact-list v-show="$route.params.type == 'search' && isShow" type="Friends"></contact-list>
+    <contact-list v-show="$route.params.type == 'search' || $route.params.type == 'inviteFriend' && isShow" type="Friends"></contact-list>
     <Group v-show="$route.params.type == 'addFriends' && isShow">
       <cell>
         <span slot="title">{{userInfo.name}}</span>
-        <img slot="icon" width="40" style="display:block;margin-right:25px;" :src="userInfo.portrait">
-        <x-button mini plain @click.native="AddFriend">加为好友</x-button>
+        <img slot="icon" width="40" style="display:block;margin-right:25px;" :src="baseurl + userInfo.portrait">
+        <x-button mini plain @click.native="AddFriend" v-if="$route.params.type == 'search'">加为好友</x-button>
+        <x-button mini plain @click.native="AddFriend" v-else>邀请加入</x-button>
       </cell>
     </Group>
   </div>
@@ -73,7 +74,8 @@
           self.FuzzySearch(val).then(res => {
             console.log(res)
           })
-        } else {
+        }
+        if (self.$route.params.type === 'addFriends' || self.$route.params.type === 'inviteFriend') {
           self.FindUserByPhone(val).then(res => {
             self.userInfo = res
             self.isShow = true
@@ -109,10 +111,15 @@
             self.$router.push('/contacts')
           })
         })
+      },
+      invite () {
+        console.log('111')
       }
     },
     data () {
       return {
+        baseurl: 'http://192.168.0.12:7000',
+        btnTitle: '邀请加入',
         results: [],
         isShow: false,
         userInfo: {},

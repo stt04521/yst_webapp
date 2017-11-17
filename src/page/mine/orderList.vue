@@ -12,7 +12,7 @@
         <router-link to="">已支付</router-link>
       </tab-item>
     </tab>
-    <div class="order-list-container" @delete-order="deleteOrder">
+    <div class="order-list-container" @delete-order="deleteOrder" :style="{height: height + 'px'}">
       <router-view :dataList="orderList"></router-view>
     </div>
   </div>
@@ -28,6 +28,7 @@
     },
     data () {
       return {
+        height: 0,
         orderList: [],
         allList: [
           {
@@ -180,6 +181,9 @@
     created () {
       this.orderList = this.allList
     },
+    mounted () {
+      this.height = document.body.offsetHeight - 90
+    },
     methods: {
       toggleList (orderStatus) {
         if (orderStatus === 1) {
@@ -202,8 +206,7 @@
     height: 100%;
     overflow: hidden;
     .order-list-container{
-      height: 100%;
-      overflow-y: hidden;
+      overflow-y: auto;
     }
   }
 </style>

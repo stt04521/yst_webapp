@@ -4,7 +4,7 @@ import Router from 'vue-router'
 Vue.use(Router)
 
 export default new Router({
-  mode: 'history',
+  // mode: 'history',
   routes: [
     {
       path: '/',
@@ -42,7 +42,7 @@ export default new Router({
         children: [{
           path: 'showSchedule',
           name: 'showSchedule',
-          meta: { keepAlive: true },
+          // meta: { keepAlive: true },
           component: (resolve) => {
             require(['@/page/schedule/showSchedule'], resolve)
           }
@@ -152,8 +152,16 @@ export default new Router({
       }
     },
     {
+      path: '/scheduleList',     // 某天的日程
+      name: 'scheduleList',
+      component: (resolve) => {
+        require(['@/page/schedule/scheduleList'], resolve)
+      }
+    },
+    {
       path: '/createSchedule', // 创建日程
       name: 'createSchedule',
+      // meta: { keepAlive: true },
       component: (resolve) => {
         require(['@/page/schedule/createSchedule'], resolve)
       }
@@ -166,7 +174,7 @@ export default new Router({
       }
     },
     {
-      path: '/createNote/:info',  // 创建记事
+      path: '/createNote',  // 创建记事
       name: 'createNote',
       component: (resolve) => {
         require(['@/page/schedule/createNote'], resolve)

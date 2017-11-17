@@ -59,7 +59,6 @@
             startTime: this.startTime,
             notepadId: this.id
           }
-          console.log('true: ', data)
           this.editNotepad(data).then(() => {
             that.$router.push({
               name: 'showNote'
@@ -83,8 +82,7 @@
       }
     },
     created () {
-      let info = this.$route.params.info
-      console.log('info: ', this.$route.params)
+      let info = this.$route.query.info
       if (info) {
         this.isEdit = true
         this.content = info.content

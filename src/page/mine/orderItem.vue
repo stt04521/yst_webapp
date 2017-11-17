@@ -21,12 +21,13 @@
         </cell>
       </group>
       <div class="operate" v-if="item.payStatus === 0">
-        <button class="operate-btn">去付款</button>
-        <button class="operate-btn">找人代付</button>
-        <button class="operate-btn">取消订单</button>
+        <button class="operate-btn" @click="payForItem">去付款</button>
+        <button class="operate-btn" @click="payForItem">找人代付</button>
+        <button class="operate-btn" @click="cancelOrder">取消订单</button>
       </div>
       <div class="operate" v-else>
         <button class="operate-btn" @click="deleteOrder(item)">删除订单</button>
+        <button class="operate-btn" @click="refund(item)">申请退款</button>
       </div>
     </div>
 
@@ -52,6 +53,17 @@
         console.log('delete-order')
         this.$emit('delete-order', order)
         console.log('111')
+      },
+      refund () {
+        console.log('申请退款')
+      },
+      payForItem () {
+        this.$router.push({
+          name: 'purchaseApply'
+        })
+      },
+      cancelOrder () {
+        console.log('cancel order')
       }
     }
   }

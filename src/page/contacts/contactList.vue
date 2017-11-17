@@ -153,7 +153,8 @@
       type: String,
       select: String,
       list: Array,
-      userId: Array
+      userId: Array,
+      result: Object
     },
     directives: {
       longtap,
@@ -234,9 +235,6 @@
         showContent004: false,
         show3: false,
         menus3: {},
-        result: {
-          choosedList: []
-        },
         errorImg: 'this.src="' + require('@/assets/DefaultAvatar.svg') + '"',
         checkList: [
         ],

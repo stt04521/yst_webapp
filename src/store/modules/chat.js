@@ -1,8 +1,8 @@
 /**
  * Created by shishitengteng on 2017/10/27.
  */
-const Pomelo = require('yuan-pomeloclient')
-export const pomelo = new Pomelo()
+const PomeloX = require('yuan-pomeloclient')
+export const pomelo = new PomeloX()
 import { url, notify, compare } from '@/utils/index'
 import db from '../../db'
 import store from '../index'

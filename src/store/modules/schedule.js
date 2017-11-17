@@ -1,23 +1,35 @@
 // import {createSchedule, getList, getInfo, createNote, getNoteList, getNoteInfo} from '@/api/schedule'
 import {getToken} from '@/utils/auth'
-import {getList, createSchedule, createNote, getNoteList, getNoteInfo, getInfo, updateSchedule, deleteSchedule, updateNotepad, deleteNotepad} from '@/api/schedule'
+import {getList, createScheduleApi, createNote, getNoteList, getNoteInfo, getInfo, updateSchedule, deleteSchedule, updateNotepad, deleteNotepad, getScheduleByDateApi} from '@/api/schedule'
 const schedule = {
   state: {
     token: getToken(),
-    scheduleList: ''
+    scheduleList: '',
+    scheduleParticipator: [],
+    createScheduleData: {},
+    canChoosedList: []
   },
 
   mutations: {
     SET_SCHEDULE_LIST: (state, data) => {
       state.scheduleList = data
+    },
+    SET_SCHEDULE_PARTICIPATOR: (state, data) => {
+      state.scheduleParticipator = data
+    },
+    SET_CREATE_SCHEDULE_DATA: (state, data) => {
+      state.createScheduleData = data
+    },
+    SET_CAN_CHOOSEDLIST: (state, data) => {
+      state.canChoosedList = data
     }
   },
 
   actions: {
     // 创建日程
-    createSchedule ({commit}, data) {
+    createScheduleAction ({commit}, data) {
       return new Promise((resolve, reject) => {
-        createSchedule(data).then((res) => {
+        createScheduleApi(data).then((res) => {
           resolve()
         }).catch((err) => {
           reject(err)
@@ -44,6 +56,16 @@ const schedule = {
         }).catch((err) => {
           reject(err)
         })
+      })
+    },
+    // 获取某一天的日程列表
+    getScheduleByDateAction ({commit}, data) {
+      return new Promise((resolve, reject) => {
+        getScheduleByDateApi(data).then((res) => {
+          resolve(res.data.result)
+        })
+      }).catch((err) => {
+        console.log(err)
       })
     },
     // 获取笔记列表

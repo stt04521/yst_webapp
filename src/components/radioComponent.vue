@@ -5,7 +5,7 @@
         <img :src="baseurl + item.portrait" class="left-img">
         <span class="left-name">{{ item.realName }}</span>
       </div>
-      <icon type="success-no-circle" class="radio-icon" v-show="result.choosedList.indexOf(item) > -1"></icon>
+      <icon type="success-no-circle" class="radio-icon" v-show="choosedIdList.indexOf(item.userId) > -1"></icon>
     </div>
   </div>
 </template>
@@ -37,7 +37,7 @@
       toggleChoose (e, item) {
         e.cancelBubble = true
         if (this.radioType === 'mulRadio') {
-          if (this.result.choosedList.indexOf(item) > -1) {
+          if (this.choosedIdList.indexOf(item.userId) > -1) {
             this.result.choosedList = this._.remove(this.result.choosedList, (ite) => {
               return ite.id !== item.id
             })
@@ -46,13 +46,20 @@
           }
         }
         if (this.radioType === 'radio') {
-          if (this.result.choosedList.length === 0 || this.result.choosedList.indexOf(item) < 0) {
+          if (this.choosedIdList.length === 0 || this.choosedIdList.indexOf(item.userId) < 0) {
             this.result.choosedList.splice(0, 1)
             this.result.choosedList = this.result.choosedList.concat(item)
           } else {
             this.result.choosedList = []
           }
         }
+      }
+    },
+    computed: {
+      choosedIdList () {
+        return this.result.choosedList.map((item) => {
+          return item.userId
+        })
       }
     }
   }

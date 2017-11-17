@@ -43,7 +43,7 @@
         console.log('data: ', data)
         this.$router.push({
           name: 'createNote',
-          params: {
+          query: {
             info: data
           }
         })

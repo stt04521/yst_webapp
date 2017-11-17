@@ -10,7 +10,7 @@
     </x-header>
     <view-box class="content-container">
       <group>
-        <x-textarea :max="1000" v-model="content" placeholder="请输入日程内容" @on-focus="onEvent('focus')" @on-blur="onEvent('blur')" :height="183"></x-textarea>
+        <x-textarea :max="1000" v-model="content" placeholder="请输入日程内容" :height="183"></x-textarea>
       </group>
       <group>
         <datetime format="YYYY-MM-DD HH:mm" @on-change="startTimeChange" title="开始时间" v-model="startTime"></datetime>
@@ -18,31 +18,29 @@
         <cell title="提醒" is-link :value="remindValue" @click.native="showActionSheet"></cell>
       </group>
       <group>
-        <!--<x-input title="地点" v-model="address"></x-input>-->
-        <x-address title="地点" v-model="address" :list="addressData" placeholder="必填"></x-address>
+        <x-input title="地点" v-model="address" placeholder="必填" text-align="right"></x-input>
       </group>
       <group>
-        <cell title="参与者" is-link link="/chooseParticipator">
+        <cell title="参与者" is-link @click.native="chooseMember">
           <!-- 下面内容是显示选中的人员 没有则显示为空 -->
-        <!-- <span slot="value">
-          <img src="../../assets/news/userImg.jpg" class="item-img"/>
-          <img src="../../assets/news/userImg.jpg" class="item-img"/>
-          <span>2人</span>
-        </span> -->
+          <span slot="value" v-show="$store.state.schedule.scheduleParticipator.length">
+            <img v-for="(item, index) in $store.state.schedule.scheduleParticipator" :src="baseurl + item.portrait" class="item-img"/>
+            <span>{{ $store.state.schedule.scheduleParticipator.length }}人</span>
+          </span>
         </cell>
       </group>
     </view-box>
   </div>
 </template>
 <script>
-  import { XTextarea, Group, DatetimeRange, Datetime, Cell, Actionsheet, XSwitch, PopupHeader, Radio, XHeader, ViewBox, XAddress, ChinaAddressV4Data, Value2nameFilter as value2name } from 'vux'
+  import {XInput, XTextarea, Group, DatetimeRange, Datetime, Cell, Actionsheet, XSwitch, PopupHeader, Radio, XHeader, ViewBox} from 'vux'
   import { mapActions } from 'vuex'
   export default {
     name: 'createSchedule',
     data () {
       return {
-        addressData: ChinaAddressV4Data,
-        address: [],
+        baseurl: 'http://192.168.0.12:7000',
+        address: '',
         isEdit: false,
         content: '',
         show1: false,
@@ -83,18 +81,16 @@
       Radio,
       XHeader,
       ViewBox,
-      XAddress
+//      XAddress,
+      XInput
     },
     methods: {
       ...mapActions([
-        'createSchedule',
-        'editSchedule'
+        'createScheduleAction',
+        'editSchedule',
+        'getCollegeListAction'
       ]),
-      onEvent (event) {
-        console.log('on', event)
-      },
       startTimeChange (val) {
-        // 任务开始时间 截止时间的startDate设置为开始时间
         this.startTime = val
         this.beginTime = this.startTime.split(' ')[0]
       },
@@ -114,51 +110,99 @@
       cancleCreateSchedule () {
         this.$router.go(-1)
       },
+      getIdFromList (list) {
+        let idList = list && list.map((item) => {
+          return item.userId
+        })
+        return idList
+      },
       createNewSchedule () {
         let that = this
         let paramData
+        // 编辑已有日程
         if (this.isEdit) {
           paramData = {
             content: this.content,
             startTime: this.startTime,
             endTime: this.endTime,
-            address: value2name(this.address, ChinaAddressV4Data),
+            address: this.address,
             remind: this.remind,
-            partner: [],
+            partner: this.getIdFromList(this.$store.state.schedule.scheduleParticipator),
             scheduleId: this.id
           }
-          console.log(paramData)
           this.editSchedule(paramData).then(() => {
             that.$router.push({
-              name: 'showSchedule'
+              name: 'scheduleDetail',
+              params: {
+                id: this.id
+              }
             })
+            this.$store.commit('SET_SCHEDULE_PARTICIPATOR', [])
+            this.$store.commit('SET_CREATE_SCHEDULE_DATA', {})
           }, (err) => {
             console.log(err)
           }).catch((err) => {
             console.log(err)
           })
         } else {
+          // 创建新日程
           paramData = {
             content: this.content,
             startTime: this.startTime,
             endTime: this.endTime,
-            address: value2name(this.address, ChinaAddressV4Data),
+            address: this.address,
             remind: this.remind,
-            partner: []
+            partner: this.getIdFromList(this.$store.state.schedule.scheduleParticipator)
           }
-          this.createSchedule(paramData).then(() => {
+          this.createScheduleAction(paramData).then(() => {
             that.$router.push({
               name: 'showSchedule'
             })
+            this.$store.commit('SET_SCHEDULE_PARTICIPATOR', [])
+            this.$store.commit('SET_CREATE_SCHEDULE_DATA', {})
           }, (err) => {
             console.log(err)
           }).catch(err => {
             console.log(err)
           })
         }
+      },
+      chooseMember () {
+        let paramData = {
+          content: this.content,
+          startTime: this.startTime,
+          endTime: this.endTime,
+          address: this.address,
+          remind: this.remind
+        }
+        this.$store.commit('SET_CREATE_SCHEDULE_DATA', paramData)
+        this.$router.push({
+          name: 'addMember',
+          query: {
+            role: 'SCHEDULE_PARTICIPATOR'
+          }
+        })
+      },
+      isEmptyObject (e) {
+        let t
+        for (t in e) {
+          return true
+        }
+        return false
       }
     },
-    created () {
+    async created () {
+      let res = await this.getCollegeListAction()
+      this.$store.commit('SET_CAN_CHOOSEDLIST', res)
+      if (this.isEmptyObject(this.$store.state.schedule.createScheduleData)) {
+        let data = this.$store.state.schedule.createScheduleData
+        this.content = data.content
+        this.startTime = data.startTime
+        this.endTime = data.endTime
+        this.address = data.address
+        this.remind = data.remind
+      }
+      // 编辑已有日程
       if (this.$route.query && this.$route.query.info) {
         let info = this.$route.query.info
         if (info.remind === 3600000) {
@@ -177,9 +221,66 @@
           this.startTime = this.$moment(info.startTime).format('YYYY-MM-DD HH:mm:ss')
           this.endTime = this.$moment(info.endTime).format('YYYY-MM-DD HH:mm:ss')
           this.id = info.id
+          this.address = info.address
+          this.partner = info.partner
+          this.$store.commit('SET_SCHEDULE_PARTICIPATOR', this.partner)
+        }
+      }
+    },
+    computed: {
+      info () {
+        if (this.$route.query && this.$route.query.info) {
+          let info = this.$route.query.info
+          if (info.remind === 3600000) {
+            this.remindValue = '一小时'
+          }
+          if (info.remind === 86400000) {
+            this.remindValue = '一天前'
+          }
+          if (info.remind === -1) {
+            this.remindValue = '不提醒'
+          }
+          if (info) {
+            this.isEdit = true
+            this.infoList = info
+            this.content = info.content
+            this.startTime = this.$moment(info.startTime).format('YYYY-MM-DD HH:mm:ss')
+            this.endTime = this.$moment(info.endTime).format('YYYY-MM-DD HH:mm:ss')
+            this.id = info.id
+          }
         }
       }
     }
+//    beforeRouteLeave (to, from, next) {
+//      if (to.path === '/addMember') {
+//        from.meta.keepAlive = true
+//      }
+//      if (to.path === '/schedule/showSchedule') {
+//        from.meta.keepAlive = false
+//      }
+//      next()
+//    },
+//    beforeRouteEnter (to, from, next) {
+//      if (from.path === '/addMember') {
+//        to.meta.keepAlive = true
+//      }
+//      next()
+//    }
+//    beforeRouteLeave (to, from, next) {
+//      if (to.path === '/addMember') {
+//        from.meta.keepAlive = true
+//      }
+//      next()
+//    }
+//    beforeRouteEnter (to, from, next) {
+//      if (from.path === '/schedule/showSchedule') {
+//        to.meta.keepAlive = false
+//      }
+//      if (from.path === '/addMember') {
+//        to.meta.keepAlive = true
+//      }
+//      next()
+//    }
   }
 </script>
 <style scoped lang="less">

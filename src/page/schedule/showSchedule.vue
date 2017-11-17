@@ -12,7 +12,7 @@
           <div class="title">{{ item.content }}</div>
           <div class="address" v-if="isShowAddress">{{ item.address }}</div>
           <div class="create-time" :style="{marginTop: isShowAddress ? '2px' : '27px'}">{{ $moment(item.startTime).format('YYYY-MM-DD HH:mm:ss') }}</div>
-          <img class="s-delete" src="../../assets/delete.png" @click.stop="deleteItem(item)"/>
+          <i class="iconfont icon-shanchu s-delete" @click.stop="deleteItem(item)"/>
           <span class="modify-time">{{ $moment(item.updatedAt).format('YYYY-MM-DD HH:mm:ss') }}</span>
         </div>
       </li>
@@ -101,9 +101,6 @@ export default {
         })
       }
     }
-  },
-  created () {
-
   }
 }
 </script>
@@ -182,6 +179,8 @@ export default {
         position: absolute;
         right: 10px;
         top: 10px;
+        font-size: 20px;
+        color: #aaa;
       }
       .modify-time{
         position: absolute;

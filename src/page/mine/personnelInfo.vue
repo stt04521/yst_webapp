@@ -1,6 +1,7 @@
 <template>
   <div class="personnel-info-wrapper">
     <x-header title="个人资料" class="header">
+      <span slot="overwrite-left" @click="goBack">< 返回</span>
     </x-header>
     <div class="personnel-info-container">
       <group class="user-info" :gutter="0">
@@ -18,7 +19,7 @@
         <cell title="Email" :value="accountInfo.email"></cell>
       </group>
       <group v-show="organizeList.length > 0">
-        <group-title slot="title">组织信息<span style="float:right; color: #0099ff" @click="showMoreOrganize">更多组织>></span></group-title>
+        <group-title slot="title">组织信息<span style="float:right; color: #0099ff" @click="showMoreOrganize">选择组织>></span></group-title>
         <cell title="组织" :value="name"></cell>
         <cell title="工号" value="暂无数据"></cell>
         <cell title="部门" value="暂无数据"></cell>
@@ -100,6 +101,11 @@
       },
       changeOrganize () {
         console.log('change organize')
+      },
+      goBack () {
+        this.$router.push({
+          path: '/news'
+        })
       }
     },
     async created () {
@@ -118,7 +124,7 @@
     },
     computed: {
       name () {
-        if (this.$route.query.id) {
+        if (this.$route.query.id && this.infoList.organizeId) {
           let result = this.infoList.organizeId && this.infoList.organizeId.filter(res => {
             return res.id === this.$route.query.id
           })

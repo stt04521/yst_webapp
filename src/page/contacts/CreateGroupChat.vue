@@ -24,7 +24,7 @@
     <hr>
     <div class="step_one" v-if="step == 1">
       <h2>选择群类型：</h2>
-      <span class="chat_type">
+      <span class="chat_type" @click="chooseGroupType" :style="{borderColor: isChoosed ? '#0099ff' : '#D9D9D9'}">
         好友
       </span>
       <!--<select class="chat_type">-->
@@ -36,12 +36,12 @@
       <div class="group_list">
         <span>选择群成员:</span>
         <div class="fr" >
-          <div style="width: 1111px">
-            <img slot="icon"  src="../../assets/news/userImg.jpg" v-for="i in 11">
+          <div style="width: 277px; overflow-x: auto">
+            <img slot="icon" v-for="(item, index) in result.choosedList"  :src="baseurl + item.portrait">
           </div>
         </div>
       </div>
-      <contact-list type="Friends" select="true" :list="FriendGroup" ref="Friends"></contact-list>
+      <contact-list :result="result" type="Friends" select="true" :list="FriendGroup" ref="Friends"></contact-list>
     </div>
     <div class="step_three" v-show="step == 3">
       <label for="groupName">群名称：</label>
@@ -58,6 +58,11 @@
     name: 'hello',
     data () {
       return {
+        baseurl: 'http://192.168.0.12:7000',
+        isChoosed: false,
+        result: {
+          choosedList: []
+        },
         stepList: [
           {name: '第一步', value: '选择群类型'},
           {name: '第二步', value: '选择群成员'},
@@ -106,7 +111,6 @@
         })
       },
       createdGroup () {
-        console.log('create group chat')
         let self = this
         let userId = self.$refs.Friends.result.choosedList.map(item => { return item.userId })
         let request = {
@@ -119,6 +123,9 @@
             name: 'contacts'
           })
         })
+      },
+      chooseGroupType () {
+        this.isChoosed = !this.isChoosed
       }
     }
   }
@@ -186,6 +193,9 @@
         border-radius: 4px;
       }
     }
+  }
+  .choosed {
+    border-color: #0099ff
   }
 
 </style>

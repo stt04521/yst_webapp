@@ -35,7 +35,9 @@
       ]),
       invitate (e) {
         e.cancelBubble = true
-        console.log('邀请成员')
+        this.$router.push({
+          path: 'SearchBuddy/inviteFriend'
+        })
       },
       createOrganize () {
         this.$router.push({

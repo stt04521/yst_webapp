@@ -13,16 +13,16 @@
       :hide-header="false"
       :hide-week-list="false"
       @on-change="onChange"
+      :render-function="buildSlotFn"
     >
     </inline-calendar>
     <div>
-      <confirm v-model="showFirm"
-               @on-cancel="onCancel"
-               @on-confirm="onConfirm">
-        <p style="text-align:center;">{{dateValue}}没有创建日程需要创建日程吗？</p>
-      </confirm>
+      <!--<confirm v-model="showFirm"-->
+               <!--@on-cancel="onCancel"-->
+               <!--@on-confirm="onConfirm">-->
+        <!--<p style="text-align:center;">{{dateValue}}没有创建日程需要创建日程吗？</p>-->
+      <!--</confirm>-->
     </div>
-
   </div>
 </template>
 <script>
@@ -36,16 +36,21 @@
     },
     data () {
       return {
-        dateValue: '',
-        showFirm: false
+        dateValue: ''
+//        showFirm: false
+ //        useCustomFn: true,
+ //        buildSlotFn: () => ''
       }
     },
     methods: {
       onChange () {
-//       // 根据日期和当前用户Id获取是否存在日程
-        // 如果存在日程，则显示日程详情页面
-        // 如果不存在日程，confirm提示是否需要创建日程
-        this.showFirm = true
+//       this.showFirm = true
+        this.$router.push({
+          name: 'scheduleList',
+          query: {
+            dateTitle: this.dateValue
+          }
+        })
       },
       onCancel () {
         console.log('on hide')
@@ -59,11 +64,17 @@
         this.$router.push({
           name: 'showSchedule'
         })
+      },
+ //      dateMark (rowIndex, columnIndex, detail) {
+ //        console.log(rowIndex, ' 列 ： ', columnIndex, ' 详情： ', detail)
+ //      }
+      buildSlotFn (line, index, data) {
+        return /8/.test(data.date) ? '<div style="font-size:12px;text-align:center;"><span style="display:inline-block;width:5px;height:5px;background-color:red;border-radius:50%;"></span></div>' : '<div style="height:19px;}"></div>'
       }
     }
   }
 </script>
-<style scoped lang="less">
+<style lang="less">
   .calender-wrapper {
     height: 100%;
     overflow: hidden;
@@ -71,5 +82,24 @@
       color: #fff;
       font-size: 15px;
     }
+  }
+  .inline-calendar {
+    .calendar-header {
+      .vux-prev-icon{
+        border-color: #0099ff;
+      }
+      .vux-next-icon{
+        border-color: #0099ff;
+      }
+    }
+    td.is-today {
+      color: #0099ff !important;
+    }
+  }
+  .inline-calendar td.current > span.vux-calendar-each-date {
+    background-color: #0099ff !important;
+  }
+  .weui-dialog__btn_primary{
+    color: #0099ff;
   }
 </style>

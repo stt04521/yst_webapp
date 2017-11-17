@@ -5,7 +5,7 @@
       <div class="header-container">
         <img :src="myInfo.portrait ? baseurl + myInfo.portrait : defaultLogo" class="avatar" @click="showUserInfo">
         <span class="name">{{ myInfo.realName }}</span>
-        <span class="organize-name">{{ orTitle }}</span>
+        <span class="organize-name">{{ $store.state.user.overAllStatus.organizeName === '全部' ? '' : $store.state.user.overAllStatus.organizeName }}</span>
       </div>
       <ul class="operate-container">
         <li class="operate-item" v-for="(item, index) in operateList" :key="index" @click="dealClick(item)">

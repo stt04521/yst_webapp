@@ -11,7 +11,7 @@ import fetch from '@/utils/fetch'
   *   remind: '360000'
   *  }
   * */
-export function createSchedule (data) {
+export function createScheduleApi (data) {
   return fetch({
     url: '/restful/schedule/create',
     method: 'post',
@@ -27,6 +27,14 @@ export function getList () {
   })
 }
 
+// 获取某一天的日程
+export function getScheduleByDateApi (data) {
+  return fetch({
+    url: '/restful/schedule/getScheduleByDate',
+    method: 'post',
+    data
+  })
+}
 // 获取日程详情
 export function getInfo (id) {
   return fetch({

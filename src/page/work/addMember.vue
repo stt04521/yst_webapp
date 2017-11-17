@@ -54,7 +54,6 @@
       return {
         baseurl: 'http://192.168.0.12:7000',
         showContent: false,
-//        canChoosedList: [],
         role: '',
         height: 0,
         searchValue: '',
@@ -64,71 +63,7 @@
         colleageList: [],
         result: {
           choosedList: []
-        },
-        list: [
-          {
-            avatar: require('../../assets/news/userImg.jpg'),
-            name: '111',
-            id: '2'
-          },
-          {
-            avatar: require('../../assets/news/userImg.jpg'),
-            name: '111',
-            id: '1'
-          },
-          {
-            avatar: require('../../assets/news/userImg.jpg'),
-            name: '111',
-            id: '3'
-          },
-          {
-            avatar: require('../../assets/news/userImg.jpg'),
-            name: '111',
-            id: '4'
-          },
-          {
-            avatar: require('../../assets/news/userImg.jpg'),
-            name: '111',
-            id: '5'
-          },
-          {
-            avatar: require('../../assets/news/userImg.jpg'),
-            name: '111',
-            id: '6'
-          }
-        ],
-        list2: [
-          {
-            avatar: require('../../assets/news/userImg.jpg'),
-            name: '111',
-            id: '11111111'
-          },
-          {
-            avatar: require('../../assets/news/userImg.jpg'),
-            name: '111',
-            id: '222222'
-          },
-          {
-            avatar: require('../../assets/news/userImg.jpg'),
-            name: '111',
-            id: '3333333'
-          },
-          {
-            avatar: require('../../assets/news/userImg.jpg'),
-            name: '111',
-            id: '44444444'
-          },
-          {
-            avatar: require('../../assets/news/userImg.jpg'),
-            name: '111',
-            id: '555555555'
-          },
-          {
-            avatar: require('../../assets/news/userImg.jpg'),
-            name: '111',
-            id: '6666666666'
-          }
-        ]
+        }
       }
     },
     methods: {
@@ -177,9 +112,15 @@
         if (this.role === 'PARTICIPANT') {
           this.$store.commit('SET_PARTICIPANT_LIST', this.hasChoosedList)
         }
-        this.$router.push({
-          name: 'createTask'
-        })
+        if (this.role === 'SCHEDULE_PARTICIPATOR') {
+          this.$store.commit('SET_SCHEDULE_PARTICIPATOR', this.hasChoosedList)
+          this.$router.push({
+            name: 'createSchedule'
+          })
+        }
+//        this.$router.push({
+//          name: 'createTask'
+//        })
       },
       toggleContentShow () {
         this.showContent = !this.showContent
@@ -188,10 +129,6 @@
         this.result.choosedList = this._.remove(this.result.choosedList, (item) => {
           return val.userId !== item.userId
         })
-//        console.log(this.result.choosedList)
-//        this.hasChoosedList = this.hasChoosedList.map((item) => {
-//          return item.userId !== val.userId
-//        })
       }
     },
     computed: {
@@ -211,18 +148,27 @@
           this.result.choosedList = this.result.choosedList.concat(this.$store.state.task.participantList)
           return this.result.choosedList
         }
+        if (this.role === 'SCHEDULE_PARTICIPATOR') {
+          this.result.choosedList = this.result.choosedList
+          return this.result.choosedList
+        }
       },
       canChoosedList () {
-        let choosedList = []
-        let list = this.colleageList
-        choosedList = choosedList.concat(this.$store.state.task.principalList).concat(this.$store.state.task.executorList).concat(this.$store.state.task.checkerList).concat(this.$store.state.task.participantList)
-        choosedList.map((item) => {
-          list = this._.remove(list, (ite) => {
-            return ite.userId !== item.userId
-          })
-        })
-        console.log(list)
-        return list
+//        let choosedList = []
+//        let list = this.colleageList
+//        choosedList = choosedList.concat(this.$store.state.task.principalList).concat(this.$store.state.task.executorList).concat(this.$store.state.task.checkerList).concat(this.$store.state.task.participantList)
+//        choosedList.map((item) => {
+//          list = this._.remove(list, (ite) => {
+//            return ite.userId !== item.userId
+//          })
+//        })
+//        console.log(list)
+//        return list
+//      }
+        if (this.role === 'SCHEDULE_PARTICIPATOR') {
+          this.result.choosedList = this.$store.state.schedule.scheduleParticipator
+          return this.$store.state.schedule.canChoosedList
+        }
       }
     },
     mounted () {

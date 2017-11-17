@@ -1,6 +1,7 @@
 <template>
   <div class="detail-wrapper">
     <x-header title="日程详情" class="header">
+      <span slot="overwrite-left" @click="goBack">< 返回</span>
     </x-header>
     <div class="content-container">
       <div class="detail-container">
@@ -9,7 +10,7 @@
         <div class="detail-ite">截止时间：{{ $moment(info.endTime).format('YYYY-MM-DD HH:mm:ss') }}</div>
         <div class="detail-ite">地点：{{ info.address }}</div>
         <div class="creator-detail">
-          <img class="creator-img" src="../../assets/news/userImg.jpg"/>
+          <img class="creator-img" :src="creatorAvatar ? baseurl + creatorAvatar : ''"/>
           <span class="creator">{{ creator }}&nbsp;发出的</span>
           <span class="created-time">{{ $moment(info.createdAt).format('YYYY-MM-DD HH:mm:ss') }}</span>
         </div>
@@ -17,9 +18,9 @@
       <div class="participator">
         <div class="p-title">参与者</div>
         <ul class="participate-container" v-show="info.partner && info.partner.length">
-          <li class="participate-item">
-            <img class="avatar" src="../../assets/news/userImg.jpg">
-            <span>李明友</span>
+          <li class="participate-item" v-for="(item, index) in info.partner" :key="index">
+            <img class="avatar" :src="baseurl + item.portrait">
+            <span>{{ item.realName }}</span>
           </li>
         </ul>
         <div class="operate">
@@ -41,8 +42,10 @@
     },
     data () {
       return {
+        baseurl: 'http://192.168.0.12:7000',
         info: {},
-        creator: ''
+        creator: '',
+        creatorAvatar: ''
       }
     },
     methods: {
@@ -52,8 +55,10 @@
         'getMyInfoAction',
         'findPersonInfoByUserIdAction'
       ]),
-      back () {
-        console.log('back')
+      goBack () {
+        this.$router.push({
+          name: 'showSchedule'
+        })
       },
       editDetail () {
         // 跳转到编辑日程页面
@@ -78,17 +83,20 @@
     },
     async created () {
       let id = this.$route.params.id
-      this.getScheduleDetail(id).then((res) => {
-        this.info = res
-      }).catch((err) => {
-        console.log(err)
-      })
-      let res = this.getMyInfoAction()
+//      this.getScheduleDetail(id).then((res) => {
+//        this.info = res
+//      }).catch((err) => {
+//        console.log(err)
+//      })
+      this.info = await this.getScheduleDetail(id)
+      let res = await this.getMyInfoAction()
       if (this.info.creator === res.userId) {
         this.creator = '我'
+        this.creatorAvatar = res.portrait
       } else {
         let response = await this.findPersonInfoByUserIdAction(this.info.creator)
         this.creator = response.realName
+        this.creatorAvatar = response.portrait
       }
     }
   }

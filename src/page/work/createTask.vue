@@ -152,7 +152,8 @@
     methods: {
       ...mapActions([
         'createTaskAction',
-        'GetMyInfo'
+        'GetMyInfo',
+        'getMyInfoAction'
       ]),
       cancel () {
         console.log('cancel')

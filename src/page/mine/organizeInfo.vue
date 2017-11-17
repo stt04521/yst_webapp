@@ -1,22 +1,25 @@
 <template>
   <div class="organize-info-wrapper">
-    <x-header title="组织认证" class="header">
+    <x-header title="组织信息" class="header">
     </x-header>
     <tab class="tab-container" active-color="#0099ff" :line-width="1">
       <tab-item selected @click.native="showBase">基本信息</tab-item>
       <tab-item @click.native="showAuthentication">认证信息</tab-item>
     </tab>
     <group :gutter="0" class="content-container" v-for="(item, index) in baseTitle" :key="index" v-show="baseInfo">
-      <cell :title="item.title">
-        <img :src="organizeDetail[0].logo ? organizeDetail[0].logo : defaultLogo" alt="" v-if="index === 3" class="logo">
-        <span slot="value" v-else style="font-size: 14px">{{ organizeDetail[0][item.value] ? organizeDetail[0][item.value] : '' }}</span>
-      </cell>
+      <x-input :title="item.title" text-align="right"
+               @click.native="changeLogo(index)"
+               :readonly="isReadOnly || [0,1,2,3].indexOf(index) > -1"
+               :placeholder="organizeDetail[0] && organizeDetail[0][item.value] ? organizeDetail[0][item.value] : ''"
+      >
+        <img slot="right" :src="organizeDetail[0] && organizeDetail[0].organizeLogo ? organizeDetail[0].organizeLogo : defaultLogo" alt="" v-if="index === 2" class="logo" @click="changeLogo">
+      </x-input>
     </group>
     <div class="content-container" v-show="anthenticationInfo">
       <group :gutter="0"  style="margin-bottom: 20px">
         <cell title="认证状态">
           <span slot="value" v-show="anthenticationList.status === 1">已认证</span>
-          <span slot="value" v-show="anthenticationList.status === 0">未认证<span style="color: #0099ff" @click="gotoAuthentication">去认证>></span></span>
+          <span slot="value" v-show="anthenticationList.status === 0">未认证<span style="color: #0099ff" @click="gotoAuthentication" v-show="isCreator">去认证>></span></span>
         </cell>
       </group>
       <group :gutter="0" v-show="anthenticationList.status === 1" v-for="(item, index) in anthenticationList.list" :key="index">
@@ -28,11 +31,12 @@
   </div>
 </template>
 <script>
-  import {XHeader, Tab, TabItem, Cell, Group} from 'vux'
+  import {XHeader, Tab, TabItem, Cell, Group, XInput} from 'vux'
   import {mapActions} from 'vuex'
   export default {
     name: 'organizeInfo',
     components: {
+      XInput,
       XHeader,
       Tab,
       TabItem,
@@ -44,6 +48,8 @@
         defaultLogo: require('../../assets/default_organize_logo.png'),
         baseInfo: true,
         anthenticationInfo: false,
+        isReadOnly: true,
+        isCreator: false,
         organizeDetail: [],
         baseTitle: [
           {
@@ -55,16 +61,12 @@
             value: 'organizeName'
           },
           {
-            title: '组织简称',
-            value: 'organizeName'
-          },
-          {
-            title: '组织简称',
+            title: '组织logo',
             value: 'organizeLogo'
           },
           {
             title: '创建人',
-            value: ''
+            value: 'creator'
           },
           {
             title: '所在地区',
@@ -103,7 +105,8 @@
     },
     methods: {
       ...mapActions([
-        'getMyInfoAction'
+        'getMyInfoAction',
+        'findPersonInfoByUserIdAction'
       ]),
       showBase () {
         this.anthenticationInfo = false
@@ -114,7 +117,6 @@
         this.anthenticationInfo = true
       },
       gotoAuthentication () {
-        console.log('111')
         this.$router.push({
           name: 'authentication',
           params: {
@@ -122,19 +124,25 @@
             paramList: this.organizeAuthenticationInfo
           }
         })
+      },
+      changeLogo (idx) {
+        if (idx === 2) {
+          console.log('change logo')
+        }
       }
     },
     async created () {
       let organizeId = this.$route.params.id
-//      this.getMyInfoAction().then(res => {
-//        self.organizeDetail = res.organizeId.filter((item) => {
-//          return item.id === organizeId
-//        })
-//      })
       let res = await this.getMyInfoAction()
       this.organizeDetail = res.organizeId.filter((item) => {
         return item.id === organizeId
       })
+      if (res.userId === this.organizeDetail[0].creator) {
+        this.isCreator = true
+        this.isReadOnly = false
+      }
+      let creatordetail = await this.findPersonInfoByUserIdAction(this.organizeDetail[0].creator)
+      this.organizeDetail[0].creator = creatordetail.data.result.realName
     }
   }
 </script>

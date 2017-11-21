@@ -7,7 +7,8 @@ const schedule = {
     scheduleList: '',
     scheduleParticipator: [],
     createScheduleData: {},
-    canChoosedList: []
+    canChoosedList: [],
+    oneDateSchedule: []
   },
 
   mutations: {
@@ -22,6 +23,9 @@ const schedule = {
     },
     SET_CAN_CHOOSEDLIST: (state, data) => {
       state.canChoosedList = data
+    },
+    SET_ONE_DATE_SCHEDULE: (state, data) => {
+      state.oneDateSchedule = data
     }
   },
 

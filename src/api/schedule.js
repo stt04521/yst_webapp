@@ -28,11 +28,11 @@ export function getList () {
 }
 
 // 获取某一天的日程
-export function getScheduleByDateApi (data) {
+export function getScheduleByDateApi (params) {
   return fetch({
     url: '/restful/schedule/getScheduleByDate',
-    method: 'post',
-    data
+    method: 'get',
+    params
   })
 }
 // 获取日程详情

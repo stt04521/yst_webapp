@@ -1,12 +1,16 @@
-import {getMyInfoApi, findPersonInfoByUserIdApi, editInfoApi, identityVerificationApi, createOrganizeApi, editEmailOrPhoneApi, changePasswordApi, organizeVerificationApi} from '@/api/mine'
+import {getMyInfoApi, findPersonInfoByUserIdApi, editInfoApi, identityVerificationApi, createOrganizeApi, editEmailOrPhoneApi, changePasswordApi, organizeVerificationApi, updateOrganizeInfoApi} from '@/api/mine'
 import db from '../../db'
 const mine = {
   state: {
-    organizeId: []
+    organizeId: [],
+    currentOrganize: {}
   },
   mutations: {
     SET_ORGANIZEID: (state, info) => {
       state.organizeId = info
+    },
+    SET_CURRENT_ORGANIZE: (state, info) => {
+      state.currentOrganize = info
     }
   },
 
@@ -77,6 +81,11 @@ const mine = {
     // 创建组织
     async createOrganizeAction ({dispatch, commit}, data) {
       await createOrganizeApi(data)
+      await dispatch('MyInfo')
+    },
+    // 更改组织信息
+    async updateOrganizeInfoAction ({dispatch, commit}, data) {
+      await updateOrganizeInfoApi(data)
       await dispatch('MyInfo')
     },
     // 修改手机号或者邮箱

@@ -2,10 +2,10 @@
   <div class="schedule-wrapper">
     <x-header :title="dateTitle"></x-header>
     <ul class="schedule-container" :style="{height: height + 'px'}">
-      <li class="item-container" v-for="(item, index) in scheduleList" :key="index" :style="{paddingTop: index === 0 ? '20px': ''}">
+      <li class="item-container" v-for="(item, index) in $store.state.schedule.oneDateSchedule" :key="index" :style="{paddingTop: index === 0 ? '20px': ''}">
         <div class="left">
           <div class="circle"></div>
-          <div class="line" v-show="index !== scheduleList.length-1">
+          <div class="line" v-show="index !== $store.state.schedule.oneDateSchedule.length-1">
             <span class="s-line"></span>
           </div>
         </div>
@@ -71,11 +71,19 @@
     mounted () {
       this.height = document.body.offsetHeight - 46
     },
-    async created () {
+    created () {
       this.dateTitle = this.$route.query.dateTitle
-      let date = this.dateTitle + ' 00:00:00'
-      let res = await this.getScheduleByDateAction(date)
-      this.scheduleList = res
+//      let date = this.dateTitle
+//      let paramsDate = {
+//        date: date
+//      }
+//      this.scheduleList = await this.getScheduleByDateAction(paramsDate)
+//      console.log(this.scheduleList)
+//      this.getScheduleByDateAction(paramsDate).then((res) => {
+//        console.log(res)
+//      }).catch((err) => {
+//        console.log(err)
+//      })
     }
   }
 </script>
@@ -85,6 +93,7 @@
     overflow: hidden;
     .schedule-container{
       overflow-y: auto;
+      overflow-x: hidden;
       &:first-child {
         padding-top: 20px;
       }

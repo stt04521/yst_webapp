@@ -62,23 +62,23 @@
         <tabbar class="vux-demo-tabbar" id="vux-demo-tabbar" icon-class="vux-center" slot="bottom">
           <tabbar-item :link="{path:'/news'}" :selected="route.path === '/news'" badge="99+">
             <!--<span class="demo-icon-22 vux-demo-tabbar-icon-home" slot="icon" style="position:relative;top: -2px;">&#xe637;</span>-->
-            <i class="iconfont icon-xiaoxi1" slot="icon"></i>
-            <i class="iconfont icon-xiaoxi" slot="icon-active"></i>
+            <img src="../assets/navbarIcon/message.png" slot="icon"/>
+            <img src="../assets/navbarIcon/message-active.png" slot="icon-active"/>
             <span slot="label">消息</span>
           </tabbar-item>
           <tabbar-item :link="{path:'/work'}" :selected="route.path.indexOf('work') > -1" >
-            <i class="iconfont icon-jishiben" slot="icon"></i>
-            <i class="iconfont icon-work-copy" slot="icon-active"></i>
+            <img src="../assets/navbarIcon/work.png" slot="icon"/>
+            <img src="../assets/navbarIcon/work-active.png" slot="icon-active"/>
             <span slot="label"><span v-if="componentName" class="vux-demo-tabbar-component">{{componentName}}</span><span v-else>工作</span></span>
           </tabbar-item>
           <tabbar-item :link="{path:'/contacts'}" :selected="route.path === '/contacts'" show-dot badge="New">
-            <i class="iconfont icon-lianxiren" slot="icon"></i>
-            <i class="iconfont icon-geren" slot="icon-active"></i>
+            <img src="../assets/navbarIcon/contact.png" slot="icon"/>
+            <img src="../assets/navbarIcon/contact-active.png" slot="icon-active"/>
           <span slot="label">联系人</span>
           </tabbar-item>
           <tabbar-item :link="{path:'/schedule'}" :selected="route.path.indexOf('schedule') > -1" show-dot>
-            <i class="iconfont icon-calendar1" slot="icon"></i>
-            <i class="iconfont icon-calendar" slot="icon-active"></i>
+            <img src="../assets/navbarIcon/schedule.png" slot="icon"/>
+            <img src="../assets/navbarIcon/schedule-active.png" slot="icon-active"/>
             <span slot="label">日程</span>
           </tabbar-item>
         </tabbar>
@@ -295,6 +295,10 @@
     color: #F70968;
 
   }
+  .weui-tabbar__icon img {
+    width: 22px !important;
+    height: 22px !important;
+  }
   .vux-demo-tabbar .weui-tabbar_item.weui-bar__item_on .vux-demo-tabbar-icon-home {
     color: rgb(53, 73, 94);
   }
@@ -414,5 +418,4 @@
     color: #fff;
     font-size: 15px;
   }
-
 </style>

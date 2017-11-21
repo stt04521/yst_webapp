@@ -27,7 +27,7 @@
 </template>
 
 <script>
-  import { Search, Tab, TabItem, Swiper, SwiperItem, ViewBox } from 'vux'
+  import { Search, Tab, TabItem, Swiper, SwiperItem } from 'vux'
   import contactList from './contactList.vue'
   import {mapActions} from 'vuex'
   const list = () => ['好友', '同事', '群聊']
@@ -38,8 +38,7 @@
       TabItem,
       Swiper,
       SwiperItem,
-      contactList,
-      ViewBox
+      contactList
     },
     mounted () {
       this.height = document.documentElement.clientHeight - 189
@@ -76,12 +75,14 @@
       onFocus () {
         console.log('on focus')
       },
+      // 获取好友列表信息
       getAllGroup () {
         let self = this
         self.GetFriendGroup().then(res => {
           self.FriendGroup = res
         })
       },
+      // 获取群组分组
       getChatGroup () {
         let self = this
         self.GetChatGroup().then(res => {

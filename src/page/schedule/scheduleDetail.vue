@@ -118,6 +118,7 @@
     .content-container {
       height: 620px;
       overflow-y: auto;
+      overflow-x: hidden;
       .detail-container{
         .container;
         position: relative;

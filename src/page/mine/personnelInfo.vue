@@ -7,7 +7,7 @@
       <group class="user-info" :gutter="0">
         <cell value="编辑头像" is-link>
           <div slot="title">
-            <img :src="infoList.portrait ? baseurl + infoList.portrait : defaultAvatar" class="avatar" alt="">
+            <img :src="baseurl + infoList.portrait || defaultAvatar" class="avatar" alt="">
             <span class="name">{{ infoList.realName }}</span>
             <img src="../../assets/erwei_code.png" class="code" alt="">
           </div>

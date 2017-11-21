@@ -1,6 +1,6 @@
 <template>
   <div class="create-note-wrapper">
-    <x-header title="新建计划" slot="overwrite-left" class="header">
+    <x-header :title="noteTitle" slot="overwrite-left" class="header">
       <span slot="overwrite-left" @click="cancleCreateNote">取消</span>
       <span slot="right" @click="create">{{isEdit ? '保存' : '创建'}}</span>
     </x-header>
@@ -32,7 +32,8 @@
         startTime: '',
         content: '',
         placeHolder: '请输入记事内容',
-        id: ''
+        id: '',
+        noteTitle: '新建记事'
       }
     },
     methods: {
@@ -84,6 +85,7 @@
     created () {
       let info = this.$route.query.info
       if (info) {
+        this.noteTitle = '修改记事'
         this.isEdit = true
         this.content = info.content
         this.startTime = this.$moment(info.startTime).format('YYYY-MM-DD HH:mm:ss')

@@ -60,7 +60,8 @@
     },
     async created () {
       let res = await this.getMyInfoAction()
-      this.organizeList = res.organizeId.concat([{organizeName: '个人'}])
+//      this.organizeList = res.organizeId.concat([{organizeName: '个人'}])
+      this.organizeList = res.organizeId
     }
   }
 </script>

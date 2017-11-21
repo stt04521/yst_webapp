@@ -374,6 +374,13 @@ export default new Router({
       }
     },
     {
+      path: '/editOrganizeInfo',  // 编辑组织信息
+      name: 'editOrganizeInfo',
+      component: (resolve) => {
+        require(['@/page/mine/editOrganizeInfo'], resolve)
+      }
+    },
+    {
       path: '/personnelInfo',  // 个人信息
       name: 'personnelInfo',
       component: (resolve) => {

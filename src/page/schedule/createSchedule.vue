@@ -4,7 +4,7 @@
       <actionsheet :menus="remindMenu" v-model="showRemind" @on-click-menu="chooseRemind"></actionsheet>
     </div>
     <!--主体内容-->
-    <x-header title="新建日程" slot="overwrite-left" class="header">
+    <x-header :title="scheduleTitle" slot="overwrite-left" class="header">
       <span slot="overwrite-left" @click="cancleCreateSchedule">取消</span>
       <span slot="right" @click="createNewSchedule">{{isEdit ? '保存' : '创建'}}</span>
     </x-header>
@@ -22,10 +22,12 @@
       </group>
       <group>
         <cell title="参与者" is-link @click.native="chooseMember">
-          <!-- 下面内容是显示选中的人员 没有则显示为空 -->
           <span slot="value" v-show="$store.state.schedule.scheduleParticipator.length">
-            <img v-for="(item, index) in $store.state.schedule.scheduleParticipator" :src="baseurl + item.portrait" class="item-img"/>
-            <span>{{ $store.state.schedule.scheduleParticipator.length }}人</span>
+            <img v-for="(item, index) in $store.state.schedule.scheduleParticipator.slice(0, 7)" :src="baseurl + item.portrait" class="item-img"/>
+            <span>
+              {{ $store.state.schedule.scheduleParticipator.length > 7 ? '等' + $store.state.schedule.scheduleParticipator.length : $store.state.schedule.scheduleParticipator.length }}
+              人
+            </span>
           </span>
         </cell>
       </group>
@@ -39,6 +41,7 @@
     name: 'createSchedule',
     data () {
       return {
+        scheduleTitle: '新建日程',
         baseurl: 'http://192.168.0.12:7000',
         address: '',
         isEdit: false,
@@ -173,7 +176,11 @@
           startTime: this.startTime,
           endTime: this.endTime,
           address: this.address,
-          remind: this.remind
+          remind: this.remind,
+          isEdit: this.isEdit
+        }
+        if (this.id) {
+          paramData.scheduleId = this.id
         }
         this.$store.commit('SET_CREATE_SCHEDULE_DATA', paramData)
         this.$router.push({
@@ -183,6 +190,7 @@
           }
         })
       },
+      // 判断一个对象是否为空
       isEmptyObject (e) {
         let t
         for (t in e) {
@@ -201,6 +209,8 @@
         this.endTime = data.endTime
         this.address = data.address
         this.remind = data.remind
+        this.id = data.scheduleId
+        this.isEdit = data.isEdit || false
       }
       // 编辑已有日程
       if (this.$route.query && this.$route.query.info) {
@@ -225,6 +235,9 @@
           this.partner = info.partner
           this.$store.commit('SET_SCHEDULE_PARTICIPATOR', this.partner)
         }
+      }
+      if (this.isEdit) {
+        this.scheduleTitle = '修改计划'
       }
     },
     computed: {

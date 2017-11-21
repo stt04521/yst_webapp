@@ -78,6 +78,20 @@ export function createOrganizeApi (data) {
     data
   })
 }
+// 修改组织信息
+/* params
+*  {
+*   key: val
+*  }
+* */
+export function updateOrganizeInfoApi (paramsData) {
+  let data = paramsData.params
+  return fetch({
+    url: '/restful/organize/updateOrganize/' + paramsData.id,
+    method: 'post',
+    data
+  })
+}
 // 修改手机号或者邮箱
 /* params
 * {

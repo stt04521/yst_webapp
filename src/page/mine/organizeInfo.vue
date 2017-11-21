@@ -1,19 +1,17 @@
 <template>
   <div class="organize-info-wrapper">
     <x-header title="组织信息" class="header">
+      <span slot="right" v-if="baseInfo && IamCreator" @click="toEditPage">编辑</span>
     </x-header>
     <tab class="tab-container" active-color="#0099ff" :line-width="1">
       <tab-item selected @click.native="showBase">基本信息</tab-item>
       <tab-item @click.native="showAuthentication">认证信息</tab-item>
     </tab>
     <group :gutter="0" class="content-container" v-for="(item, index) in baseTitle" :key="index" v-show="baseInfo">
-      <x-input :title="item.title" text-align="right"
-               @click.native="changeLogo(index)"
-               :readonly="isReadOnly || [0,1,2,3].indexOf(index) > -1"
-               :placeholder="organizeDetail[0] && organizeDetail[0][item.value] ? organizeDetail[0][item.value] : ''"
-      >
-        <img slot="right" :src="organizeDetail[0] && organizeDetail[0].organizeLogo ? organizeDetail[0].organizeLogo : defaultLogo" alt="" v-if="index === 2" class="logo" @click="changeLogo">
-      </x-input>
+      <cell :title="item.title">
+        <img :src="organizeDetail[0] && organizeDetail[0].logo || defaultLogo" alt="" v-if="index === 2" class="logo">
+        <span slot="value" v-else style="font-size: 14px">{{ organizeDetail[0] && organizeDetail[0][item.value] || '' }}</span>
+      </cell>
     </group>
     <div class="content-container" v-show="anthenticationInfo">
       <group :gutter="0"  style="margin-bottom: 20px">
@@ -45,10 +43,11 @@
     },
     data () {
       return {
+        organizeId: '',
         defaultLogo: require('../../assets/default_organize_logo.png'),
         baseInfo: true,
+        IamCreator: false,
         anthenticationInfo: false,
-        isReadOnly: true,
         isCreator: false,
         organizeDetail: [],
         baseTitle: [
@@ -74,7 +73,7 @@
           },
           {
             title: '详细地址',
-            value: 'address'
+            value: 'street'
           },
           {
             title: '联系电话',
@@ -86,9 +85,8 @@
           },
           {
             title: '公众号',
-            value: ''
+            value: 'account'
           }],
-//        infoList: ['企业', '武汉黎宁游科技有限公司', '黎宁游科技', require('../../assets/news/userImg.jpg'), '李明友', '武汉市洪山区', '武汉市洪山区关山大道未来大厦1201', '1111111111111111111111111', '111@111.com', '武汉黎宁游科技有限公司'],
         anthenticationTitle: ['统一社会信用代码', '企业名称', '企业类型', '企业住所', '法定代表人', '注册资本', '成立时间', '经营范围'],
         anthenticationList: {
           status: 0,
@@ -125,24 +123,25 @@
           }
         })
       },
-      changeLogo (idx) {
-        if (idx === 2) {
-          console.log('change logo')
-        }
+      toEditPage () {
+        this.$router.push({
+          name: 'editOrganizeInfo'
+        })
       }
     },
     async created () {
-      let organizeId = this.$route.params.id
+      this.organizeId = this.$route.params.id
       let res = await this.getMyInfoAction()
       this.organizeDetail = res.organizeId.filter((item) => {
-        return item.id === organizeId
+        return item.id === this.organizeId
       })
       if (res.userId === this.organizeDetail[0].creator) {
+        this.IamCreator = true
         this.isCreator = true
-        this.isReadOnly = false
       }
       let creatordetail = await this.findPersonInfoByUserIdAction(this.organizeDetail[0].creator)
       this.organizeDetail[0].creator = creatordetail.data.result.realName
+      this.$store.commit('SET_CURRENT_ORGANIZE', this.organizeDetail[0])
     }
   }
 </script>

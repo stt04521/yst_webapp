@@ -5,39 +5,48 @@
     </div>
     <!--好友列表-->
     <group v-if="type == 'Friends'" >
-      <template v-for="item,index in list" >
+      <template v-for="(item, index) in list">
         <cell
           is-link
           :border-intent="false"
           :arrow-direction="item.showContent ? 'up' : 'down'"
           @click.native.stop="item.showContent = !item.showContent"
-          v-longtap="{fn:onlongpress,name:'长按'}"
+          v-longtap="{fn:onlongpress,name:'长按', params: {index}}"
           :data-id="index"
         >
           <div slot="title" :data-id="index">
             {{item.name}}
-            <Popover :ref="'group'+index">
-              <div slot="content">
-                <p @click.stop="onJutmp('/GroupManagement')">分组管理</p>
-                <hr>
-                <p>姓氏排序</p>
-              </div>
-            </Popover>
+            <tool-tip v-show="index === toolTipShowIndex"
+                      :list="managerList"
+                      @item-click="operateGroup"
+                      @hide-tooltip="hideToolTip"></tool-tip>
+            <!--<div class="pop-background" @click="hidePopove"></div>-->
+            <!--<Popover :ref="'group'+index">-->
+              <!--<div slot="content">-->
+                <!--<p @click.stop="onJutmp('/GroupManagement')">分组管理</p>-->
+                <!--<hr>-->
+                <!--<p>姓氏排序</p>-->
+              <!--</div>-->
+            <!--</Popover>-->
           </div>
         </cell>
         <template v-if="item.showContent">
-          <template v-for="item1,index1 in item.friend" >
+          <template v-for="(item1, index1) in item.friend" >
             <!--好友列表-->
-            <cell :data-id="index1"  v-longtap="{fn:onItemLongpress,name:'长按'}" @click.native.stop="onJutmp({path: `/ContactInfo/${type}`, query: {id: item1.personInfo.userId}})" v-if="!select && item1.personInfo">
+            <cell :data-id="index1"  v-longtap="{fn:onItemLongpress,name:'长按', params: {item1, index1}}" @click.native.stop="onJutmp({path: `/ContactInfo/${type}`, query: {id: item1.personInfo.userId}})" v-if="!select && item1.personInfo">
               <div slot="title" :data-id="index1" >
                 {{item1.personInfo.realName}}
-                <Popover :ref="'groupItem'+index1" >
-                  <div slot="content">
-                    <p @click.stop="onJutmp({path: '/MobilePacket', query:{id: item1.personInfo.userId}})">移动分组</p>
-                    <hr>
-                    <p @click.stop="onShowDele(item1.personInfo.userId)">删除好友</p>
-                  </div>
-                </Popover>
+                <tool-tip v-show="item1.friendGroupId + index1 === toolTipItemShowIndex"
+                          :list="operateList"
+                          @item-click="operateFriend"
+                          @hide-tooltip="hideTooltip"></tool-tip>
+                <!--<Popover :ref="'groupItem'+index1" >-->
+                  <!--<div slot="content">-->
+                    <!--<p @click.stop="onJutmp({path: '/MobilePacket', query:{id: item1.personInfo.userId}})">移动分组</p>-->
+                    <!--<hr>-->
+                    <!--<p @click.stop="onShowDele(item1.personInfo.userId)">删除好友</p>-->
+                  <!--</div>-->
+                <!--</Popover>-->
               </div>
               <img slot="icon" class="icon" :src="baseurl + item1.personInfo.portrait" :data-id="index1" :onerror="errorImg">
             </cell>
@@ -133,6 +142,7 @@
 <script>
   import { Cell, CellBox, CellFormPreview, Group, Badge, Actionsheet, Checklist, TransferDom } from 'vux'
   import Popover from '@/components/popover.vue'
+  import toolTip from '@/components/toolTip.vue'
   import { longtap } from '@/directives/vue-touch'
   import radioComponent from '@/components/radioComponent'
   import { mapActions } from 'vuex'
@@ -147,7 +157,8 @@
       Popover,
       Actionsheet,
       Checklist,
-      radioComponent
+      radioComponent,
+      toolTip
     },
     props: {
       type: String,
@@ -170,16 +181,17 @@
         'FriendDelFriend',
         'DelGroupMembers'
       ]),
-      onlongpress (e) {
+      onlongpress (e, val) {
         e.preventDefault()
-        let id = e.target.getAttribute('data-id')
-        let attr = 'group' + id
-        this.$refs[attr][0].onShow(true)
+        this.toolTipShowIndex = val.params.index
+//        let id = e.target.getAttribute('data-id')
+//        let attr = 'group' + id
+//        this.$refs[attr][0].onShow(true)
       },
-      onItemLongpress (e) {
+      onItemLongpress (e, val) {
         e.preventDefault()
-        let id = e.target.getAttribute('data-id')
-        this.$refs['groupItem' + id][0].onShow(true)
+        this.toolTipItemShowIndex = val.params.item1.friendGroupId + val.params.index1
+        this.currentItem = val.params.item1
       },
       onJutmp (url) {
         this.$router.push(url)
@@ -213,6 +225,40 @@
             delete: '<span style="color:red">确定</span>'
           }
         }
+      },
+      hidePopove () {
+        console.log('111')
+      },
+      // 隐藏tooltip
+      hideToolTip () {
+        this.toolTipShowIndex = null
+      },
+      operateGroup (item) {
+        switch (item.key) {
+          case 'GROUP_MANAGEMENT':
+            this.onJutmp('/GroupManagement')
+            break
+          case 'SORT_FIRST_NAME':
+            console.log('SORT_FIRST_NAME')
+            break
+          default:
+            break
+        }
+      },
+      operateFriend (item) {
+        switch (item.key) {
+          case 'MOVE_TO_OTHER_GROUP':
+            this.$router.push({path: '/MobilePacket', query: {id: this.currentItem.personInfo.userId}})
+            break
+          case 'DELETE_FRIEND':
+            this.onShowDele(this.currentItem.personInfo.userId)
+            break
+          default:
+            break
+        }
+      },
+      hideTooltip () {
+        this.toolTipItemShowIndex = null
       }
     },
     filters: {
@@ -227,6 +273,11 @@
     },
     data () {
       return {
+        toolTipItemShowIndex: null,
+        toolTipShowIndex: null,
+        currentItem: null,
+        managerList: [{title: '分组管理', key: 'GROUP_MANAGEMENT'}, {title: '姓氏排序', key: 'SORT_FIRST_NAME'}],
+        operateList: [{title: '移动分组', key: 'MOVE_TO_OTHER_GROUP'}, {title: '删除好友', key: 'DELETE_FRIEND'}],
         baseurl: 'http://192.168.0.12:7000',
         delid: '',
         showContent001: false,
@@ -262,5 +313,4 @@
       background: deepskyblue;
     }
   }
-
 </style>

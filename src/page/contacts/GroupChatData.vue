@@ -14,7 +14,7 @@
       <Flexbox wrap="wrap" :gutter="0"  v-click-outside="onClickedOutside">
         <FlexboxItem :span="2" v-for="i in GroupList" :key="i.id" class="relative">
           <img :src="require('@/assets/close.svg')"  class="close" v-show="isClose" @click="delMembers(i.userId)">
-          <img :src="require('@/assets/DefaultAvatar.svg') || i.personInfo.portrait"  class="img" v-longtap="{fn:onlongpress,name:'长按'}">
+          <img :src="baseurl + i.personInfo.portrait || require('@/assets/DefaultAvatar.svg')"  class="img" v-longtap="{fn:onlongpress,name:'长按'}">
           <p>{{i.personInfo.realName}}</p>
         </FlexboxItem>
       </Flexbox>
@@ -68,6 +68,7 @@
     },
     data () {
       return {
+        baseurl: 'http://192.168.0.12:7000',
         isClose: false,
         GroupList: [],
         show3: false,
